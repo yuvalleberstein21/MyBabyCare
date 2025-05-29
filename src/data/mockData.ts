@@ -1,23 +1,40 @@
 import {
+  Baby,
   DailySummary,
   DiaperLog,
   FeedingLog,
   SleepLog,
   SleepQuality,
+  User,
 } from '../types';
 
-let now = new Date();
-let currentTime = now.toLocaleTimeString('en-US', {
+const now = new Date();
+const currentTime = now.toLocaleTimeString('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
-  second: '2-digit',
 });
+
+const today = new Date('2025-05-29');
+
+// Mock User
+
+export const users: User[] = [
+  { id: '1', fullName: 'yuval leb', password: '123456' },
+  { id: '2', fullName: 'admin', password: 'admin123' },
+];
+
+// Mock Baby Logs
+export const babyData: Baby = {
+  id: '101',
+  name: 'Shon',
+  userId: '10345',
+};
 
 // Mock Feeding Logs
 export const feedingLogs: FeedingLog[] = [
-  { id: 1, babyId: 101, time: currentTime, amount: 120, type: 'bottle' },
-  { id: 2, babyId: 101, time: currentTime, amount: null, type: 'breast' },
-  { id: 3, babyId: 101, time: currentTime, amount: 60, type: 'solid' },
+  { id: 1, babyId: 101, time: today, amount: 120, type: 'bottle' },
+  { id: 2, babyId: 101, time: today, amount: null, type: 'breast' },
+  { id: 3, babyId: 101, time: today, amount: 60, type: 'solid' },
 ];
 
 // Mock Sleep Logs
@@ -49,14 +66,14 @@ export const diaperLogs: DiaperLog[] = [
 export const dailySummary: DailySummary = {
   date: new Date(),
   feedings: [
-    { time: currentTime, type: 'bottle', amount: 120 },
-    { time: currentTime, type: 'breast', amount: null },
-    { time: currentTime, type: 'solid', amount: 60 },
+    { time: today, type: 'bottle', amount: 120 },
+    { time: today, type: 'breast', amount: null },
+    { time: today, type: 'solid', amount: 60 },
   ],
   diaperChanges: [
-    { time: '09:00', type: 'pee' },
-    { time: '12:15', type: 'mixed' },
-    { time: '18:00', type: 'poop' },
+    { time: currentTime, type: 'pee' },
+    { time: currentTime, type: 'mixed' },
+    { time: currentTime, type: 'poop' },
   ],
   sleepSessions: [
     { startTime: '10:00', endTime: '11:00' },
