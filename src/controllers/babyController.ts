@@ -34,5 +34,18 @@ export const getBabies = (req: Request, res: Response) => {
     res.status(404).json({ error: 'אין תינוקות ברשימה' });
     return;
   }
-  res.json({ babies: userBabies });
+  res.status(200).json({ babies: userBabies });
+};
+
+export const getBabyData = (req: Request, res: Response) => {
+  const { babyId } = req.params;
+
+  const userBaby = babies.find((baby) => baby.id === babyId);
+
+  if (!userBaby) {
+    res.status(404).json({ error: 'שגיאה בקבלת מידע התינוק' });
+    return;
+  }
+
+  res.status(200).json({ baby: userBaby });
 };
