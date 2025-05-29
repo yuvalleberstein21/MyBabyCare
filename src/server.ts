@@ -1,6 +1,11 @@
 import express, { ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import feedRoutes from './routers/feedRoutes';
+import sleepRoutes from './routers/sleepRoutes';
+import diaperRoutes from './routers/diaperRoutes';
+import dailySummaryRoutes from './routers/dailySummaryRoutes';
+import authRoutes from './routers/authRoutes';
 
 dotenv.config();
 
@@ -14,6 +19,12 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.get('/', (req, res) => {
   res.send('MyBabyCare API is running!');
 });
+
+app.use('/auth', authRoutes);
+app.use('/feed', feedRoutes);
+app.use('/sleep', sleepRoutes);
+app.use('/diaper', diaperRoutes);
+app.use('/daily-summary', dailySummaryRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   console.error(`${req.method}: ${req.originalUrl}, failed with error ${err}`);
