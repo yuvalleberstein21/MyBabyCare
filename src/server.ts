@@ -9,6 +9,7 @@ import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import authRoutes from './routers/authRoutes';
 import babyRoutes from './routers/babyRoutes';
 import { requireAuth } from './middlewares/auth';
+import { connectDB } from './config/dataBase';
 
 dotenv.config();
 
@@ -39,6 +40,10 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} `);
-});
+
+(async () => {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+  });
+})();
