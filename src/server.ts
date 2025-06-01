@@ -5,9 +5,9 @@ import cookieParser from 'cookie-parser';
 import feedRoutes from './routers/feedRoutes';
 import sleepRoutes from './routers/sleepRoutes';
 import diaperRoutes from './routers/diaperRoutes';
-import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import authRoutes from './routers/authRoutes';
 import babyRoutes from './routers/babyRoutes';
+import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
 import { connectDB } from './config/dataBase';
 
@@ -17,7 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 

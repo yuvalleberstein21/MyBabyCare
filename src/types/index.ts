@@ -5,6 +5,10 @@ export interface User {
   password: string;
 }
 
+export interface JwtUser {
+  id: string;
+  name: string;
+}
 // מידע של תינוק
 export interface Baby {
   id: string;
@@ -51,7 +55,7 @@ export interface DiaperLog {
 
 // סיכום יומי
 export type DailySummary = {
-  date: Date;
+  date: string;
   feedings: Omit<FeedingLog, 'id' | 'babyId'>[];
   diaperChanges: Omit<DiaperLog, 'id' | 'babyId'>[];
   sleepSessions: {

@@ -1,10 +1,8 @@
 import express from 'express';
-import { dailySummary } from '../data/mockData';
-
 const router = express.Router();
+import { getDailySummary } from '../controllers/dailySummaryController';
+import { requireAuth } from '../middlewares/auth';
 
-router.get('/', (req, res) => {
-  res.json(dailySummary);
-});
+router.get('/', requireAuth, getDailySummary);
 
 export default router;

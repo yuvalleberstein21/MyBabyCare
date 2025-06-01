@@ -1,31 +1,33 @@
 import { Request, Response, NextFunction } from 'express';
-import { users } from '../data/mockData';
-import { User } from '../types';
+import jwt from 'jsonwebtoken';
+import { JwtUser } from '../types/index';
 
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: User;
+    user?: JwtUser;
   }
 }
+
 export const requireAuth = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const userId = req.signedCookies.userId;
+): void => {
+  const token = req.cookies.accessToken;
 
-  if (!userId) {
-    res.status(401).json({ error: 'לא מחובר' });
+  if (!token) {
+    res.sendStatus(401);
     return;
   }
 
-  const user = users.find((u) => u.id === userId);
-
-  if (!user) {
-    res.status(401).json({ error: 'משתמש לא קיים' });
+  try {
+    const secret = process.env.ACCESS_TOKEN_SECRET!;
+    const user = jwt.verify(token, secret) as JwtUser;
+    req.user = user;
+    next();
+  } catch (err) {
+    console.error('JWT verification failed:', err);
+    res.sendStatus(403);
     return;
   }
-
-  req.user = user;
-  next();
 };

@@ -4,9 +4,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    fullName: {
-      type: String,
-    },
+    fullName: { type: String, required: true },
     email: {
       type: String,
       unique: true,
@@ -18,6 +16,12 @@ const userSchema = new Schema(
       min: 4,
       required: true,
     },
+    babies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Baby',
+      },
+    ],
   },
   { timestamps: true }
 );

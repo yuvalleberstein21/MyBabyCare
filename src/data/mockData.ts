@@ -64,7 +64,7 @@ export const diaperLogs: DiaperLog[] = [
 
 // Mock Daily Summary
 export const dailySummary: DailySummary = {
-  date: new Date(),
+  date: '26/06/2025',
   feedings: [
     { time: today, type: 'bottle', amount: 120 },
     { time: today, type: 'breast', amount: null },
