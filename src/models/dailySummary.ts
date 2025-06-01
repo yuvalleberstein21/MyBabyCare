@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 import { DailySummary } from '../types';
 
 const DailySummarySchema = new Schema<DailySummary>({
-  babyId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Baby',
-    required: true,
-  },
+  // babyId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Baby',
+  //   required: true,
+  // },
   date: { type: String, required: true },
   feedings: [
     {

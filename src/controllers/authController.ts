@@ -49,6 +49,44 @@ export const Login = async (req: Request, res: Response) => {
   }
 };
 
+export const Register = async (req: Request, res: Response) => {
+  try {
+    const { fullName, email, password } = req.body;
+
+    if (!fullName || !email || !password) {
+      res.status(400).json({ error: 'נא למלא את כל השדות' });
+      return;
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      res.status(409).json({ error: 'משתמש כבר קיים במערכת' });
+      return;
+    }
+
+    const newUser = new User({
+      fullName,
+      email,
+      password,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({
+      message: 'נרשמת בהצלחה',
+      user: {
+        id: newUser._id,
+        name: newUser.fullName,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    console.error('שגיאה ב-register:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
+
 export const Logout = (req: Request, res: Response) => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
