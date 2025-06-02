@@ -8,7 +8,7 @@ const DailySummarySchema = new Schema<DailySummary>({
   //   ref: 'Baby',
   //   required: true,
   // },
-  date: { type: String, required: true },
+  date: { type: Date, required: true },
   feedings: [
     {
       time: { type: String, required: true },

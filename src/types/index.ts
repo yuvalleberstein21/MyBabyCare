@@ -55,7 +55,7 @@ export interface DiaperLog {
 
 // סיכום יומי
 export type DailySummary = {
-  date: string;
+  date: Date;
   feedings: Omit<FeedingLog, 'id' | 'babyId'>[];
   diaperChanges: Omit<DiaperLog, 'id' | 'babyId'>[];
   sleepSessions: {

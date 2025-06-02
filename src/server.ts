@@ -10,6 +10,7 @@ import babyRoutes from './routers/babyRoutes';
 import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
 import { connectDB } from './config/dataBase';
+import dailySummary from './models/dailySummary';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/', requireAuth, (req, res) => {
-  res.send('MyBabyCare API is running!');
+  res.send('hello you pass the protected route');
 });
 
 app.use('/auth', authRoutes);
