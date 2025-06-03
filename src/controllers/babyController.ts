@@ -1,51 +1,106 @@
 import { Request, Response, RequestHandler } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { Baby } from '../types';
+import mongoose from 'mongoose';
 
-const babies: Baby[] = [];
-export const createBaby: RequestHandler = (req, res) => {
-  const { name } = req.body;
+import { Baby } from '../models/babyModel';
+import { User } from '../models/userModel';
+
+export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
+
+  const { name, gender, birthDate, notes } = req.body;
 
   if (!userId) {
     res.status(401).json({ error: 'משתמש לא מזוהה' });
     return;
   }
+
   if (!name) {
     res.status(400).json({ error: 'שם התינוק חסר' });
     return;
   }
 
-  const newBaby: Baby = {
-    id: uuidv4(),
-    name,
-    userId,
-  };
+  try {
+    const newBaby = new Baby({
+      userId,
+      name,
+      gender,
+      birthDate,
+      notes,
+    });
 
-  babies.push(newBaby);
+    const savedBaby = await newBaby.save();
 
-  res.status(201).json({ message: 'תינוק נוצר בהצלחה', baby: newBaby });
+    await User.findByIdAndUpdate(userId, {
+      $push: { babies: savedBaby._id },
+    });
+
+    res.status(201).json({ message: 'תינוק נוצר בהצלחה', baby: savedBaby });
+  } catch (error) {
+    console.error('שגיאה ביצירת תינוק:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
 };
 
-export const getBabies = (req: Request, res: Response) => {
+export const getBabies = async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const userBabies = babies.filter((baby) => baby.userId === userId);
-  if (userBabies.length === 0) {
-    res.status(404).json({ error: 'אין תינוקות ברשימה' });
-    return;
+
+  const { babyId } = req.query;
+
+  try {
+    if (babyId) {
+      if (!mongoose.Types.ObjectId.isValid(babyId as string)) {
+        res.status(400).json({ error: 'baby Id לא תקין' });
+        return;
+      }
+      const userBaby = await Baby.findOne({ _id: babyId, userId });
+
+      if (!userBaby) {
+        res.status(404).json({ error: 'תינוק לא נמצא' });
+        return;
+      }
+
+      res.status(200).json({ baby: userBaby });
+      return;
+    } else {
+      const userBabies = await Baby.find({ userId });
+
+      if (!userBabies.length) {
+        res.status(404).json({ error: 'אין תינוקות ברשימה' });
+        return;
+      }
+      res.status(200).json({ babies: userBabies });
+      return;
+    }
+  } catch (error) {
+    console.error('שגיאה בקבלת תינוקות:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
   }
-  res.status(200).json({ babies: userBabies });
 };
 
-export const getBabyData = (req: Request, res: Response) => {
+export const updateBaby = async (req: Request, res: Response) => {
   const { babyId } = req.params;
+  const updateFields = req.body;
 
-  const userBaby = babies.find((baby) => baby.id === babyId);
+  try {
+    if (!babyId) {
+      res.status(400).json({ error: 'id של התינוק אינו נמצא' });
+      return;
+    }
 
-  if (!userBaby) {
-    res.status(404).json({ error: 'שגיאה בקבלת מידע התינוק' });
-    return;
+    console.log(updateFields);
+    const updatedBaby = await Baby.findByIdAndUpdate(
+      babyId,
+      { $set: { updateFields } },
+      { new: true, runValidators: true } // לוודא שהשדות שנשלחים עומדים בוולידציה של הסכימה.
+    );
+
+    if (!updatedBaby) {
+      res.status(404).json({ error: 'תינוק לא נמצא' });
+      return;
+    }
+    res.status(200).json({ message: 'התינוק עודכן בהצלחה', baby: updatedBaby });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
   }
-
-  res.status(200).json({ baby: userBaby });
 };

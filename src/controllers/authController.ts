@@ -15,11 +15,11 @@ export const Login = async (req: Request, res: Response) => {
       return;
     }
 
-    // const isMatch = await bcrypt.compare(password, user.password);
-    // if (!isMatch) {
-    //   res.status(401).json({ error: 'אימייל או סיסמה שגויים' });
-    //   return;
-    // }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      res.status(401).json({ error: 'אימייל או סיסמה שגויים' });
+      return;
+    }
 
     const payload: JwtUser = { id: user._id.toString(), name: user.fullName };
     const { accessToken, refreshToken } = generateTokens(payload);

@@ -3,7 +3,7 @@ import dailySummary from '../models/dailySummary';
 
 export const getDailySummary = async (req: Request, res: Response) => {
   try {
-    const { fromDate } = req.query;
+    const { fromDate, feedingType, minAmount, diaperType } = req.query;
 
     if (!fromDate) {
       res.status(400).json({ error: 'חסר fromDate בשאילתה' });
@@ -14,12 +14,30 @@ export const getDailySummary = async (req: Request, res: Response) => {
     const end = new Date(start);
     end.setDate(start.getDate() + 1);
 
-    const summaries = await dailySummary.find({
-      date: {
-        $gte: start,
-        $lt: end,
-      },
-    });
+    const query: any = {
+      date: { $gte: start, $lt: end },
+    };
+
+    // פילטר לפי סוג האכלה
+    if (feedingType) {
+      query.feedings = { $elemMatch: { type: feedingType } };
+    }
+
+    // פילטר לפי מינימום כמות
+    if (minAmount) {
+      query.feedings = {
+        $elemMatch: {
+          amount: { $gte: minAmount },
+        },
+      };
+    }
+
+    // פילטר לפי סוג חיתול
+    if (diaperType) {
+      query.diaperChanges = { $elemMatch: { type: diaperType } };
+    }
+
+    const summaries = await dailySummary.find(query).populate('babyId');
 
     res.json(summaries);
   } catch (error) {

@@ -9,7 +9,10 @@ const babySchema = new Schema(
       ref: 'User',
       required: true,
     },
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     gender: String,
     birthDate: Date,
     notes: String,
