@@ -25,12 +25,6 @@ const userSchema = new Schema<IUser>(
       min: 4,
       required: true,
     },
-    babies: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Baby',
-      },
-    ],
   },
   { timestamps: true }
 );
