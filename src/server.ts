@@ -2,6 +2,7 @@ import express, { ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
 import feedRoutes from './routers/feedRoutes';
 import sleepRoutes from './routers/sleepRoutes';
 import diaperRoutes from './routers/diaperRoutes';

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import { DailySummary } from '../types';
+import { DailySummary } from '../types/summary';
 
 const DailySummarySchema = new Schema<DailySummary>({
   babyId: {

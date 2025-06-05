@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { User } from '../models/userModel';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { generateTokens } from '../utils/generateTokens';
-import { JwtUser } from '../types';
+import { JwtUser } from '../types/user';
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -15,7 +14,8 @@ export const Login = async (req: Request, res: Response) => {
       return;
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.comparePassword(password);
+
     if (!isMatch) {
       res.status(401).json({ error: 'אימייל או סיסמה שגויים' });
       return;

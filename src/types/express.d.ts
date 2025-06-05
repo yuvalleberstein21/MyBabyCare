@@ -1,4 +1,4 @@
-import { JwtUser } from './index';
+import { JwtUser } from './user';
 
 declare global {
   namespace Express {

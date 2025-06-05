@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import { Baby } from '../models/babyModel';
 import { User } from '../models/userModel';
+import { IBaby, IBabyDocument } from '../types/baby';
 
 export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
@@ -52,7 +53,10 @@ export const getBabies = async (req: Request, res: Response) => {
         res.status(400).json({ error: 'baby Id לא תקין' });
         return;
       }
-      const userBaby = await Baby.findOne({ _id: babyId, userId });
+      const userBaby: IBabyDocument | null = await Baby.findOne({
+        _id: babyId,
+        userId,
+      });
 
       if (!userBaby) {
         res.status(404).json({ error: 'תינוק לא נמצא' });
@@ -62,7 +66,7 @@ export const getBabies = async (req: Request, res: Response) => {
       res.status(200).json({ baby: userBaby });
       return;
     } else {
-      const userBabies = await Baby.find({ userId });
+      const userBabies: IBaby[] = await Baby.find({ userId });
 
       if (!userBabies.length) {
         res.status(404).json({ error: 'אין תינוקות ברשימה' });
@@ -88,7 +92,7 @@ export const updateBaby = async (req: Request, res: Response) => {
     }
 
     console.log(updateFields);
-    const updatedBaby = await Baby.findByIdAndUpdate(
+    const updatedBaby: IBabyDocument | null = await Baby.findByIdAndUpdate(
       babyId,
       { $set: { updateFields } },
       { new: true, runValidators: true } // לוודא שהשדות שנשלחים עומדים בוולידציה של הסכימה.
