@@ -2,15 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
-      "name": "Debug with Nodemon",
+      "name": "Debug Nodemon TypeScript",
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/src/server.ts",
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "runtimeArgs": ["--inspect-brk"],
+      "runtimeArgs": ["--inspect", "--require", "ts-node/register"],
+      "envFile": "${workspaceFolder}/.env",
       "skipFiles": ["<node_internals>/**"]
     }
   ]

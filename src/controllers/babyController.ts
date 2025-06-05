@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { Baby } from '../models/babyModel';
 import { User } from '../models/userModel';
 import { IBaby, IBabyDocument } from '../types/baby';
+import { validateObjectId } from '../utils/validateObjectId';
 
 export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
@@ -86,20 +87,16 @@ export const updateBaby = async (req: Request, res: Response) => {
   const updateFields = req.body;
 
   try {
-    if (!babyId) {
-      res.status(400).json({ error: 'id של התינוק אינו נמצא' });
-      return;
-    }
+    if (!validateObjectId(babyId, res, 'מזהה תינוק')) return;
 
-    console.log(updateFields);
-    const updatedBaby: IBabyDocument | null = await Baby.findByIdAndUpdate(
-      babyId,
-      { $set: { updateFields } },
+    const updatedBaby: IBabyDocument | null = await Baby.findOneAndUpdate(
+      { _id: babyId, userId: req.user?.id },
+      { $set: updateFields },
       { new: true, runValidators: true } // לוודא שהשדות שנשלחים עומדים בוולידציה של הסכימה.
     );
 
     if (!updatedBaby) {
-      res.status(404).json({ error: 'תינוק לא נמצא' });
+      res.status(404).json({ error: 'שגיאה בעדכון פרטי תינוק' });
       return;
     }
     res.status(200).json({ message: 'התינוק עודכן בהצלחה', baby: updatedBaby });
