@@ -1,10 +1,15 @@
 import express from 'express';
 import { requireAuth } from '../middlewares/auth';
-import { createFeeding, getFeedings } from '../controllers/feedingsController';
+import {
+  createFeeding,
+  editFeeding,
+  getFeedings,
+} from '../controllers/feedingsController';
 
 const router = express.Router();
 
 router.get('/:babyId', requireAuth, getFeedings);
 router.post('/:babyId', requireAuth, createFeeding);
+router.put('/:feedingId', requireAuth, editFeeding);
 
 export default router;

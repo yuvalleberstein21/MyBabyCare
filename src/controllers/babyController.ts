@@ -1,9 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
 import mongoose from 'mongoose';
-
 import { Baby } from '../models/babyModel';
-import { User } from '../models/userModel';
-import { IBaby, IBabyDocument } from '../types/baby';
 import { validateObjectId } from '../utils/validateObjectId';
 
 export const createBaby: RequestHandler = async (req, res) => {
