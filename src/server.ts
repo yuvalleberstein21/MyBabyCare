@@ -12,6 +12,7 @@ import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
 import { connectDB } from './config/dataBase';
 import dailySummary from './models/dailySummary';
+import { insertCitiesIfEmpty } from './data/insertCities';
 
 dotenv.config();
 
@@ -45,6 +46,8 @@ const PORT = process.env.PORT || 8001;
 
 (async () => {
   await connectDB();
+  await insertCitiesIfEmpty();
+
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
   });
