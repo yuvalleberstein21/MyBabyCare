@@ -1,3 +1,5 @@
+import { IBaby } from './baby';
+
 // האכלה
 export type FeedingType = 'bottle' | 'breast' | 'solid';
 
@@ -7,4 +9,12 @@ export interface FeedingLog {
   time: Date;
   amount: number | null;
   type: FeedingType;
+}
+
+export interface IFeeding extends Document {
+  babyId: IBaby | string;
+  type: string;
+  amount: number;
+  time: Date;
+  notes?: string;
 }

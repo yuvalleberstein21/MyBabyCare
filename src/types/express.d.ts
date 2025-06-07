@@ -1,3 +1,4 @@
+import { IFeeding } from './feeding';
 import { JwtUser } from './user';
 
 declare global {

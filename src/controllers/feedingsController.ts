@@ -1,7 +1,6 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
-import { Baby } from '../models/babyModel';
 import { IBaby } from '../types/baby';
 
 export const getFeedings = async (req: Request, res: Response) => {
@@ -48,10 +47,10 @@ export const createFeeding: RequestHandler = async (req, res) => {
   }
 };
 
-// TODO: TO FIX THE FUNCTION !!
 export const editFeeding = async (req: Request, res: Response) => {
   const { feedingId } = req.params;
-  const updateFields = req.body;
+  const { type, amount, time, notes } = req.body;
+  const updateFields = { type, amount, time, notes };
   const userId = req.user?.id;
 
   try {
@@ -82,6 +81,36 @@ export const editFeeding = async (req: Request, res: Response) => {
       .json({ message: 'האכלה עודכנה בהצלחה', feeding: updatedFeeding });
   } catch (error) {
     console.error('שגיאה בעדכון תינוק:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
+
+export const deleteFeeding = async (req: Request, res: Response) => {
+  const { feedingId } = req.params;
+  const userId = req.user?.id;
+
+  if (!validateObjectId(feedingId, res, 'מזהה האכלה')) return;
+
+  if (!userId) {
+    res.status(401).json({ error: 'משתמש לא מזוהה' });
+    return;
+  }
+
+  try {
+    const feeding = await Feeding.findById(feedingId).populate<{
+      babyId: IBaby;
+    }>('babyId');
+
+    if (!feeding || feeding.babyId.userId.toString() !== userId) {
+      res.status(404).json({ error: 'האכלה לא נמצאה או לא שייכת למשתמש' });
+      return;
+    }
+
+    await feeding.deleteOne();
+
+    res.status(200).json({ message: 'האכלה נמחקה בהצלחה' });
+  } catch (error) {
+    console.error('שגיאה במחיקת האכלה:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
   }
 };
