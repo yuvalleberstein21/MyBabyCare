@@ -16,7 +16,7 @@ export const requireAuth = (
   const token = req.cookies.accessToken;
 
   if (!token) {
-    res.sendStatus(401);
+    res.status(401).json('משתמש לא מורשה');
     return;
   }
 

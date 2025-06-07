@@ -96,14 +96,19 @@ export async function insertCitiesIfEmpty() {
     console.log('⚠️ Cities already exist, skipping insert');
   }
 
+  // ערים באסיה עם אוכלוסייה מעל 20 מיליון, ממויינות מהכי הרבה לפחות:
+
   //   AGGREGATED CITIES //
   const asianCities = await City.aggregate([
     {
-      $match: { continent: { $in: ['North America', 'Asia'] } },
-    },
-    {
-      $sort: { population: -1 },
+      $facet: {
+        asianCities: [{ $match: { continent: 'Asia' } }, { $count: 'count' }],
+        europeanCities: [
+          { $match: { continent: 'Europe' } },
+          { $count: 'count' },
+        ],
+      },
     },
   ]);
-  console.log('🌏 Asian Cities:', asianCities);
+  console.log('🌏 Asian Cities:', JSON.stringify(asianCities));
 }

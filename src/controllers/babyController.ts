@@ -61,10 +61,10 @@ export const getBabies = async (req: Request, res: Response) => {
       return;
     }
 
-    const userBabies = await Baby.find({ userId });
+    const userBabies = await Baby.find({ userId }).lean();
 
     if (!userBabies.length) {
-      res.status(404).json({ error: 'לא נמצאו תינוקות' });
+      res.status(200).json({ babies: userBabies });
       return;
     }
 
@@ -78,7 +78,8 @@ export const getBabies = async (req: Request, res: Response) => {
 
 export const updateBaby = async (req: Request, res: Response) => {
   const { babyId } = req.params;
-  const updateFields = req.body;
+  const { name, gender, birthDate, notes } = req.body;
+  const updateFields = { name, gender, birthDate, notes };
   const userId = req.user?.id;
 
   try {

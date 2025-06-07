@@ -19,6 +19,7 @@ const userSchema = new Schema<IUser>(
       unique: true,
       required: true,
       trim: true,
+      index: true, // אינדקס = חיפוש מהיר יותר + אכיפת ייחוד
     },
     password: {
       type: String,
