@@ -53,14 +53,10 @@ export const Register = async (req: Request, res: Response) => {
   try {
     const { fullName, email, password } = req.body;
 
-    if (!fullName || !email || !password) {
-      res.status(400).json({ error: 'נא למלא את כל השדות' });
-      return;
-    }
-
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
+      console.log('exists');
       res.status(409).json({ error: 'משתמש כבר קיים במערכת' });
       return;
     }
