@@ -1,7 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
-import { Feeding } from '../models/feedingModel';
-import { IBaby } from '../types/baby';
 import { Sleeping } from '../models/sleepModel';
 import { ISleep } from '../types/sleep';
 

@@ -29,4 +29,7 @@ const DailySummarySchema = new Schema<DailySummary>({
   ],
 });
 
-export default mongoose.model<DailySummary>('DailySummary', DailySummarySchema);
+export const DailySummaryModel = mongoose.model<DailySummary>(
+  'DailySummary',
+  DailySummarySchema
+);

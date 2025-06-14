@@ -1,45 +1,72 @@
 import { Request, Response } from 'express';
-import dailySummary from '../models/dailySummary';
+import { DailySummaryModel } from '../models/dailySummary';
+import mongoose from 'mongoose';
 
 export const getDailySummary = async (req: Request, res: Response) => {
   try {
-    const { fromDate, feedingType, minAmount, diaperType } = req.query;
+    const { babyId } = req.params;
+    const { date } = req.query;
 
-    if (!fromDate) {
-      res.status(400).json({ error: 'חסר fromDate בשאילתה' });
+    if (!babyId || !date) {
+      res.status(400).json({ error: 'חסר תאריך או מזהה תינוק' });
       return;
     }
 
-    const start = new Date(fromDate as string);
+    const start = new Date(date as string);
     const end = new Date(start);
     end.setDate(start.getDate() + 1);
 
-    const query: any = {
-      date: { $gte: start, $lt: end },
-    };
+    const babyObjectId = new mongoose.Types.ObjectId(babyId);
 
-    // פילטר לפי סוג האכלה
-    if (feedingType) {
-      query.feedings = { $elemMatch: { type: feedingType } };
-    }
+    const [feedings, diaperChanges, sleepSessions] = await Promise.all([
+      mongoose.connection
+        .collection('feedings')
+        .aggregate([
+          {
+            $match: {
+              babyId: babyObjectId,
+              time: { $gte: start, $lt: end },
+            },
+          },
+        ])
+        .toArray(),
 
-    // פילטר לפי מינימום כמות
-    if (minAmount) {
-      query.feedings = {
-        $elemMatch: {
-          amount: { $gte: minAmount },
-        },
-      };
-    }
+      mongoose.connection
+        .collection('diapers')
+        .aggregate([
+          {
+            $match: {
+              babyId: babyObjectId,
+              time: { $gte: start, $lt: end },
+            },
+          },
+        ])
+        .toArray(),
 
-    // פילטר לפי סוג חיתול
-    if (diaperType) {
-      query.diaperChanges = { $elemMatch: { type: diaperType } };
-    }
+      mongoose.connection
+        .collection('sleepings')
+        .aggregate([
+          {
+            $match: {
+              babyId: babyObjectId,
+              startTime: { $lt: end },
+              $or: [
+                { endTime: { $gte: start } },
+                { endTime: { $exists: false } },
+              ],
+            },
+          },
+        ])
+        .toArray(),
+    ]);
 
-    const summaries = await dailySummary.find(query).populate('babyId');
-
-    res.json(summaries);
+    res.json({
+      babyId,
+      date: start.toISOString().split('T')[0],
+      feedings,
+      diaperChanges,
+      sleepSessions,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'שגיאה בשרת' });

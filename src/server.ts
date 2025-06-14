@@ -11,7 +11,7 @@ import babyRoutes from './routers/babyRoutes';
 import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
 import { connectDB } from './config/dataBase';
-import dailySummary from './models/dailySummary';
+
 import { insertCitiesIfEmpty } from './data/insertCities';
 
 dotenv.config();

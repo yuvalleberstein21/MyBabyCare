@@ -1,9 +1,10 @@
+import { Document, Types } from 'mongoose';
 // חיתולים
 export type DiaperType = 'pee' | 'poop' | 'mixed';
 
-export interface DiaperLog {
-  id: number;
-  babyId: number;
-  time: string;
+export interface IDiapper extends Document {
+  babyId: Types.ObjectId;
+  time: Date;
   type: DiaperType;
+  notes: string;
 }
