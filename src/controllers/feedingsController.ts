@@ -2,12 +2,15 @@ import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
 import { IBaby } from '../types/baby';
+import { IFeeding } from '../types/feeding';
 
 export const getFeedings = async (req: Request, res: Response) => {
   const { babyId } = req.params;
 
   try {
-    const feedings = await Feeding.find({ babyId }).sort({ time: -1 });
+    const feedings: IFeeding[] = await Feeding.find({ babyId }).sort({
+      time: -1,
+    });
 
     res.status(200).json({ feedings });
   } catch (error) {
@@ -28,7 +31,7 @@ export const createFeeding: RequestHandler = async (req, res) => {
 
     const feedingTime = time ? new Date(time) : new Date();
 
-    const newFeed = new Feeding({
+    const newFeed: IFeeding = new Feeding({
       babyId,
       type,
       amount,
@@ -65,7 +68,7 @@ export const editFeeding = async (req: Request, res: Response) => {
       return;
     }
 
-    const updatedFeeding = await Feeding.findByIdAndUpdate(
+    const updatedFeeding: IFeeding | null = await Feeding.findByIdAndUpdate(
       feedingId,
       { $set: updateFields },
       { new: true, runValidators: true }

@@ -1,4 +1,4 @@
-import { IBaby } from './baby';
+import { Document, Types } from 'mongoose';
 
 // האכלה
 export type FeedingType = 'bottle' | 'breast' | 'solid';
@@ -12,7 +12,7 @@ export interface FeedingLog {
 }
 
 export interface IFeeding extends Document {
-  babyId: IBaby | string;
+  babyId: Types.ObjectId;
   type: string;
   amount: number;
   time: Date;

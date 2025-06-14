@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { ISleep } from '../types/sleep';
 
-const Schema = mongoose.Schema;
-
-const sleepSchema = new Schema(
+const sleepSchema = new Schema<ISleep>(
   {
     babyId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,12 +12,10 @@ const sleepSchema = new Schema(
       type: Date,
       required: true,
     },
-    endTime: {
-      type: Date,
-    },
+    endTime: Date,
     notes: String,
   },
   { timestamps: true }
 );
 
-export const Sleeping = mongoose.model('Sleeping', sleepSchema);
+export const Sleeping = mongoose.model<ISleep>('Sleeping', sleepSchema);
