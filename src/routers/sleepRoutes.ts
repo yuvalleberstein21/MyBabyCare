@@ -1,9 +1,25 @@
 import express from 'express';
+import {
+  createEndSleep,
+  createStartSleep,
+  editSleeping,
+  getSleepings,
+} from '../controllers/sleepController';
+import { requireAuth } from '../middlewares/auth';
+import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
 
 const router = express.Router();
 
-router.get('/sleep', (req, res) => {
-  res.send('Sleep routes');
-});
+router.get('/:babyId', requireAuth, verifyBabyOwnership, getSleepings);
+
+router.post(
+  '/:babyId/start',
+  requireAuth,
+  verifyBabyOwnership,
+  createStartSleep
+);
+
+router.post('/:babyId/end', requireAuth, verifyBabyOwnership, createEndSleep);
+router.put('/:sleepingId', requireAuth, editSleeping);
 
 export default router;

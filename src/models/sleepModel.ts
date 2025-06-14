@@ -9,8 +9,13 @@ const sleepSchema = new Schema(
       ref: 'Baby',
       required: true,
     },
-    startTime: String,
-    endTime: String,
+    startTime: {
+      type: Date,
+      required: true,
+    },
+    endTime: {
+      type: Date,
+    },
     notes: String,
   },
   { timestamps: true }
