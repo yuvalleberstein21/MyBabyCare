@@ -1,20 +1,26 @@
 import mongoose from 'mongoose';
-import { IDiapper } from '../types/diaper';
+import { IDiaper } from '../types/diaper';
 
 const Schema = mongoose.Schema;
 
-const diaperSchema = new Schema<IDiapper>(
+const diaperSchema = new Schema<IDiaper>(
   {
     babyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Baby',
       required: true,
     },
-    time: Date,
-    type: String,
+    time: {
+      type: Date,
+    },
+    type: {
+      type: String,
+      enum: ['pee', 'poop', 'mixed'],
+      required: true,
+    },
     notes: String,
   },
   { timestamps: true }
 );
 
-export const Diaper = mongoose.model<IDiapper>('Diaper', diaperSchema);
+export const Diaper = mongoose.model<IDiaper>('Diaper', diaperSchema);
