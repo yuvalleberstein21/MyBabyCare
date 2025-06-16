@@ -8,6 +8,7 @@ declare global {
       user?: JwtUser;
       sleeping: ISleep;
       feeding: IFeeding;
+      baby?: IBaby;
     }
   }
 }

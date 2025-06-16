@@ -2,10 +2,10 @@ import { Request, Response, RequestHandler } from 'express';
 import mongoose from 'mongoose';
 import { Baby } from '../models/babyModel';
 import { validateObjectId } from '../utils/validateObjectId';
+import { IBaby } from '../types/baby';
 
 export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
-
   const { name, gender, birthDate, notes } = req.body;
 
   if (!userId) {
@@ -38,40 +38,25 @@ export const createBaby: RequestHandler = async (req, res) => {
 
 export const getBabies = async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const { babyId } = req.query;
 
   try {
-    if (babyId) {
-      if (!mongoose.Types.ObjectId.isValid(babyId as string)) {
-        res.status(400).json({ error: 'מזהה תינוק לא תקין' });
-        return;
-      }
-
-      const userBaby = await Baby.findOne({
-        _id: babyId,
-        userId,
-      });
-
-      if (!userBaby) {
-        res.status(404).json({ error: 'תינוק לא נמצא או לא שייך למשתמש' });
-        return;
-      }
-
-      res.status(200).json({ baby: userBaby });
-      return;
-    }
-
-    const userBabies = await Baby.find({ userId }).lean();
-
-    if (!userBabies.length) {
-      res.status(200).json({ babies: userBabies });
-      return;
-    }
-
-    res.status(200).json({ babies: userBabies });
-    return;
+    const babies = await Baby.find({ userId }).lean();
+    res.status(200).json({ babies });
   } catch (error) {
     console.error('שגיאה בקבלת תינוקות:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
+
+export const getSingleBaby = async (req: Request, res: Response) => {
+  try {
+    if (!req.baby) {
+      res.status(404).json({ error: 'תינוק לא נמצא' });
+      return;
+    }
+
+    res.status(200).json({ baby: req.baby });
+  } catch (error) {
     res.status(500).json({ error: 'שגיאה בשרת' });
   }
 };

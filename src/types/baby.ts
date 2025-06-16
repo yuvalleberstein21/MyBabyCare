@@ -1,11 +1,12 @@
+import { Document, Types } from 'mongoose';
 // מידע של תינוק
-export interface IBaby {
-  id: string;
-  name: string;
-  userId: string;
-  gender: string;
-  birthDate: string;
-  notes: string;
-}
 
-export type IBabyDocument = Document & IBaby;
+export interface IBaby extends Document {
+  userId: Types.ObjectId;
+  name: string;
+  gender?: string | null;
+  birthDate?: Date | null;
+  notes?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}

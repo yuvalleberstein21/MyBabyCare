@@ -59,35 +59,27 @@ export const createDiaper: RequestHandler = async (req, res) => {
   }
 };
 
-export const editDiaper = async (req: Request, res: Response) => {
-  const { diaperId } = req.params;
-  const { type, time, notes } = req.body;
-  const updateFields = { type, time, notes };
+// export const editDiaper = async (req: Request, res: Response) => {
+//   const { type, time, notes } = req.body;
 
-  try {
-    if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
+//   try {
+//     const diaperToUpdate = req.diaper!;
 
-    const updatedDiaper: IDiaper | null = await Diaper.findByIdAndUpdate(
-      diaperId,
-      { $set: updateFields },
-      { new: true, runValidators: true }
-    );
+//     if (type !== undefined) diaperToUpdate.type = type;
+//     if (time !== undefined) diaperToUpdate.time = new Date(time);
+//     if (notes !== undefined) diaperToUpdate.notes = notes;
 
-    if (!updatedDiaper) {
-      res
-        .status(404)
-        .json({ error: 'החלפת חיתולים לא נמצאה או לא שייכת למשתמש' });
-      return;
-    }
+//     await diaperToUpdate.save();
 
-    res
-      .status(200)
-      .json({ message: 'החלפת חיתולים עודכנה בהצלחה', diaper: updatedDiaper });
-  } catch (error) {
-    console.error('שגיאה בעדכון החלפת חיתולים:', error);
-    res.status(500).json({ error: 'שגיאה בשרת' });
-  }
-};
+//     res.status(200).json({
+//       message: 'החלפת חיתולים עודכנה בהצלחה',
+//       diaper: diaperToUpdate,
+//     });
+//   } catch (error) {
+//     console.error('שגיאה בעדכון החלפת חיתולים:', error);
+//     res.status(500).json({ error: 'שגיאה בשרת' });
+//   }
+// };
 
 export const deleteDiaper = async (req: Request, res: Response) => {
   const { diaperId } = req.params;
