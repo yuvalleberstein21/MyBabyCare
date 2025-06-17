@@ -26,7 +26,7 @@ export const createDiaper: RequestHandler = async (req, res) => {
   const { babyId } = req.params;
   const { time, type, notes } = req.body;
 
-  const validTypes = ['pee', 'poop', 'mixed'];
+  const validTypes = ['רטוב', 'מלוכלך', 'שניהם'];
 
   try {
     if (!type) {
@@ -59,32 +59,42 @@ export const createDiaper: RequestHandler = async (req, res) => {
   }
 };
 
-// export const editDiaper = async (req: Request, res: Response) => {
-//   const { type, time, notes } = req.body;
+export const editDiaper = async (req: Request, res: Response) => {
+  const { diaperId } = req.params;
+  const { type, time, notes } = req.body;
 
-//   try {
-//     const diaperToUpdate = req.diaper!;
+  try {
+    if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
-//     if (type !== undefined) diaperToUpdate.type = type;
-//     if (time !== undefined) diaperToUpdate.time = new Date(time);
-//     if (notes !== undefined) diaperToUpdate.notes = notes;
+    const updateFields: Partial<{
+      type: String;
+      time: Date;
+      notes: string;
+    }> = {};
 
-//     await diaperToUpdate.save();
+    if (time) updateFields.time = new Date(time);
+    if (type !== undefined) updateFields.type = type;
+    if (notes !== undefined) updateFields.notes = notes;
 
-//     res.status(200).json({
-//       message: 'החלפת חיתולים עודכנה בהצלחה',
-//       diaper: diaperToUpdate,
-//     });
-//   } catch (error) {
-//     console.error('שגיאה בעדכון החלפת חיתולים:', error);
-//     res.status(500).json({ error: 'שגיאה בשרת' });
-//   }
-// };
+    const updatedDiaper = await Diaper.findByIdAndUpdate(
+      diaperId,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: 'החלפת חיתולים עודכנה בהצלחה', diaper: updatedDiaper });
+  } catch (error: any) {
+    console.error('שגיאה בעדכון החלפת חיתולים:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
 
 export const deleteDiaper = async (req: Request, res: Response) => {
   const { diaperId } = req.params;
 
-  if (!validateObjectId(diaperId, res, 'מזהה שינה')) return;
+  if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
   try {
     const diaper = await Diaper.findById(diaperId).populate('babyId');

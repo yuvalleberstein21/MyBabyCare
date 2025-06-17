@@ -15,7 +15,7 @@ const diaperSchema = new Schema<IDiaper>(
     },
     type: {
       type: String,
-      enum: ['pee', 'poop', 'mixed'],
+      enum: ['רטוב', 'מלוכלך', 'שניהם'],
       required: true,
     },
     notes: String,

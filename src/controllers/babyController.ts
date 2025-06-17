@@ -8,16 +8,10 @@ export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
   const { name, gender, birthDate, notes } = req.body;
 
-  if (!userId) {
+  if (!req.user?.id) {
     res.status(401).json({ error: 'משתמש לא מזוהה' });
     return;
   }
-
-  if (!name) {
-    res.status(400).json({ error: 'שם התינוק חסר' });
-    return;
-  }
-
   try {
     const newBaby = new Baby({
       userId,
