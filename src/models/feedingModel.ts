@@ -10,9 +10,9 @@ const feedSchema = new Schema<IFeeding>(
       ref: 'Baby',
       required: true,
     },
-    type: String,
+    type: { type: String, required: true },
     amount: String,
-    time: Date,
+    time: { type: Date, required: true },
     notes: String,
   },
   { timestamps: true }
