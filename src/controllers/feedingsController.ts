@@ -24,11 +24,6 @@ export const createFeeding: RequestHandler = async (req, res) => {
   const { type, amount, time, notes } = req.body;
 
   try {
-    if (!type || !amount) {
-      res.status(400).json({ error: 'אנא מלא/י את כל שדות החובה' });
-      return;
-    }
-
     const feedingTime = time ? new Date(time) : new Date();
 
     const newFeed: IFeeding = new Feeding({
@@ -54,19 +49,9 @@ export const editFeeding = async (req: Request, res: Response) => {
   const { feedingId } = req.params;
   const { type, amount, time, notes } = req.body;
   const updateFields = { type, amount, time, notes };
-  const userId = req.user?.id;
 
   try {
     if (!validateObjectId(feedingId, res, 'מזהה האכלה')) return;
-
-    const feeding = await Feeding.findById(feedingId).populate<{
-      babyId: IBaby;
-    }>('babyId');
-
-    if (!feeding || feeding.babyId.userId.toString() !== userId) {
-      res.status(404).json({ error: 'האכלה לא נמצאה או לא שייכת למשתמש' });
-      return;
-    }
 
     const updatedFeeding: IFeeding | null = await Feeding.findByIdAndUpdate(
       feedingId,
@@ -89,26 +74,9 @@ export const editFeeding = async (req: Request, res: Response) => {
 };
 
 export const deleteFeeding = async (req: Request, res: Response) => {
-  const { feedingId } = req.params;
-  const userId = req.user?.id;
-
-  if (!validateObjectId(feedingId, res, 'מזהה האכלה')) return;
-
-  if (!userId) {
-    res.status(401).json({ error: 'משתמש לא מזוהה' });
-    return;
-  }
+  const feeding = (req as any).feeding as IFeeding;
 
   try {
-    const feeding = await Feeding.findById(feedingId).populate<{
-      babyId: IBaby;
-    }>('babyId');
-
-    if (!feeding || feeding.babyId.userId.toString() !== userId) {
-      res.status(404).json({ error: 'האכלה לא נמצאה או לא שייכת למשתמש' });
-      return;
-    }
-
     await feeding.deleteOne();
 
     res.status(200).json({ message: 'האכלה נמחקה בהצלחה' });
