@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import { IDiaper } from '../types/diaper';
 
-const Schema = mongoose.Schema;
-
-const diaperSchema = new Schema<IDiaper>(
+const diaperSchema = new mongoose.Schema<IDiaper>(
   {
     babyId: {
       type: mongoose.Schema.Types.ObjectId,

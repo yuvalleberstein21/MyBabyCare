@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+
 import { DailySummary } from '../types/summary';
 
-const DailySummarySchema = new Schema<DailySummary>({
+const DailySummarySchema = new mongoose.Schema<DailySummary>({
   babyId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Baby',

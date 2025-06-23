@@ -1,5 +1,4 @@
 import { Request, Response, RequestHandler } from 'express';
-import mongoose from 'mongoose';
 import { Baby } from '../models/babyModel';
 import { validateObjectId } from '../utils/validateObjectId';
 import { IBaby } from '../types/baby';
@@ -7,6 +6,8 @@ import { IBaby } from '../types/baby';
 export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
   const { name, gender, birthDate, notes } = req.body;
+
+  const image = req.file ? '/uploads/' + req.file.filename : undefined;
 
   if (!req.user?.id) {
     res.status(401).json({ error: 'משתמש לא מזוהה' });
@@ -19,6 +20,7 @@ export const createBaby: RequestHandler = async (req, res) => {
       gender,
       birthDate,
       notes,
+      image,
     });
 
     const savedBaby = await newBaby.save();

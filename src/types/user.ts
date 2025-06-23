@@ -1,15 +1,9 @@
-import { IBaby } from './baby';
-
-// מידע של משתמש
-export interface IUser {
-  id: string;
+export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
-  babies: IBaby[];
+  comparePassword(bodyPassword: string): Promise<boolean>;
 }
-
-export type IUserDocument = Document & IUser;
 
 export interface JwtUser {
   id: string;

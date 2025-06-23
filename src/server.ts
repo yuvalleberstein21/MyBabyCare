@@ -9,9 +9,10 @@ import authRoutes from './routers/authRoutes';
 import babyRoutes from './routers/babyRoutes';
 import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
-import { connectDB } from './config/dataBase';
+import connectDB from './config/dataBase';
 
 dotenv.config();
+connectDB();
 
 const app = express();
 
@@ -41,9 +42,6 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 8001;
 
-(async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-  });
-})();
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+});

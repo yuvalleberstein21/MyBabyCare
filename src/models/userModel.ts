@@ -1,17 +1,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { IUser } from '../types/user';
 
-const Schema = mongoose.Schema;
-
-export interface IUser extends Document {
-  fullName: string;
-  email: string;
-  password: string;
-  comparePassword(bodyPassword: string): Promise<boolean>;
-  babies: [];
-}
-
-const userSchema = new Schema<IUser>(
+const userSchema = new mongoose.Schema<IUser>(
   {
     fullName: { type: String, required: true },
     email: {
@@ -19,7 +10,7 @@ const userSchema = new Schema<IUser>(
       unique: true,
       required: true,
       trim: true,
-      index: true, // אינדקס = חיפוש מהיר יותר + אכיפת ייחוד
+      index: true,
     },
     password: {
       type: String,

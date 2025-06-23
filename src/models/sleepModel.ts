@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import { ISleep } from '../types/sleep';
 
-const sleepSchema = new Schema<ISleep>(
+const sleepSchema = new mongoose.Schema<ISleep>(
   {
     babyId: {
       type: mongoose.Schema.Types.ObjectId,

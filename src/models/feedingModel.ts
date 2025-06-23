@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import { IFeeding } from '../types/feeding';
 
-const Schema = mongoose.Schema;
-
-const feedSchema = new Schema<IFeeding>(
+const feedSchema = new mongoose.Schema<IFeeding>(
   {
     babyId: {
       type: mongoose.Schema.Types.ObjectId,

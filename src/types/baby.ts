@@ -9,4 +9,5 @@ export interface IBaby extends Document {
   notes?: string | null;
   createdAt: Date;
   updatedAt: Date;
+  image: string | null;
 }
