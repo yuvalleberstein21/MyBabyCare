@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <title>העלאת תינוק</title>
+  </head>
+  <body>
+    <h2>יצירת תינוק חדש</h2>
+    <form id="babyForm" enctype="multipart/form-data">
+      <input type="text" name="name" placeholder="שם" required />
+      <input type="text" name="gender" placeholder="מין" />
+      <input type="date" name="birthDate" />
+      <textarea name="notes" placeholder="הערות"></textarea>
+      <input type="file" name="image" />
+      <button type="submit">צור תינוק</button>
+    </form>
+  </body>
+</html>
+
+<script>
+  const form = document.getElementById('babyForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    const response = await fetch('http://localhost:8005/babies', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include', // <<<< זה שולח את ה-cookie
+    });
+
+    const data = await response.json();
+    console.log(data);
+  });
+</script>

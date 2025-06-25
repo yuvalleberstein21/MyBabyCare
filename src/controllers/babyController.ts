@@ -7,6 +7,7 @@ export const createBaby: RequestHandler = async (req, res) => {
   const userId = req.user?.id;
   const { name, gender, birthDate, notes } = req.body;
 
+  console.log(req.file);
   const image = req.file ? '/uploads/' + req.file.filename : undefined;
 
   if (!req.user?.id) {

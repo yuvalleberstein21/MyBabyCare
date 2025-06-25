@@ -4,7 +4,6 @@ import {
   getBabies,
   getSingleBaby,
   updateBaby,
-  // getBabyData,
 } from '../controllers/babyController';
 import { requireAuth } from '../middlewares/auth';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
@@ -16,9 +15,9 @@ const router = express.Router();
 router.get('/', requireAuth, getBabies); // קבלת רשימת תינוקות של המשתמש
 router.post(
   '/',
-  validateCreateBaby,
-  upload.single('image'),
   requireAuth,
+  upload.single('image'),
+  validateCreateBaby,
   createBaby
 ); // הוספת תינוק חדש
 

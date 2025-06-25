@@ -1,0 +1,27 @@
+<form id="loginForm">
+  <input name="email" placeholder="email" />
+  <input name="password" type="password" placeholder="password" />
+  <button type="submit">התחבר</button>
+</form>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const body = {
+      email: formData.get('email'),
+      password: formData.get('password'),
+    };
+
+    const res = await fetch('http://localhost:8005/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      credentials: 'include', // מאפשר לדפדפן לשמור את הקוקיז
+    });
+
+    const data = await res.json();
+    console.log(data);
+  });
+</script>

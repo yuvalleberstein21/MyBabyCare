@@ -1,6 +1,7 @@
 import express, { ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import feedRoutes from './routers/feedRoutes';
 import sleepRoutes from './routers/sleepRoutes';
@@ -16,6 +17,12 @@ connectDB();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://localhost:8005'],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
