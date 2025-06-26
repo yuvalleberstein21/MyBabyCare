@@ -47,7 +47,7 @@ export const getBabies = async (req: Request, res: Response) => {
   }
 };
 
-export const getSingleBaby = async (req: Request, res: Response) => {
+export const getSingleBaby = (req: Request, res: Response): void => {
   try {
     if (!req.baby) {
       res.status(404).json({ error: 'תינוק לא נמצא' });
@@ -69,7 +69,7 @@ export const updateBaby = async (req: Request, res: Response) => {
   try {
     if (!validateObjectId(babyId, res, 'מזהה תינוק')) return;
 
-    const updatedBaby = await Baby.findOneAndUpdate(
+    const updatedBaby: IBaby | null = await Baby.findOneAndUpdate(
       { _id: babyId, userId },
       { $set: updateFields },
       { new: true, runValidators: true }

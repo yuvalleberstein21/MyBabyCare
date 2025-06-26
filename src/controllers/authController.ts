@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { User } from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import { generateTokens } from '../utils/generateTokens';
-import { JwtUser } from '../types/user';
+import { IUser, JwtUser } from '../types/user';
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -83,7 +83,7 @@ export const Register = async (req: Request, res: Response) => {
   }
 };
 
-export const Logout = (req: Request, res: Response) => {
+export const Logout = (req: Request, res: Response): void => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
   res.json({ message: 'התנתקת בהצלחה' });
