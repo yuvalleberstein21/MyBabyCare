@@ -1,16 +1,17 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
-import { IBaby } from '../types/baby';
 import { IFeeding } from '../types/feeding';
 
 export const getFeedings = async (req: Request, res: Response) => {
   const { babyId } = req.params;
 
   try {
-    const feedings: IFeeding[] = await Feeding.find({ babyId }).sort({
-      time: -1,
-    });
+    const feedings: IFeeding[] = await Feeding.find({ babyId })
+      .select('type amount time notes')
+      .sort({
+        time: -1,
+      });
 
     res.status(200).json({ feedings });
   } catch (error) {

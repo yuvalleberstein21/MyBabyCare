@@ -26,8 +26,8 @@ export const Login = async (req: Request, res: Response) => {
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      secure: false, // כי זה localhost (אין HTTPS)
-      sameSite: 'lax', // מאפשר קבלת הקוקי ברוב הבקשות
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       maxAge: 15 * 60 * 1000,
     });
 

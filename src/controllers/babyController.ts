@@ -37,7 +37,9 @@ export const getBabies = async (req: Request, res: Response) => {
   const userId = req.user?.id;
 
   try {
-    const babies = await Baby.find({ userId }).lean();
+    const babies = await Baby.find({ userId })
+      .select('name gender notes birthDate image')
+      .lean();
     res.status(200).json({ babies });
   } catch (error) {
     console.error('שגיאה בקבלת תינוקות:', error);

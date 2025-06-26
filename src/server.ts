@@ -11,6 +11,8 @@ import babyRoutes from './routers/babyRoutes';
 import dailySummaryRoutes from './routers/dailySummaryRoutes';
 import { requireAuth } from './middlewares/auth';
 import connectDB from './config/dataBase';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger';
 
 dotenv.config();
 connectDB();
@@ -28,6 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Swagger APIS
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', requireAuth, (req, res) => {
   res.send('hello you pass the protected route');
