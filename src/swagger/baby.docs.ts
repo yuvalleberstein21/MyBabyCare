@@ -110,6 +110,33 @@ const babyDocs = {
         },
       },
     },
+    delete: {
+      tags: ['Babies'],
+      summary: 'מחיקת תינוק לפי מזהה',
+      security: [{ cookieAuth: [] }],
+      parameters: [
+        {
+          name: 'babyId',
+          in: 'path',
+          required: true,
+          schema: { type: 'string' },
+        },
+      ],
+      responses: {
+        200: {
+          description: 'התינוק נמחק בהצלחה',
+        },
+        404: {
+          description: 'תינוק לא נמצא או לא שייך למשתמש',
+        },
+        401: {
+          description: 'משתמש לא מזוהה',
+        },
+        500: {
+          description: 'שגיאה בשרת',
+        },
+      },
+    },
   },
 };
 

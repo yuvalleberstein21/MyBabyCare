@@ -21,4 +21,6 @@ const diaperSchema = new mongoose.Schema<IDiaper>(
   { timestamps: true }
 );
 
+diaperSchema.index({ babyId: 1, time: -1 });
+
 export const Diaper = mongoose.model<IDiaper>('Diaper', diaperSchema);

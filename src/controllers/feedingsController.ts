@@ -3,7 +3,10 @@ import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
 import { IFeeding } from '../types/feeding';
 
-export const getFeedings = async (req: Request, res: Response) => {
+export const getFeedings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { babyId } = req.params;
 
   try {

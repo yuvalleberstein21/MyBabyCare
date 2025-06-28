@@ -48,16 +48,12 @@ export const getBabies = async (req: Request, res: Response) => {
 };
 
 export const getSingleBaby = (req: Request, res: Response): void => {
-  try {
-    if (!req.baby) {
-      res.status(404).json({ error: 'תינוק לא נמצא' });
-      return;
-    }
-
-    res.status(200).json({ baby: req.baby });
-  } catch (error) {
-    res.status(500).json({ error: 'שגיאה בשרת' });
+  if (!req.baby) {
+    res.status(404).json({ error: 'תינוק לא נמצא' });
+    return;
   }
+
+  res.status(200).json({ baby: req.baby });
 };
 
 export const updateBaby = async (req: Request, res: Response) => {
@@ -83,6 +79,16 @@ export const updateBaby = async (req: Request, res: Response) => {
     res.status(200).json({ message: 'התינוק עודכן בהצלחה', baby: updatedBaby });
   } catch (error) {
     console.error('שגיאה בעדכון תינוק:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
+
+export const deleteBaby = async (req: Request, res: Response) => {
+  const { babyId } = req.params;
+  try {
+    await Baby.deleteOne({ _id: babyId });
+    res.status(200).json({ message: 'תינוק נמחק בהצלחה' });
+  } catch (error) {
     res.status(500).json({ error: 'שגיאה בשרת' });
   }
 };

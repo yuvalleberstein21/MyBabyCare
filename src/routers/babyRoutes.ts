@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   createBaby,
+  deleteBaby,
   getBabies,
   getSingleBaby,
   updateBaby,
@@ -23,6 +24,6 @@ router.post(
 
 router.get('/:babyId', requireAuth, verifyBabyOwnership, getSingleBaby);
 router.put('/:babyId', requireAuth, verifyBabyOwnership, updateBaby); // עריכת פרטי תינוק
-// router.delete('/babies/:babyId'); // מחיקת תינוק
+router.delete('/:babyId', requireAuth, verifyBabyOwnership, deleteBaby); // מחיקת תינוק
 
 export default router;

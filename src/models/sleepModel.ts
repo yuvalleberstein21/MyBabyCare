@@ -18,4 +18,6 @@ const sleepSchema = new mongoose.Schema<ISleep>(
   { timestamps: true }
 );
 
+sleepSchema.index({ babyId: 1, startTime: -1 });
+
 export const Sleeping = mongoose.model<ISleep>('Sleeping', sleepSchema);

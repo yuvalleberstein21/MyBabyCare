@@ -16,4 +16,6 @@ const feedSchema = new mongoose.Schema<IFeeding>(
   { timestamps: true }
 );
 
+feedSchema.index({ babyId: 1, time: -1 });
+
 export const Feeding = mongoose.model<IFeeding>('Feeding', feedSchema);

@@ -23,4 +23,6 @@ const babySchema = new mongoose.Schema<IBaby>(
   { timestamps: true }
 );
 
-export const Baby = mongoose.model('Baby', babySchema);
+babySchema.index({ userId: 1 });
+
+export const Baby = mongoose.model<IBaby>('Baby', babySchema);
