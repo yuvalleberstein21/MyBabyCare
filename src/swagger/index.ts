@@ -1,5 +1,6 @@
 import authDocs from './auth.docs';
 import babyDocs from './baby.docs';
+import dailySummaryDocs from './dailySummary';
 import feedingDocs from './feeding.docs';
 import sleepDocs from './sleeping.docs';
 
@@ -21,5 +22,6 @@ export default {
     ...babyDocs,
     ...feedingDocs,
     ...sleepDocs,
+    ...dailySummaryDocs,
   },
 };

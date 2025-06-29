@@ -9,7 +9,7 @@ const feedSchema = new mongoose.Schema<IFeeding>(
       required: true,
     },
     type: { type: String, required: true },
-    amount: String,
+    amount: { type: Number, required: true },
     time: { type: Date, required: true },
     notes: String,
   },
