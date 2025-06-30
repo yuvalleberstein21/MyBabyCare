@@ -6,3 +6,8 @@ export interface ISleep extends Document {
   endTime?: Date;
   notes?: string;
 }
+
+// export interface QuerySleep {
+//   babyId?: string;
+//   startTime?: Date | undefined;
+// }

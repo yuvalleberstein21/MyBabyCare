@@ -1,5 +1,5 @@
 const sleepDocs = {
-  '/api/sleep/{babyId}': {
+  '/sleep/{babyId}': {
     get: {
       tags: ['Sleep'],
       summary: 'קבלת רשימת שינות עבור תינוק',
@@ -20,7 +20,7 @@ const sleepDocs = {
       },
     },
   },
-  '/api/sleep/{babyId}/start': {
+  '/sleep/{babyId}/start': {
     post: {
       tags: ['Sleep'],
       summary: 'תחילת שינה',
@@ -52,7 +52,7 @@ const sleepDocs = {
       },
     },
   },
-  '/api/sleep/{babyId}/end': {
+  '/sleep/{babyId}/end': {
     post: {
       tags: ['Sleep'],
       summary: 'סיום שינה',
@@ -83,7 +83,7 @@ const sleepDocs = {
       },
     },
   },
-  '/api/sleep/{sleepingId}': {
+  '/sleep/{sleepingId}': {
     put: {
       tags: ['Sleep'],
       summary: 'עריכת שינה',

@@ -9,18 +9,40 @@ import {
 } from '../validators/sleepValidators';
 
 export const getSleepings = async (req: Request, res: Response) => {
-  const { babyId } = req.params;
-
   try {
-    const sleeping: ISleep[] = await Sleeping.find({ babyId }).sort({
-      startTime: -1,
-    });
+    const { babyId } = req.params;
+    const { limit = 50, page = 1, startDate, endDate } = req.query;
+
+    const query: any = { babyId };
+
+    if (startDate || endDate) {
+      query.startTime = {};
+      if (startDate) query.startTime.$gte = new Date(startDate as string);
+      if (endDate) query.startTime.$lte = new Date(endDate as string);
+    }
+
+    const sleeping: ISleep[] = await Sleeping.find(query)
+      .select('startTime endTime notes createdAt')
+      .sort({ startTime: -1 })
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit))
+      .lean();
+
+    const total = await Sleeping.countDocuments(query);
 
     if (!sleeping || sleeping.length === 0) {
       res.status(404).json({ error: 'לא נמצאה שינה לתינוק' });
     }
 
-    res.status(200).json({ sleeping });
+    res.json({
+      sleeping,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        pages: Math.ceil(total / Number(limit)),
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'שגיאה בשרת' });
@@ -28,13 +50,26 @@ export const getSleepings = async (req: Request, res: Response) => {
 };
 
 export const createStartSleep: RequestHandler = async (req, res) => {
-  const { babyId } = req.params;
-
-  if (!validateStartSleepBody(req.body, res)) return;
-
-  const { notes, startTime } = req.body;
-
   try {
+    const { babyId } = req.params;
+
+    if (!validateStartSleepBody(req.body, res)) return;
+
+    const { notes, startTime } = req.body;
+
+    // בדיקה אם יש כבר שינה פתוחה
+    const existingOpenSleep = await Sleeping.findOne({
+      babyId,
+      endTime: { $exists: false },
+    }).lean();
+
+    if (existingOpenSleep) {
+      res.status(400).json({
+        error: 'יש כבר שינה פתוחה עבור התינוק הזה',
+      });
+      return;
+    }
+
     const parsedStartTime = startTime ? new Date(startTime) : new Date();
 
     const newSleep: ISleep = new Sleeping({
@@ -56,13 +91,12 @@ export const createStartSleep: RequestHandler = async (req, res) => {
 };
 
 export const createEndSleep: RequestHandler = async (req, res) => {
-  const { babyId } = req.params;
-
-  if (!validateEndSleepBody(req.body, res)) return;
-
-  const { endTime } = req.body;
-
   try {
+    const { babyId } = req.params;
+
+    if (!validateEndSleepBody(req.body, res)) return;
+
+    const { endTime } = req.body;
     const parsedEndTime = endTime ? new Date(endTime) : new Date();
 
     // מוצא את רשומת השינה הפתוחה ביותר עבור התינוק
@@ -97,14 +131,14 @@ export const createEndSleep: RequestHandler = async (req, res) => {
 };
 
 export const editSleeping = async (req: Request, res: Response) => {
-  const { sleepingId } = req.params;
-
-  if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
-  if (!validateEditSleepBody(req.body, res)) return;
-
-  const { startTime, endTime, notes } = req.body;
-
   try {
+    const { sleepingId } = req.params;
+
+    if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
+    if (!validateEditSleepBody(req.body, res)) return;
+
+    const { startTime, endTime, notes } = req.body;
+
     const updateFields: Partial<{
       startTime: Date;
       endTime: Date;
@@ -131,21 +165,19 @@ export const editSleeping = async (req: Request, res: Response) => {
 };
 
 export const deleteSleeping = async (req: Request, res: Response) => {
-  const { sleepingId } = req.params;
-
-  if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
-
   try {
-    const sleeping = await Sleeping.findById(sleepingId).populate('babyId');
+    const { sleepingId } = req.params;
 
-    if (!sleeping) {
+    if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
+
+    const deletedSleeping = await Sleeping.findByIdAndDelete(sleepingId);
+
+    if (!deletedSleeping) {
       res.status(404).json({ error: 'שינה לא נמצאה' });
       return;
     }
 
-    await sleeping.deleteOne();
-
-    res.status(200).json({ message: 'השינה הנוכחית נמחקה בהצלחה' });
+    res.json({ message: 'השינה נמחקה בהצלחה' });
   } catch (error) {
     console.error('שגיאה במחיקת השינה:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });

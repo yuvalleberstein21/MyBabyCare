@@ -3,6 +3,7 @@ import { Feeding } from '../models/feedingModel';
 import mongoose from 'mongoose';
 import { IFeeding } from '../types/feeding';
 import { IBaby } from '../types/baby';
+import { validateObjectId } from '../utils/validateObjectId';
 
 declare global {
   namespace Express {
@@ -20,16 +21,15 @@ export const verifyFeedingOwnership = async (
   const { feedingId } = req.params;
 
   // בדיקת תקינות ID
-  if (!mongoose.Types.ObjectId.isValid(feedingId)) {
-    res.status(400).json({ error: 'מזהה האכלה לא תקין' });
-    return;
-  }
+  if (!validateObjectId(feedingId, res, 'מזהה שינה')) return;
 
   try {
     // **רק query אחד!**
-    const feeding = await Feeding.findById(feedingId).populate<{
-      babyId: IBaby;
-    }>('babyId', 'userId'); // טיפוס נכון
+    const feeding = await Feeding.findById(feedingId)
+      .populate<{
+        babyId: IBaby;
+      }>('babyId', 'userId')
+      .lean(); // טיפוס נכון
 
     // בדיקה אחת מאוחדת
     if (!feeding || feeding.babyId.userId.toString() !== req.user!.id) {
