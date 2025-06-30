@@ -2,6 +2,11 @@ import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Sleeping } from '../models/sleepModel';
 import { ISleep } from '../types/sleep';
+import {
+  validateEditSleepBody,
+  validateEndSleepBody,
+  validateStartSleepBody,
+} from '../validators/sleepValidators';
 
 export const getSleepings = async (req: Request, res: Response) => {
   const { babyId } = req.params;
@@ -11,8 +16,8 @@ export const getSleepings = async (req: Request, res: Response) => {
       startTime: -1,
     });
 
-    if (!sleeping) {
-      res.status(404).json({ error: 'לא נמצא שינה לתינוק' });
+    if (!sleeping || sleeping.length === 0) {
+      res.status(404).json({ error: 'לא נמצאה שינה לתינוק' });
     }
 
     res.status(200).json({ sleeping });
@@ -24,6 +29,9 @@ export const getSleepings = async (req: Request, res: Response) => {
 
 export const createStartSleep: RequestHandler = async (req, res) => {
   const { babyId } = req.params;
+
+  if (!validateStartSleepBody(req.body, res)) return;
+
   const { notes, startTime } = req.body;
 
   try {
@@ -49,6 +57,9 @@ export const createStartSleep: RequestHandler = async (req, res) => {
 
 export const createEndSleep: RequestHandler = async (req, res) => {
   const { babyId } = req.params;
+
+  if (!validateEndSleepBody(req.body, res)) return;
+
   const { endTime } = req.body;
 
   try {
@@ -87,11 +98,13 @@ export const createEndSleep: RequestHandler = async (req, res) => {
 
 export const editSleeping = async (req: Request, res: Response) => {
   const { sleepingId } = req.params;
+
+  if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
+  if (!validateEditSleepBody(req.body, res)) return;
+
   const { startTime, endTime, notes } = req.body;
 
   try {
-    if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
-
     const updateFields: Partial<{
       startTime: Date;
       endTime: Date;

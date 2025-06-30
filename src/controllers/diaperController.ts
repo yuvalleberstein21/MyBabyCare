@@ -2,6 +2,10 @@ import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { IDiaper } from '../types/diaper';
 import { Diaper } from '../models/DiaperModel';
+import {
+  validateCreateDiaperBody,
+  validateEditDiaperBody,
+} from '../validators/diaperValidators';
 
 export const getDiaper = async (req: Request, res: Response) => {
   const { babyId } = req.params;
@@ -24,20 +28,12 @@ export const getDiaper = async (req: Request, res: Response) => {
 
 export const createDiaper: RequestHandler = async (req, res) => {
   const { babyId } = req.params;
+
+  if (!validateCreateDiaperBody(req.body, res)) return;
+
   const { time, type, notes } = req.body;
 
-  const validTypes = ['רטוב', 'מלוכלך', 'שניהם'];
-
   try {
-    if (!type) {
-      res.status(400).json({ error: 'עלייך לבחור סוג תקין' });
-      return;
-    }
-    if (!validTypes.includes(type)) {
-      res.status(400).json({ error: `סוג לא חוקי: ${type}` });
-      return;
-    }
-
     const diaperTime = time ? new Date(time) : new Date();
 
     const newDiaper: IDiaper = new Diaper({
@@ -61,6 +57,9 @@ export const createDiaper: RequestHandler = async (req, res) => {
 
 export const editDiaper = async (req: Request, res: Response) => {
   const { diaperId } = req.params;
+
+  if (!validateEditDiaperBody(req.body, res)) return;
+
   const { type, time, notes } = req.body;
 
   try {
@@ -97,7 +96,7 @@ export const deleteDiaper = async (req: Request, res: Response) => {
   if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
   try {
-    const diaper = await Diaper.findById(diaperId).populate('babyId');
+    const diaper = await Diaper.findById(diaperId).populate('babyId'); // החלפת חיתולים של תינוק מסויים
 
     if (!diaper) {
       res.status(404).json({ error: 'החלפת חיתולים לא נמצאה' });
