@@ -7,7 +7,6 @@ declare global {
     interface Request {
       user?: JwtUser;
       sleeping: ISleep;
-      feeding: IFeeding;
       baby?: IBaby;
     }
   }

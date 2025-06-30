@@ -4,19 +4,12 @@ import { validateObjectId } from '../utils/validateObjectId';
 import { IBaby } from '../types/baby';
 
 export const createBaby: RequestHandler = async (req, res) => {
-  const userId = req.user?.id;
-  const { name, gender, birthDate, notes } = req.body;
-
-  console.log(req.file);
-  const image = req.file ? '/uploads/' + req.file.filename : undefined;
-
-  if (!req.user?.id) {
-    res.status(401).json({ error: 'משתמש לא מזוהה' });
-    return;
-  }
   try {
-    const newBaby = new Baby({
-      userId,
+    const { name, gender, birthDate, notes } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+    const baby = await Baby.create({
+      userId: req.user!.id,
       name,
       gender,
       birthDate,
@@ -24,22 +17,22 @@ export const createBaby: RequestHandler = async (req, res) => {
       image,
     });
 
-    const savedBaby = await newBaby.save();
-
-    res.status(201).json({ message: 'תינוק נוצר בהצלחה', baby: savedBaby });
+    res.status(201).json({
+      message: 'תינוק נוצר בהצלחה',
+      baby,
+    });
   } catch (error) {
     console.error('שגיאה ביצירת תינוק:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
   }
 };
 
-export const getBabies = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
-
+export const getBabies: RequestHandler = async (req, res) => {
   try {
-    const babies = await Baby.find({ userId })
-      .select('name gender notes birthDate image')
-      .lean();
+    const babies = await Baby.find({ userId: req.user!.id })
+      .select('name gender notes birthDate image createdAt')
+      .lean()
+      .sort({ createdAt: -1 });
     res.status(200).json({ babies });
   } catch (error) {
     console.error('שגיאה בקבלת תינוקות:', error);
@@ -47,16 +40,11 @@ export const getBabies = async (req: Request, res: Response) => {
   }
 };
 
-export const getSingleBaby = (req: Request, res: Response): void => {
-  if (!req.baby) {
-    res.status(404).json({ error: 'תינוק לא נמצא' });
-    return;
-  }
-
-  res.status(200).json({ baby: req.baby });
+export const getSingleBaby: RequestHandler = (req, res): void => {
+  res.json({ baby: req.baby });
 };
 
-export const updateBaby = async (req: Request, res: Response) => {
+export const updateBaby: RequestHandler = async (req, res) => {
   const { babyId } = req.params;
   const { name, gender, birthDate, notes } = req.body;
   const updateFields = { name, gender, birthDate, notes };

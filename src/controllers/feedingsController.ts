@@ -3,20 +3,39 @@ import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
 import { IFeeding } from '../types/feeding';
 
-export const getFeedings = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { babyId } = req.params;
+// TODO : ADD ALL CHANGES TO SWAGGER
 
+export const getFeedings: RequestHandler = async (req, res) => {
   try {
-    const feedings: IFeeding[] = await Feeding.find({ babyId })
-      .select('type amount time notes')
-      .sort({
-        time: -1,
-      });
+    const { babyId } = req.params;
+    const { limit = 50, page = 1, startDate, endDate } = req.query;
 
-    res.status(200).json({ feedings });
+    const query: any = { babyId }; // query דינמי
+
+    if (startDate || endDate) {
+      query.time = {};
+      if (startDate) query.time.$gte = new Date(startDate as string);
+      if (endDate) query.time.$lte = new Date(endDate as string);
+    }
+
+    const feedings: IFeeding[] = await Feeding.find(query)
+      .select('type amount time notes createdAt')
+      .sort({ time: -1 })
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit))
+      .lean();
+
+    const total = await Feeding.countDocuments(query);
+
+    res.json({
+      feedings,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        pages: Math.ceil(total / Number(limit)),
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'שגיאה בשרת' });
@@ -24,13 +43,13 @@ export const getFeedings = async (
 };
 
 export const createFeeding: RequestHandler = async (req, res) => {
-  const { babyId } = req.params;
-  const { type, amount, time, notes } = req.body;
-
   try {
+    const { babyId } = req.params;
+    const { type, amount, time, notes } = req.body;
+
     const feedingTime = time ? new Date(time) : new Date();
 
-    const newFeed: IFeeding = new Feeding({
+    const feeding = await Feeding.create({
       babyId,
       type,
       amount,
@@ -38,11 +57,10 @@ export const createFeeding: RequestHandler = async (req, res) => {
       notes,
     });
 
-    await newFeed.save();
-
-    res
-      .status(201)
-      .json({ message: 'הוספת האכלה בוצעה בהצלחה!', feed: newFeed });
+    res.status(201).json({
+      message: 'הוספת האכלה בוצעה בהצלחה!',
+      feeding,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'שגיאה בשרת' });
@@ -50,11 +68,11 @@ export const createFeeding: RequestHandler = async (req, res) => {
 };
 
 export const editFeeding = async (req: Request, res: Response) => {
-  const { feedingId } = req.params;
-  const { type, amount, time, notes } = req.body;
-  const updateFields = { type, amount, time, notes };
-
   try {
+    const { feedingId } = req.params;
+    const { type, amount, time, notes } = req.body;
+    const updateFields = { type, amount, time, notes };
+
     if (!validateObjectId(feedingId, res, 'מזהה האכלה')) return;
 
     const updatedFeeding: IFeeding | null = await Feeding.findByIdAndUpdate(
@@ -77,13 +95,11 @@ export const editFeeding = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteFeeding = async (req: Request, res: Response) => {
-  const feeding = (req as any).feeding as IFeeding;
-
+export const deleteFeeding: RequestHandler = async (req, res) => {
   try {
-    await feeding.deleteOne();
-
-    res.status(200).json({ message: 'האכלה נמחקה בהצלחה' });
+    const { feedingId } = req.params;
+    await Feeding.findByIdAndDelete(feedingId);
+    res.json({ message: 'האכלה נמחקה בהצלחה' });
   } catch (error) {
     console.error('שגיאה במחיקת האכלה:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });

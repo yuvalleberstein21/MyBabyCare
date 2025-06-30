@@ -8,10 +8,25 @@ const feedSchema = new mongoose.Schema<IFeeding>(
       ref: 'Baby',
       required: true,
     },
-    type: { type: String, required: true },
-    amount: { type: Number, required: true },
-    time: { type: Date, required: true },
-    notes: String,
+    type: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      min: 0,
+      required: true,
+    },
+    time: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+    notes: {
+      type: String,
+      trim: true,
+    },
   },
   { timestamps: true }
 );

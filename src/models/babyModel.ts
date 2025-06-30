@@ -7,10 +7,12 @@ const babySchema = new mongoose.Schema<IBaby>(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+      index: true,
     },
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     gender: String,
     birthDate: Date,
@@ -22,7 +24,5 @@ const babySchema = new mongoose.Schema<IBaby>(
   },
   { timestamps: true }
 );
-
-babySchema.index({ userId: 1 });
 
 export const Baby = mongoose.model<IBaby>('Baby', babySchema);
