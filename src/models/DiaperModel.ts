@@ -10,6 +10,8 @@ const diaperSchema = new mongoose.Schema<IDiaper>(
     },
     time: {
       type: Date,
+      required: true,
+      default: Date.now,
     },
     type: {
       type: String,

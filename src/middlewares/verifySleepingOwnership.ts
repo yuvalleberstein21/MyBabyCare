@@ -16,7 +16,6 @@ export const verifySleepingOwnership: RequestHandler = async (
   next
 ) => {
   const { sleepingId } = req.params;
-  const userId = req.user?.id;
 
   if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
 
@@ -26,23 +25,11 @@ export const verifySleepingOwnership: RequestHandler = async (
         babyId: IBaby;
       }>('babyId', 'userId')
       .lean();
-    // const sleeping = await Sleeping.findById(sleepingId).populate('babyId');
 
     if (!sleeping || sleeping.babyId.userId.toString() !== req.user!.id) {
       res.status(404).json({ error: 'האכלה לא נמצאה או לא שייכת למשתמש' });
       return;
     }
-
-    // if (!sleeping) {
-    //   res.status(404).json({ error: 'שינה לא נמצאה' });
-    //   return;
-    // }
-
-    // const baby = sleeping.babyId as any;
-    // if (baby.userId.toString() !== userId) {
-    //   res.status(403).json({ error: 'אין הרשאה לפעולה זו' });
-    //   return;
-    // }
 
     req.sleeping = sleeping as any;
     next();

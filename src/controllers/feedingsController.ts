@@ -8,7 +8,7 @@ import { IFeeding } from '../types/feeding';
 export const getFeedings: RequestHandler = async (req, res) => {
   try {
     const { babyId } = req.params;
-    const { limit = 50, page = 1, startDate, endDate } = req.query;
+    const { limit = 10, page = 1, startDate, endDate } = req.query;
 
     const query: any = { babyId }; // query דינמי
 
@@ -21,8 +21,8 @@ export const getFeedings: RequestHandler = async (req, res) => {
     const feedings: IFeeding[] = await Feeding.find(query)
       .select('type amount time notes createdAt')
       .sort({ time: -1 })
-      .limit(Number(limit))
-      .skip((Number(page) - 1) * Number(limit))
+      .limit(Number(limit)) //  כמות הרשומות לעמוד.
+      .skip((Number(page) - 1) * Number(limit)) // דילוג על רשומות לפי העמוד.
       .lean();
 
     const total = await Feeding.countDocuments(query);
@@ -33,7 +33,7 @@ export const getFeedings: RequestHandler = async (req, res) => {
         total,
         page: Number(page),
         limit: Number(limit),
-        pages: Math.ceil(total / Number(limit)),
+        pages: Math.ceil(total / Number(limit)), // // סך עמודים
       },
     });
   } catch (error) {

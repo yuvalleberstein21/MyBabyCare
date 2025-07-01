@@ -12,7 +12,7 @@ export const validateFeeding = (
     return;
   }
 
-  if (!amount || typeof amount !== 'string' || amount.trim() === '') {
+  if (amount === undefined || typeof amount !== 'number') {
     res.status(400).json({ error: 'כמות ההאכלה נדרשת' });
     return;
   }

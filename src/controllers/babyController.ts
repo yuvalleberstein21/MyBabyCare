@@ -45,12 +45,12 @@ export const getSingleBaby: RequestHandler = (req, res): void => {
 };
 
 export const updateBaby: RequestHandler = async (req, res) => {
-  const { babyId } = req.params;
-  const { name, gender, birthDate, notes } = req.body;
-  const updateFields = { name, gender, birthDate, notes };
-  const userId = req.user?.id;
-
   try {
+    const { babyId } = req.params;
+    const { name, gender, birthDate, notes } = req.body;
+    const updateFields = { name, gender, birthDate, notes };
+    const userId = req.user?.id;
+
     if (!validateObjectId(babyId, res, 'מזהה תינוק')) return;
 
     const updatedBaby: IBaby | null = await Baby.findOneAndUpdate(

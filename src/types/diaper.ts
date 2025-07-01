@@ -6,5 +6,5 @@ export interface IDiaper extends Document {
   babyId: Types.ObjectId;
   time: Date;
   type: DiaperType;
-  notes: string;
+  notes?: string;
 }

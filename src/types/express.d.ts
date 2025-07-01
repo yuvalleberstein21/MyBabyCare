@@ -1,3 +1,4 @@
+import { IDiaper } from './diaper';
 import { IFeeding } from './feeding';
 import { ISleep } from './sleep';
 import { JwtUser } from './user';
@@ -7,6 +8,7 @@ declare global {
     interface Request {
       user?: JwtUser;
       sleeping: ISleep;
+      diaper: IDiaper;
       baby?: IBaby;
     }
   }

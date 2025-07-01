@@ -31,8 +31,11 @@ export const verifyFeedingOwnership = async (
       }>('babyId', 'userId')
       .lean(); // טיפוס נכון
 
-    // בדיקה אחת מאוחדת
-    if (!feeding || feeding.babyId.userId.toString() !== req.user!.id) {
+    if (
+      !feeding ||
+      !feeding.babyId ||
+      feeding.babyId.userId.toString() !== req.user!.id
+    ) {
       res.status(404).json({ error: 'האכלה לא נמצאה או לא שייכת למשתמש' });
       return;
     }
