@@ -32,6 +32,7 @@ export const getSleepings = async (req: Request, res: Response) => {
 
     if (!sleeping || sleeping.length === 0) {
       res.status(404).json({ error: 'לא נמצאה שינה לתינוק' });
+      return;
     }
 
     res.json({
