@@ -4,8 +4,8 @@ import { Document, Types } from 'mongoose';
 export interface IBaby extends Document {
   userId: Types.ObjectId;
   name: string;
-  gender?: string | null;
-  birthDate?: Date | null;
+  gender: string | null;
+  birthDate: Date | null;
   notes?: string | null;
   createdAt: Date;
   updatedAt: Date;

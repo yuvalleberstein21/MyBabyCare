@@ -9,6 +9,7 @@ import {
 import { requireAuth } from '../middlewares/auth';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
 import { verifySleepingOwnership } from '../middlewares/verifySleepingOwnership';
+import { validateEditSleepBody } from '../validators/sleepValidators';
 
 const router = express.Router();
 

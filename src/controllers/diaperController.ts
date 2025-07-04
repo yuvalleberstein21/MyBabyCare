@@ -36,6 +36,7 @@ export const getDiaper: RequestHandler = async (req, res) => {
 
     if (!diaper || diaper.length === 0) {
       res.status(404).json({ error: 'לא נמצא החלפת חיתולים לתינוק' });
+      return;
     }
 
     res.json({

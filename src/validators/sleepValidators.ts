@@ -28,6 +28,16 @@ export function validateEditSleepBody(body: any, res: Response): boolean {
     res.status(400).json({ error: 'שעת סיום אינה תקינה' });
     return false;
   }
+
+  // בדיקה ששעת התחלה אינה אחרי שעת סיום
+  if (body.startTime && body.endTime) {
+    const start = new Date(body.startTime);
+    const end = new Date(body.endTime);
+    if (start > end) {
+      res.status(400).json({ error: 'שעת התחלה לא יכולה להיות אחרי שעת סיום' });
+      return false;
+    }
+  }
   if (body.notes !== undefined && typeof body.notes !== 'string') {
     res.status(400).json({ error: 'הערות צריכות להיות מחרוזת' });
     return false;

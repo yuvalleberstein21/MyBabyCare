@@ -14,8 +14,15 @@ const babySchema = new mongoose.Schema<IBaby>(
       required: true,
       trim: true,
     },
-    gender: String,
-    birthDate: Date,
+    gender: {
+      type: String,
+      enum: ['זכר', 'נקבה'],
+      required: true,
+    },
+    birthDate: {
+      type: Date,
+      required: true,
+    },
     notes: String,
     image: {
       type: String,
