@@ -81,13 +81,27 @@ const feedingDocs = {
           'application/json': {
             schema: {
               type: 'object',
+              required: ['type', 'amount'],
               properties: {
-                type: { type: 'string' },
-                amount: { type: 'number' },
-                time: { type: 'string', format: 'date-time' },
-                notes: { type: 'string' },
+                type: {
+                  type: 'string',
+                  description: 'סוג ההאכלה (לדוגמה: בקבוק, הנקה, מוצקים)',
+                },
+                amount: {
+                  type: 'number',
+                  minimum: 0,
+                  description: 'כמות במיליליטרים',
+                },
+                time: {
+                  type: 'string',
+                  format: 'date-time',
+                  description: 'תאריך ושעה של ההאכלה',
+                },
+                notes: {
+                  type: 'string',
+                  description: 'הערות נוספות',
+                },
               },
-              required: ['type'],
             },
           },
         },
@@ -107,13 +121,26 @@ const feedingDocs = {
             },
           },
         },
-        400: { description: 'שדות שגויים' },
+        400: {
+          description: 'שדות שגויים',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  error: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
         401: { description: 'משתמש לא מחובר' },
         404: { description: 'תינוק לא נמצא או לא שייך למשתמש' },
         500: { description: 'שגיאה בשרת' },
       },
     },
   },
+
   '/feed/{feedingId}': {
     put: {
       tags: ['Feeding'],
@@ -134,10 +161,24 @@ const feedingDocs = {
             schema: {
               type: 'object',
               properties: {
-                type: { type: 'string' },
-                amount: { type: 'number' },
-                time: { type: 'string', format: 'date-time' },
-                notes: { type: 'string' },
+                type: {
+                  type: 'string',
+                  description: 'סוג ההאכלה',
+                },
+                amount: {
+                  type: 'number',
+                  minimum: 0,
+                  description: 'כמות ההאכלה',
+                },
+                time: {
+                  type: 'string',
+                  format: 'date-time',
+                  description: 'זמן ההאכלה',
+                },
+                notes: {
+                  type: 'string',
+                  description: 'הערות',
+                },
               },
             },
           },
@@ -158,11 +199,24 @@ const feedingDocs = {
             },
           },
         },
-        400: { description: 'מזהה האכלה לא תקין או גוף בקשה לא תקין' },
+        400: {
+          description: 'שדות שגויים או מזהה לא תקין',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  error: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
         404: { description: 'האכלה לא נמצאה או לא שייכת למשתמש' },
         500: { description: 'שגיאה בשרת' },
       },
     },
+
     delete: {
       tags: ['Feeding'],
       summary: 'מחיקת האכלה',

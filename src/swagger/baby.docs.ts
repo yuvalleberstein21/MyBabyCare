@@ -11,6 +11,9 @@ const babyDocs = {
         401: {
           description: 'משתמש לא מאומת',
         },
+        500: {
+          description: 'שגיאה בשרת',
+        },
       },
     },
     post: {
@@ -23,14 +26,22 @@ const babyDocs = {
           'multipart/form-data': {
             schema: {
               type: 'object',
-              properties: {
-                name: { type: 'string' },
-                birthDate: { type: 'string', format: 'date' },
-                gender: { type: 'string', enum: ['male', 'female'] },
-                notes: { type: 'string' },
-                image: { type: 'string', format: 'binary' },
-              },
               required: ['name', 'birthDate', 'gender'],
+              properties: {
+                name: { type: 'string', example: 'יונתן' },
+                birthDate: {
+                  type: 'string',
+                  format: 'date',
+                  example: '2023-01-01',
+                },
+                gender: { type: 'string', enum: ['male', 'female'] },
+                notes: { type: 'string', example: 'תינוק חמוד שאוהב לישון' },
+                image: {
+                  type: 'string',
+                  format: 'binary',
+                  description: 'קובץ תמונה של התינוק (אופציונלי)',
+                },
+              },
             },
           },
         },
@@ -45,9 +56,13 @@ const babyDocs = {
         401: {
           description: 'משתמש לא מאומת',
         },
+        500: {
+          description: 'שגיאה בשרת',
+        },
       },
     },
   },
+
   '/babies/{babyId}': {
     get: {
       tags: ['Babies'],
@@ -62,14 +77,13 @@ const babyDocs = {
         },
       ],
       responses: {
-        200: {
-          description: 'פרטי תינוק',
-        },
-        404: {
-          description: 'תינוק לא נמצא או לא שייך למשתמש',
-        },
+        200: { description: 'פרטי תינוק' },
+        401: { description: 'משתמש לא מאומת' },
+        404: { description: 'תינוק לא נמצא או לא שייך למשתמש' },
+        500: { description: 'שגיאה בשרת' },
       },
     },
+
     put: {
       tags: ['Babies'],
       summary: 'עדכון פרטי תינוק',
@@ -89,9 +103,13 @@ const babyDocs = {
             schema: {
               type: 'object',
               properties: {
-                name: { type: 'string' },
-                birthDate: { type: 'string', format: 'date' },
-                notes: { type: 'string' },
+                name: { type: 'string', example: 'דנה' },
+                birthDate: {
+                  type: 'string',
+                  format: 'date',
+                  example: '2023-02-15',
+                },
+                notes: { type: 'string', example: 'נולדה במשקל 3.1 ק"ג' },
                 gender: { type: 'string', enum: ['male', 'female'] },
               },
             },
@@ -99,17 +117,14 @@ const babyDocs = {
         },
       },
       responses: {
-        200: {
-          description: 'תינוק עודכן בהצלחה',
-        },
-        400: {
-          description: 'שגיאה בעדכון',
-        },
-        404: {
-          description: 'תינוק לא נמצא או לא שייך למשתמש',
-        },
+        200: { description: 'התינוק עודכן בהצלחה' },
+        400: { description: 'שגיאה בעדכון' },
+        401: { description: 'משתמש לא מאומת' },
+        404: { description: 'תינוק לא נמצא או לא שייך למשתמש' },
+        500: { description: 'שגיאה בשרת' },
       },
     },
+
     delete: {
       tags: ['Babies'],
       summary: 'מחיקת תינוק לפי מזהה',
@@ -123,18 +138,10 @@ const babyDocs = {
         },
       ],
       responses: {
-        200: {
-          description: 'התינוק נמחק בהצלחה',
-        },
-        404: {
-          description: 'תינוק לא נמצא או לא שייך למשתמש',
-        },
-        401: {
-          description: 'משתמש לא מזוהה',
-        },
-        500: {
-          description: 'שגיאה בשרת',
-        },
+        200: { description: 'התינוק נמחק בהצלחה' },
+        401: { description: 'משתמש לא מאומת' },
+        404: { description: 'תינוק לא נמצא או לא שייך למשתמש' },
+        500: { description: 'שגיאה בשרת' },
       },
     },
   },

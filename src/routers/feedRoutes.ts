@@ -7,7 +7,10 @@ import {
   getFeedings,
 } from '../controllers/feedingsController';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
-import { validateFeeding } from '../validators/feedingValidators';
+import {
+  validateFeeding,
+  validateUpdateFeeding,
+} from '../validators/feedingValidators';
 import { verifyFeedingOwnership } from '../middlewares/verifyFeedingOwnership';
 
 const router = express.Router();
@@ -24,7 +27,7 @@ router.put(
   '/:feedingId',
   requireAuth,
   verifyFeedingOwnership,
-  validateFeeding,
+  validateUpdateFeeding,
   editFeeding
 );
 router.delete(

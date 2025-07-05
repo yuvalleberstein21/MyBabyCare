@@ -6,11 +6,11 @@ const sleepSchema = new mongoose.Schema<ISleep>(
     babyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Baby',
-      required: true,
+      required: [true, 'מזהה תינוק נדרש'],
     },
     startTime: {
       type: Date,
-      required: true,
+      required: [true, 'תחילת זמן שינה נדרשת'],
     },
     endTime: Date,
     notes: String,

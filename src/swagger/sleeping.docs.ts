@@ -45,8 +45,12 @@ const sleepDocs = {
                       type: 'object',
                       properties: {
                         startTime: { type: 'string', format: 'date-time' },
-                        endTime: { type: 'string', format: 'date-time' },
-                        notes: { type: 'string' },
+                        endTime: {
+                          type: 'string',
+                          format: 'date-time',
+                          nullable: true,
+                        },
+                        notes: { type: 'string', nullable: true },
                         createdAt: { type: 'string', format: 'date-time' },
                       },
                     },
@@ -70,10 +74,11 @@ const sleepDocs = {
       },
     },
   },
+
   '/sleep/{babyId}/start': {
     post: {
       tags: ['Sleep'],
-      summary: 'תחילת שינה',
+      summary: 'התחלת שינה לתינוק',
       parameters: [
         {
           name: 'babyId',
@@ -83,6 +88,7 @@ const sleepDocs = {
         },
       ],
       requestBody: {
+        required: true,
         content: {
           'application/json': {
             schema: {
@@ -101,10 +107,11 @@ const sleepDocs = {
       },
     },
   },
+
   '/sleep/{babyId}/end': {
     post: {
       tags: ['Sleep'],
-      summary: 'סיום שינה',
+      summary: 'סיום שינה לתינוק',
       parameters: [
         {
           name: 'babyId',
@@ -114,6 +121,7 @@ const sleepDocs = {
         },
       ],
       requestBody: {
+        required: true,
         content: {
           'application/json': {
             schema: {
@@ -132,10 +140,11 @@ const sleepDocs = {
       },
     },
   },
+
   '/sleep/{sleepingId}': {
     put: {
       tags: ['Sleep'],
-      summary: 'עריכת שינה',
+      summary: 'עריכת שינה קיימת',
       parameters: [
         {
           name: 'sleepingId',
@@ -145,6 +154,7 @@ const sleepDocs = {
         },
       ],
       requestBody: {
+        required: true,
         content: {
           'application/json': {
             schema: {
@@ -161,8 +171,10 @@ const sleepDocs = {
       responses: {
         200: { description: 'השינה עודכנה בהצלחה' },
         400: { description: 'שגיאה בעדכון' },
+        404: { description: 'שינה לא נמצאה' },
       },
     },
+
     delete: {
       tags: ['Sleep'],
       summary: 'מחיקת שינה',

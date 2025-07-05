@@ -6,17 +6,17 @@ const diaperSchema = new mongoose.Schema<IDiaper>(
     babyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Baby',
-      required: true,
+      required: [true, 'מזהה החלפה נדרש'],
     },
     time: {
       type: Date,
-      required: true,
+      required: [true, 'זמן החלפה נדרש'],
       default: Date.now,
     },
     type: {
       type: String,
       enum: ['רטוב', 'מלוכלך', 'שניהם'],
-      required: true,
+      required: [true, 'סוג החלפה נדרש'],
     },
     notes: String,
   },

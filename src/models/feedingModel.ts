@@ -6,22 +6,22 @@ const feedSchema = new mongoose.Schema<IFeeding>(
     babyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Baby',
-      required: true,
+      required: [true, 'מזהה תינוק נדרש'],
     },
     type: {
       type: String,
       trim: true,
-      required: true,
+      required: [true, 'סוג ההאכלה נדרש'],
     },
     amount: {
       type: Number,
       min: 0,
-      required: true,
+      required: [true, 'כמות האכלה נדרשת'],
     },
     time: {
       type: Date,
       default: Date.now,
-      required: true,
+      required: [true, 'זמן ההאכלה נדרש'],
     },
     notes: {
       type: String,
