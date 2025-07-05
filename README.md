@@ -88,12 +88,18 @@ Designed for use with a frontend client , to allow parents and caregivers to mon
 
 `npm run dev`
 
-## 🧱 Tech Stack
+## ✨ Technologies Used
 
-Backend: Node.js, Express.js, MongoDB, Mongoose, TypeScript
-
-Auth: Cookie-based JWT authentication
-
-Validation: Custom Validator / Custom middleware
-
-Docs: Swagger
+- **Node.js** – JavaScript runtime environment
+- **Express** – A fast web framework for Node.js
+- **TypeScript** – Typed superset of JavaScript
+- **MongoDB** – NoSQL database
+- **Mongoose** – Elegant MongoDB object modeling for Node.js
+- **jsonwebtoken** – For JWT-based authentication
+- **bcryptjs** – For password hashing and comparing
+- **cookie-parser** – Parse cookies attached to the client request
+- **cors** – Enable Cross-Origin Resource Sharing
+- **multer** – Middleware for handling multipart/form-data
+- **nodemon** – Automatically restart the server during development
+- **dotenv** – Load environment variables from .env
+- **swagger-ui-express** – Serve Swagger docs for Express-based APIs
