@@ -55,6 +55,17 @@ Designed for use with a frontend client , to allow parents and caregivers to mon
 - `PUT /diaper/:diaperId` – Edit diaper change
 - `DELETE /diaper/:diaperId` – Delete diaper change
 
+## 📍 Command lines
+
+- `npm run start:` <br>
+  build of typescript, run the js compiles.
+- `npm run dev:` <br>
+  run typescript code for development using nodemon
+- `npm run debug:` <br>
+  tarts the project in debug mode
+- `npm run build: `<br>
+  Compiles the TypeScript code into JavaScript
+
 ## 🛠️ Installation
 
 1. **Clone the repo**
