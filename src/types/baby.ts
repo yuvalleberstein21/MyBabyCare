@@ -4,10 +4,25 @@ import { Document, Types } from 'mongoose';
 export interface IBaby extends Document {
   userId: Types.ObjectId;
   name: string;
-  gender: string | null;
-  birthDate: Date | null;
-  notes?: string | null;
+  gender: 'זכר' | 'נקבה';
+  birthDate: Date;
+  notes?: string;
+  image?: string;
   createdAt: Date;
   updatedAt: Date;
-  image: string | null;
+}
+
+export interface CreateBabyRequestBody {
+  name: string;
+  gender: 'זכר' | 'נקבה';
+  birthDate: string;
+  notes?: string;
+  image?: string;
+}
+
+export interface UpdateBabyRequestBody {
+  name?: string;
+  gender?: 'זכר' | 'נקבה';
+  birthDate?: string;
+  notes?: string;
 }

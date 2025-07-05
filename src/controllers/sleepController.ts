@@ -1,14 +1,27 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Sleeping } from '../models/sleepModel';
-import { ISleep } from '../types/sleep';
+import {
+  CreateEndSleepBody,
+  CreateStartSleepBody,
+  EditSleepBody,
+  ISleep,
+} from '../types/sleep';
 import {
   validateEditSleepBody,
   validateEndSleepBody,
   validateStartSleepBody,
 } from '../validators/sleepValidators';
 
-export const getSleepings = async (req: Request, res: Response) => {
+interface BabyIdParams {
+  babyId?: string;
+}
+
+interface SleepingIdParams {
+  sleepingId?: string | any;
+}
+
+export const getSleepings: RequestHandler<BabyIdParams> = async (req, res) => {
   try {
     const { babyId } = req.params;
     const { limit = 50, page = 1, startDate, endDate } = req.query;
@@ -50,7 +63,11 @@ export const getSleepings = async (req: Request, res: Response) => {
   }
 };
 
-export const createStartSleep: RequestHandler = async (req, res) => {
+export const createStartSleep: RequestHandler<
+  BabyIdParams,
+  {},
+  CreateStartSleepBody
+> = async (req, res) => {
   try {
     const { babyId } = req.params;
 
@@ -91,7 +108,11 @@ export const createStartSleep: RequestHandler = async (req, res) => {
   }
 };
 
-export const createEndSleep: RequestHandler = async (req, res) => {
+export const createEndSleep: RequestHandler<
+  BabyIdParams,
+  {},
+  CreateEndSleepBody
+> = async (req, res) => {
   try {
     const { babyId } = req.params;
 
@@ -131,7 +152,10 @@ export const createEndSleep: RequestHandler = async (req, res) => {
   }
 };
 
-export const editSleeping = async (req: Request, res: Response) => {
+export const editSleeping = async (
+  req: Request<SleepingIdParams, {}, EditSleepBody>,
+  res: Response
+) => {
   try {
     const { sleepingId } = req.params;
 
@@ -165,7 +189,10 @@ export const editSleeping = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteSleeping = async (req: Request, res: Response) => {
+export const deleteSleeping = async (
+  req: Request<SleepingIdParams>,
+  res: Response
+) => {
   try {
     const { sleepingId } = req.params;
 

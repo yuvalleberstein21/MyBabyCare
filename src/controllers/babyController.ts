@@ -1,9 +1,16 @@
 import { Request, Response, RequestHandler } from 'express';
 import { Baby } from '../models/babyModel';
 import { validateObjectId } from '../utils/validateObjectId';
-import { IBaby } from '../types/baby';
+import {
+  CreateBabyRequestBody,
+  IBaby,
+  UpdateBabyRequestBody,
+} from '../types/baby';
 
-export const createBaby: RequestHandler = async (req, res) => {
+export const createBaby: RequestHandler<{}, {}, CreateBabyRequestBody> = async (
+  req,
+  res
+) => {
   try {
     const { name, gender, birthDate, notes } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : undefined;
@@ -44,7 +51,11 @@ export const getSingleBaby: RequestHandler = (req, res): void => {
   res.json({ baby: req.baby });
 };
 
-export const updateBaby: RequestHandler = async (req, res) => {
+export const updateBaby: RequestHandler<
+  { babyId: string },
+  {},
+  UpdateBabyRequestBody
+> = async (req, res) => {
   try {
     const { babyId } = req.params;
     const { name, gender, birthDate, notes } = req.body;

@@ -7,7 +7,17 @@ export interface ISleep extends Document {
   notes?: string;
 }
 
-// export interface QuerySleep {
-//   babyId?: string;
-//   startTime?: Date | undefined;
-// }
+export interface CreateStartSleepBody {
+  startTime?: string;
+  notes?: string;
+}
+
+export interface CreateEndSleepBody {
+  endTime?: string; // גם מחרוזת
+}
+
+export interface EditSleepBody {
+  startTime?: string;
+  endTime?: string;
+  notes?: string;
+}

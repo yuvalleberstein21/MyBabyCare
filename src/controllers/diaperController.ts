@@ -1,13 +1,29 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
-import { IDiaper } from '../types/diaper';
+import {
+  CreateDiaperBody,
+  EditDiaperBody,
+  GetDiaperQuery,
+  IDiaper,
+} from '../types/diaper';
 import { Diaper } from '../models/DiaperModel';
 import {
   validateCreateDiaperBody,
   validateEditDiaperBody,
 } from '../validators/diaperValidators';
 
-export const getDiaper: RequestHandler = async (req, res) => {
+interface BabyIdParams {
+  babyId?: string;
+}
+
+interface DiaperIdParams {
+  diaperId?: string | any;
+}
+
+export const getDiaper = async (
+  req: Request<BabyIdParams, {}, {}, GetDiaperQuery>,
+  res: Response
+) => {
   try {
     const { babyId } = req.params;
 
@@ -54,7 +70,10 @@ export const getDiaper: RequestHandler = async (req, res) => {
   }
 };
 
-export const createDiaper: RequestHandler = async (req, res) => {
+export const createDiaper = async (
+  req: Request<BabyIdParams, {}, CreateDiaperBody>,
+  res: Response
+) => {
   try {
     const { babyId } = req.params;
 
@@ -81,7 +100,10 @@ export const createDiaper: RequestHandler = async (req, res) => {
   }
 };
 
-export const editDiaper: RequestHandler = async (req, res) => {
+export const editDiaper = async (
+  req: Request<DiaperIdParams, {}, EditDiaperBody>,
+  res: Response
+) => {
   try {
     const { diaperId } = req.params;
 
@@ -120,20 +142,23 @@ export const editDiaper: RequestHandler = async (req, res) => {
   }
 };
 
-export const deleteDiaper: RequestHandler = async (req, res) => {
+export const deleteDiaper = async (
+  req: Request<DiaperIdParams>,
+  res: Response
+) => {
   try {
     const { diaperId } = req.params;
 
     if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
-    const deletedDiaper = await Diaper.findByIdAndDelete(diaperId); // החלפת חיתולים של תינוק מסויים
+    const result = await Diaper.deleteOne({ _id: diaperId });
 
-    if (!deletedDiaper) {
-      res.status(404).json({ error: 'החלפת חיתולים לא נמצאה' });
+    if (result.deletedCount === 0) {
+      res.status(404).end();
       return;
     }
 
-    res.json({ message: 'החלפת חיתולים נמחקה בהצלחה' });
+    res.status(204).end();
   } catch (error) {
     console.error('שגיאה במחיקת החלפת חיתולים:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });

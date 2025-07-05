@@ -1,9 +1,16 @@
 import { Request, RequestHandler, Response } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
-import { IFeeding } from '../types/feeding';
+import {
+  CreateFeedingRequestBody,
+  IFeeding,
+  UpdateFeedingRequestBody,
+} from '../types/feeding';
 
-// TODO : ADD ALL CHANGES TO SWAGGER
+interface FeedingParams {
+  babyId?: string;
+  feedingId?: string | any;
+}
 
 export const getFeedings: RequestHandler = async (req, res) => {
   try {
@@ -42,7 +49,11 @@ export const getFeedings: RequestHandler = async (req, res) => {
   }
 };
 
-export const createFeeding: RequestHandler = async (req, res) => {
+export const createFeeding: RequestHandler<
+  FeedingParams,
+  {},
+  CreateFeedingRequestBody
+> = async (req, res) => {
   try {
     const { babyId } = req.params;
     const { type, amount, time, notes } = req.body;
@@ -67,7 +78,11 @@ export const createFeeding: RequestHandler = async (req, res) => {
   }
 };
 
-export const editFeeding = async (req: Request, res: Response) => {
+export const editFeeding: RequestHandler<
+  FeedingParams,
+  {},
+  UpdateFeedingRequestBody
+> = async (req, res) => {
   try {
     const { feedingId } = req.params;
     const { type, amount, time, notes } = req.body;

@@ -4,18 +4,24 @@ import { IUser } from '../types/user';
 
 const userSchema = new mongoose.Schema<IUser>(
   {
-    fullName: { type: String, required: true },
+    fullName: {
+      type: String,
+      required: [true, 'שם מלא נדרש'],
+      trim: true,
+    },
     email: {
       type: String,
       unique: true,
-      required: true,
+      required: [true, 'אימייל נדרש'],
+      lowercase: true,
       trim: true,
       index: true,
+      match: [/^\S+@\S+\.\S+$/, 'פורמט אימייל לא תקין'],
     },
     password: {
       type: String,
-      min: 4,
-      required: true,
+      minlength: [4, 'סיסמה חייבת להכיל לפחות 4 תווים'],
+      required: [true, 'סיסמה נדרשת'],
     },
   },
   { timestamps: true }

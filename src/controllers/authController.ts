@@ -1,10 +1,18 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import { generateTokens } from '../utils/generateTokens';
-import { IUser, JwtUser } from '../types/user';
+import {
+  AuthResponse,
+  JwtUser,
+  LoginRequestBody,
+  RegisterRequestBody,
+} from '../types/user';
 
-export const Login = async (req: Request, res: Response) => {
+export const Login = async (
+  req: Request<{}, {}, LoginRequestBody>,
+  res: Response<AuthResponse | { error: string }>
+) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -41,7 +49,11 @@ export const Login = async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: 'התחברת בהצלחה',
-      user: { id: user._id, name: user.fullName, email: user.email },
+      user: {
+        id: user._id.toString(),
+        name: user.fullName,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.error('שגיאה ב-login:', error);
@@ -49,7 +61,10 @@ export const Login = async (req: Request, res: Response) => {
   }
 };
 
-export const Register = async (req: Request, res: Response) => {
+export const Register = async (
+  req: Request<{}, {}, RegisterRequestBody>,
+  res: Response<AuthResponse | { error: string }>
+) => {
   try {
     const { fullName, email, password } = req.body;
 
@@ -70,9 +85,10 @@ export const Register = async (req: Request, res: Response) => {
     await newUser.save();
 
     res.status(201).json({
+      success: true,
       message: 'נרשמת בהצלחה',
       user: {
-        id: newUser._id,
+        id: newUser._id.toString(),
         name: newUser.fullName,
         email: newUser.email,
       },
@@ -83,13 +99,13 @@ export const Register = async (req: Request, res: Response) => {
   }
 };
 
-export const Logout = (req: Request, res: Response): void => {
+export const Logout: RequestHandler = (req, res): void => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
   res.json({ message: 'התנתקת בהצלחה' });
 };
 
-export const refreshAccessToken = (req: Request, res: Response) => {
+export const refreshAccessToken: RequestHandler = (req, res): void => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
