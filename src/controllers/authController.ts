@@ -8,6 +8,7 @@ import {
   LoginRequestBody,
   RegisterRequestBody,
 } from '../types/user';
+import { setAccessTokenCookie, setAuthCookies } from '../utils/cookieOptions';
 
 export const Login = async (
   req: Request<{}, {}, LoginRequestBody>,
@@ -32,19 +33,7 @@ export const Login = async (
     const payload: JwtUser = { id: user._id.toString(), name: user.fullName };
     const { accessToken, refreshToken } = generateTokens(payload);
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
-    });
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    setAuthCookies(res, accessToken, refreshToken);
 
     res.json({
       success: true,
@@ -122,12 +111,7 @@ export const refreshAccessToken: RequestHandler = (req, res): void => {
     const payload: JwtUser = { id: decoded.id, name: decoded.name };
     const { accessToken } = generateTokens(payload);
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000,
-    });
+    setAccessTokenCookie(res, accessToken);
 
     res.json({ success: true, accessToken });
   } catch (error) {

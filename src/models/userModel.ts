@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema<IUser>(
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next(); // רק אם הסיסמה חדשה או שונתה
+  if (!this.isModified('password')) return next();
 
   try {
     const saltRounds = 10;
@@ -39,8 +39,9 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-userSchema.methods.comparePassword = async function (bodyPassword: string) {
+userSchema.methods.comparePassword = async function (
+  bodyPassword: string
+): Promise<boolean> {
   return bcrypt.compare(bodyPassword, this.password);
 };
-
 export const User = mongoose.model<IUser>('User', userSchema);

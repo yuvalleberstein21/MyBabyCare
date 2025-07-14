@@ -2,6 +2,7 @@ import express, { ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import feedRoutes from './routers/feedRoutes';
 import sleepRoutes from './routers/sleepRoutes';
@@ -28,8 +29,16 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+});
+
+app.use(limiter);
 
 // Swagger APIS
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -46,8 +55,8 @@ app.use('/diaper', diaperRoutes);
 app.use('/daily-summary', dailySummaryRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.error(`${req.method}: ${req.originalUrl}, failed with error ${err}`);
-  next(err);
+  console.error(`${req.method}: ${req.originalUrl}`, err);
+  res.status(500).json({ error: 'שגיאה פנימית בשרת' });
 };
 
 app.use(errorHandler);
@@ -57,3 +66,5 @@ const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });
+
+export default app;
