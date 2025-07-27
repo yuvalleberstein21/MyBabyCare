@@ -7,10 +7,7 @@ import {
   UpdateBabyRequestBody,
 } from '../types/baby';
 
-export const createBaby: RequestHandler<{}, {}, CreateBabyRequestBody> = async (
-  req,
-  res
-) => {
+export const createBaby: RequestHandler = async (req, res) => {
   try {
     const { name, gender, birthDate, notes } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : undefined;

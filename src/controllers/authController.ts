@@ -10,10 +10,7 @@ import {
 } from '../types/user';
 import { setAccessTokenCookie, setAuthCookies } from '../utils/cookieOptions';
 
-export const Login = async (
-  req: Request<{}, {}, LoginRequestBody>,
-  res: Response<AuthResponse | { error: string }>
-) => {
+export const Login: RequestHandler = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -50,10 +47,7 @@ export const Login = async (
   }
 };
 
-export const Register = async (
-  req: Request<{}, {}, RegisterRequestBody>,
-  res: Response<AuthResponse | { error: string }>
-) => {
+export const Register: RequestHandler = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
 
