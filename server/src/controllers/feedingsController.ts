@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { validateObjectId } from '../utils/validateObjectId';
 import { Feeding } from '../models/feedingModel';
 import {

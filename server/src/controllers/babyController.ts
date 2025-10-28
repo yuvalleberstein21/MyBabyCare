@@ -1,11 +1,7 @@
 import { Request, Response, RequestHandler } from 'express';
 import { Baby } from '../models/babyModel';
 import { validateObjectId } from '../utils/validateObjectId';
-import {
-  CreateBabyRequestBody,
-  IBaby,
-  UpdateBabyRequestBody,
-} from '../types/baby';
+import { IBaby, UpdateBabyRequestBody } from '../types/baby';
 
 export const createBaby: RequestHandler = async (req, res) => {
   try {

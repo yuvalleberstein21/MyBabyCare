@@ -2,12 +2,7 @@ import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import { generateTokens } from '../utils/generateTokens';
-import {
-  AuthResponse,
-  JwtUser,
-  LoginRequestBody,
-  RegisterRequestBody,
-} from '../types/user';
+import { JwtUser } from '../types/user';
 import { setAccessTokenCookie, setAuthCookies } from '../utils/cookieOptions';
 
 export const Login: RequestHandler = async (req, res) => {

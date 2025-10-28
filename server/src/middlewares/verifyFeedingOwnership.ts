@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { Feeding } from '../models/feedingModel';
-import mongoose from 'mongoose';
 import { IFeeding } from '../types/feeding';
 import { IBaby } from '../types/baby';
 import { validateObjectId } from '../utils/validateObjectId';
