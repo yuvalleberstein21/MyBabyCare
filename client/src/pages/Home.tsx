@@ -3,6 +3,7 @@ import Button from '../components/ui/Button';
 import { SubTitle } from '../components/ui/SubTitle';
 import { Title } from '../components/ui/Title';
 import { StaticCard } from '../components/ui/StaticCard';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -26,14 +27,11 @@ const Home = () => {
           </SubTitle>
 
           <div className="flex gap-4 justify-center mb-12 animate-fade-in">
-            <Button
-              size="lg"
-              variant="primary"
-              onClick={() => console.log('clicked')}
-              disabled={false}
-            >
-              עבור לדף הניהול
-            </Button>
+            <Link to={'/dashboard'}>
+              <Button size="lg" variant="primary" disabled={false}>
+                עבור לדף הניהול
+              </Button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 animate-slide-up">
