@@ -20,7 +20,7 @@ export const Header = () => {
           <div>
             <Title className="text-xl font-bold">מעקב תינוקות</Title>
             <SubTitle className="text-sm text-muted-foreground">
-              ברוך הבא!
+              ברוך הבא! {'yuval leberstein'}
             </SubTitle>
           </div>
         </div>
