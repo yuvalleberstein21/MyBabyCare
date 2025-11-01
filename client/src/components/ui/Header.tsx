@@ -7,7 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 
 export const Header = () => {
   const auth = useContext(AuthContext);
-  const userName = auth?.user?.user?.name || 'אורח'; // ברירת מחדל אם אין משתמש מחובר
+  const userName = auth?.user?.user?.name || 'אורח';
   console.log(auth);
 
   return (

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { login } from '../api/auth';
 
 export const AuthContext = createContext(null);
@@ -16,8 +16,14 @@ export const AuthProvider = ({ children }) => {
   //   }, []);
 
   const handleLogin = async (email: string, password: string) => {
-    const userData = await login(email, password);
-    setUser(userData);
+    try {
+      const userData = await login(email, password);
+      setUser(userData);
+    } catch (error: any) {
+      console.error('Login error:', error);
+      // אפשר גם להחזיר הודעת שגיאה למעלה (ל־AuthPage)
+      throw error;
+    }
   };
 
   //   const handleRegister = async (email, password) => {

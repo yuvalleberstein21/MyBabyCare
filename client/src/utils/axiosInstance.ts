@@ -8,8 +8,14 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (err) => {
-    console.error('API error:', err.response?.data || err.message);
-    return Promise.reject(err);
+    if (err.response) {
+      // הודעה שמגיעה מהשרת עצמו
+      const message =
+        err.response.data?.error ||
+        err.response.data?.message ||
+        'An unexpected error occurred';
+      return Promise.reject(new Error(message));
+    }
   }
 );
 

@@ -10,15 +10,19 @@ export const AuthPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const { handleLogin } = useAuth();
 
   const handleSubmit = async () => {
+    setError(null);
     if (activeTab === 'login') {
-      await handleLogin(email, password);
-      console.log('sucessfull', email, password);
-    } else {
-      console.log(email, password);
+      try {
+        await handleLogin(email, password);
+        console.log('sucessfull', email, password);
+      } catch (err: any) {
+        setError(err.message || 'Login failed');
+      }
     }
   };
 
@@ -44,6 +48,10 @@ export const AuthPage: React.FC = () => {
           setConfirmPassword={setConfirmPassword}
           handleSubmit={handleSubmit}
         />
+
+        {error && (
+          <p className="text-red-500 text-sm text-center mt-2">{error}</p>
+        )}
 
         <ToggleLink activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
