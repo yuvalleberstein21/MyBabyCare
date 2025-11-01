@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import { Plus, Trash2 } from 'lucide-react';
 import { Title } from '../ui/Title';
 import { SubTitle } from '../ui/SubTitle';
+import { AddFeedingDialog } from './AddFeedingDialog';
 
 export const FeedingTracker = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -101,27 +102,11 @@ export const FeedingTracker = () => {
 
       {/* דיאלוג הוספה פשוט */}
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-2xl shadow-xl w-[90%] max-w-sm text-center animate-fadeIn">
-            <h3 className="text-xl font-semibold mb-4">הוסף האכלה חדשה</h3>
-            <p className="text-gray-500 mb-6">(בשלב זה מדובר בהדמיה בלבד)</p>
-            <div className="flex justify-center gap-4">
-              <Button
-                variant="secondary"
-                onClick={() => setIsDialogOpen(false)}
-                className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-              >
-                ביטול
-              </Button>
-              <Button
-                onClick={() => setIsDialogOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                שמירה
-              </Button>
-            </div>
-          </div>
-        </div>
+        <AddFeedingDialog
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onSave={() => console.log('Saved!')}
+        />
       )}
     </div>
   );

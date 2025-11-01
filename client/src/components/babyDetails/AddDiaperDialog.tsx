@@ -7,7 +7,7 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
 
   const handleSave = () => {
     console.log({ babyId, type, notes });
-    onClose(); // סגור את המודל אחרי שמירה
+    onClose();
   };
 
   return (
@@ -60,12 +60,12 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-2 mt-6">
+        <div className="flex gap-2 mt-6 justify-center">
           <Button variant="secondary" onClick={onClose}>
-            Cancel
+            ביטול
           </Button>
           <Button variant="primary" onClick={handleSave}>
-            Save
+            שמירה
           </Button>
         </div>
       </div>
