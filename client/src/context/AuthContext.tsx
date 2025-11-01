@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react';
-import { login } from '../api/auth';
+import { createContext, useEffect, useState } from 'react';
+import { getCurrentUser, login } from '../api/auth';
 
 export const AuthContext = createContext(null);
 
@@ -7,21 +7,28 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // בדיקה אם יש משתמש מחובר בהתחלה
-  //   useEffect(() => {
-  //     getCurrentUser()
-  //       .then(setUser)
-  //       .catch(() => setUser(null))
-  //       .finally(() => setLoading(false));
-  //   }, []);
+  useEffect(() => {
+    // ניסיון לטעון משתמש מחיבור קיים
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        setUser(res.user);
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      const userData = await login(email, password);
-      setUser(userData);
+      const res = await login(email, password);
+      setUser(res.user);
     } catch (error: any) {
       console.error('Login error:', error);
-      // אפשר גם להחזיר הודעת שגיאה למעלה (ל־AuthPage)
       throw error;
     }
   };

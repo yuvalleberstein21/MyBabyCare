@@ -7,9 +7,9 @@ import { AuthContext } from '../../context/AuthContext';
 
 export const Header = () => {
   const auth = useContext(AuthContext);
-  const userName = auth?.user?.user?.name || 'אורח';
-  console.log(auth);
+  const { user, loading } = auth || {};
 
+  const userName = !loading && user ? user.name : 'אורח';
   return (
     <header
       className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm"

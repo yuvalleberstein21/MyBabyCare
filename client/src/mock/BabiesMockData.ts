@@ -1,7 +1,7 @@
 export const BabiesMockData = [
   {
     id: '1',
-    name: 'Emma Rose',
+    name: 'נויה',
     birthDate: '2024-08-15',
     gender: 'female',
     weight: 3.5,
@@ -10,7 +10,7 @@ export const BabiesMockData = [
   },
   {
     id: '2',
-    name: 'Oliver James',
+    name: 'עומר',
     birthDate: '2024-06-20',
     gender: 'male',
     weight: 4.2,
@@ -19,7 +19,7 @@ export const BabiesMockData = [
   },
   {
     id: '3',
-    name: 'Sophie Grace',
+    name: 'רותם',
     birthDate: '2024-09-10',
     gender: 'female',
     weight: 3.8,

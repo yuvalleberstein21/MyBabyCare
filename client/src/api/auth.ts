@@ -8,3 +8,10 @@ export const login = async (email: string, password: string) => {
   );
   return data;
 };
+
+export const getCurrentUser = async () => {
+  const { data } = await axiosInstance.get('/auth/me', {
+    withCredentials: true,
+  });
+  return data;
+};

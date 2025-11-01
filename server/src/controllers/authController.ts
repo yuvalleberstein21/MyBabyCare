@@ -108,3 +108,24 @@ export const refreshAccessToken: RequestHandler = (req, res): void => {
     res.status(403).json({ error: 'refresh token לא תקין או פג תוקף' });
   }
 };
+
+export const getCurrentUser: RequestHandler = async (req, res) => {
+  try {
+    const accessToken = req.cookies.accessToken;
+
+    if (!accessToken) {
+      res.status(401).json({ error: 'לא נמצאה גישה (אין access token)' });
+      return;
+    }
+
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
+
+    res.json({
+      success: true,
+      user: decoded,
+    });
+  } catch (error) {
+    console.error('שגיאה ב־getCurrentUser:', error);
+    res.status(401).json({ error: 'אסימון לא תקף או שפג תוקף' });
+  }
+};

@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  getCurrentUser,
   Login,
   Logout,
   refreshAccessToken,
@@ -16,5 +17,6 @@ router.post('/login', validateLoginFields, Login);
 router.post('/signup', validateUserFields, Register);
 router.post('/logout', Logout);
 router.post('/refresh-token', refreshAccessToken);
+router.get('/me', getCurrentUser);
 
 export default router;
