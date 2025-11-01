@@ -1,7 +1,7 @@
-import { Baby } from 'lucide-react';
 import { Title } from './Title';
 import { SubTitle } from './SubTitle';
 import { Link } from 'react-router-dom';
+import { BabyLogo } from './BabyLogo';
 
 export const Header = () => {
   return (
@@ -13,9 +13,9 @@ export const Header = () => {
         <div className="flex items-center gap-3">
           <Link
             to={'/'}
-            className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center"
+            className="w-15 h-15 rounded-full bg-gradient-primary flex items-center justify-center"
           >
-            <Baby className="h-5 w-5 text-primary-foreground" />
+            <BabyLogo size={50} iconColor="text-white" />
           </Link>
           <div>
             <Title className="text-xl font-bold">מעקב תינוקות</Title>

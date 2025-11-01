@@ -6,6 +6,7 @@ import { BabiesMockData } from '../mock/BabiesMockData';
 import { SleepTracker } from '../components/babyDetails/SleepTracker';
 import { FeedingTracker } from '../components/babyDetails/FeedingTracker';
 import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
+import { BabyLogo } from '../components/ui/BabyLogo';
 
 const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
@@ -48,7 +49,7 @@ const BabyDetails = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <Baby className="h-8 w-8 text-white" />
+                <BabyLogo bgColor="primary" size={65} iconColor="text-white" />
               )}
             </div>
             <div>

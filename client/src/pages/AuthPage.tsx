@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
-import { Baby } from 'lucide-react';
+import { BabyLogo } from '../components/ui/BabyLogo';
 
 export const AuthPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
@@ -17,13 +17,14 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-50 to-pink-50 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 mx-4 relative overflow-hidden">
+    <div
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-50 to-pink-50 p-4"
+      dir="rtl"
+    >
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 mx-4 relative overflow-hidden mb-10">
         {/* Logo / Icon */}
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold shadow-lg">
-            <Baby className="w-8 h-8" />
-          </div>
+          <BabyLogo size={80} bgColor="bg-primary" iconColor="text-white" />
         </div>
 
         {/* Tabs */}
@@ -36,7 +37,7 @@ export const AuthPage: React.FC = () => {
             }`}
             onClick={() => setActiveTab('login')}
           >
-            Login
+            התחברות
           </button>
           <button
             className={`px-4 py-2 font-semibold transition-colors ${
@@ -46,7 +47,7 @@ export const AuthPage: React.FC = () => {
             }`}
             onClick={() => setActiveTab('register')}
           >
-            Register
+            הרשמה
           </button>
         </div>
 
@@ -55,7 +56,7 @@ export const AuthPage: React.FC = () => {
           <div className="relative">
             <input
               type="email"
-              placeholder="Email"
+              placeholder="אימייל"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -66,7 +67,7 @@ export const AuthPage: React.FC = () => {
           <div className="relative">
             <input
               type="password"
-              placeholder="Password"
+              placeholder="סיסמא"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -78,7 +79,7 @@ export const AuthPage: React.FC = () => {
             <div className="relative">
               <input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="אשר/י סיסמא"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -92,7 +93,7 @@ export const AuthPage: React.FC = () => {
             className="w-full text-white rounded-xl py-3 font-semibold hover:opacity-90 transition shadow-lg"
             onClick={activeTab === 'login' ? handleLogin : handleRegister}
           >
-            {activeTab === 'login' ? 'Login' : 'Register'}
+            {activeTab === 'login' ? 'התחברות' : 'הרשמה'}
           </Button>
         </div>
 
@@ -100,22 +101,22 @@ export const AuthPage: React.FC = () => {
         <p className="text-sm text-gray-500 mt-4 text-center">
           {activeTab === 'login' ? (
             <>
-              Don't have an account?{' '}
+              אין לך עדיין משתמש?{' '}
               <button
                 className="text-blue-500 font-medium hover:underline"
                 onClick={() => setActiveTab('register')}
               >
-                Register
+                משתמש חדש
               </button>
             </>
           ) : (
             <>
-              Already have an account?{' '}
+              יש לך כבר משתמש ?{' '}
               <button
                 className="text-blue-500 font-medium hover:underline"
                 onClick={() => setActiveTab('login')}
               >
-                Login
+                התחבר כאן
               </button>
             </>
           )}
