@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Calendar, Ruler, Scale, User, X } from 'lucide-react';
 import DeleteBabyDialog from './DeleteBabyDialog';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Baby = {
-  id: string;
+  _id: string;
   name: string;
   birthDate: string;
-  gender: 'male' | 'female';
+  gender: 'זכר' | 'נקבה';
   weight: number;
   height: number;
   photo?: string | undefined;
@@ -19,27 +19,26 @@ interface BabyCardProps {
 }
 
 const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete }) => {
-  const { id, name, birthDate, gender, weight, height, photo } = baby;
-  const navigate = useNavigate();
+  const { _id, name, birthDate, gender, weight, height, photo } = baby;
 
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getDefaultImage = () =>
-    gender === 'female'
+    gender === 'נקבה'
       ? 'https://cdn-icons-png.flaticon.com/512/4151/4151022.png'
       : 'https://cdn-icons-png.flaticon.com/512/4151/4151047.png';
 
   const handleDelete = () => {
     setIsModalOpen(false);
-    if (onDelete) onDelete(id);
+    if (onDelete) onDelete(_id);
   };
 
   return (
     <>
       {/* כרטיס התינוק */}
       <Link
-        to={`/baby/${id}`}
+        to={`/baby/${_id}`}
         className="relative block rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all border border-gray-100"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -53,10 +52,10 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete }) => {
           />
           <div
             className={`absolute top-3 left-3 px-3 py-1 text-xs rounded-full font-medium text-white shadow ${
-              gender === 'female' ? 'bg-pink-500' : 'bg-blue-500'
+              gender === 'נקבה' ? 'bg-pink-500' : 'bg-blue-500'
             }`}
           >
-            {gender === 'female' ? 'בת' : 'בן'}
+            {gender === 'נקבה' ? 'בת' : 'בן'}
           </div>
 
           {/* כפתור מחיקה (רק בהובר) */}

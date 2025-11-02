@@ -5,11 +5,18 @@ import BabyCard from '../components/Dashboard/BabyCard';
 import { AddBabyDialog } from '../components/Dashboard/AddBabyDialog';
 import { Title } from '../components/ui/Title';
 import { SubTitle } from '../components/ui/SubTitle';
-import { BabiesMockData } from '../mock/BabiesMockData';
+import { useBabies } from '../hooks/useBabies';
+import { Loader } from '../components/ui/Loader';
 
 const Dashboard = () => {
-  const [babies, setBabies] = useState(BabiesMockData);
+  const { babies, loading, error, refetch } = useBabies();
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+
+  console.log(babies);
+
+  if (loading) return <Loader />;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-background via-secondary/10 to-accent/10"
@@ -35,7 +42,7 @@ const Dashboard = () => {
         {babies && babies.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {babies.map((baby) => (
-              <BabyCard key={baby.id} baby={baby} />
+              <BabyCard key={baby._id} baby={baby} />
             ))}
           </div>
         ) : (

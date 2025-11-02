@@ -7,6 +7,7 @@ import BabyDetails from './pages/BabyDetails';
 import { AuthPage } from './pages/AuthPage';
 import { PublicRoute } from './components/routes/PublicRoute';
 import { ProtectedRoute } from './components/routes/ProtectedRoute';
+import { PageNotFound } from './pages/Page404';
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

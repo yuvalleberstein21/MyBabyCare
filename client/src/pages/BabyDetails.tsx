@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
-import { ArrowLeft, Baby } from 'lucide-react';
+import { ArrowLeft, Baby, Loader } from 'lucide-react';
 import { BabiesMockData } from '../mock/BabiesMockData';
 import { SleepTracker } from '../components/babyDetails/SleepTracker';
 import { FeedingTracker } from '../components/babyDetails/FeedingTracker';
 import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
 import { BabyLogo } from '../components/ui/BabyLogo';
+import { useSingleBaby } from '../hooks/useSingleBaby';
 
 const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
-  const baby = BabiesMockData.find((baby) => baby.id === babyId);
+  const { baby, loading, error } = useSingleBaby(babyId);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('sleep');
+
+  if (loading) return <Loader />;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!baby) return <p>לא נמצא תינוק</p>;
 
   if (!babyId) {
     return (
