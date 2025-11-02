@@ -33,7 +33,7 @@ export const getBabies: RequestHandler = async (req, res) => {
       .select('name gender notes birthDate image createdAt')
       .lean()
       .sort({ createdAt: -1 });
-    res.status(200).json({ babies });
+    res.status(200).json(babies);
   } catch (error) {
     console.error('שגיאה בקבלת תינוקות:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
