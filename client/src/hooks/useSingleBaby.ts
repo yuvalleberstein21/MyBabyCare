@@ -13,10 +13,17 @@ export const useSingleBaby = (babyId: string | undefined) => {
 
     try {
       const data = await getSingleBaby(babyId);
-      setBaby(data.baby || data);
+
+      // אם ה-baby לא קיים בנתונים
+      if (!data.baby) {
+        setError('NOT_FOUND');
+        setBaby(null);
+      } else {
+        setBaby(data.baby);
+      }
     } catch (err: any) {
       console.error('❌ שגיאה בטעינת תינוק יחיד:', err);
-      setError(err?.response?.data?.error || 'שגיאה בטעינת הנתונים');
+      setError(err.message || 'שגיאה בנתונים');
     } finally {
       setLoading(false);
     }

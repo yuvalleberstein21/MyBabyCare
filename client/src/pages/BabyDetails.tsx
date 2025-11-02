@@ -1,36 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Button from '../components/ui/Button';
-import { ArrowLeft, Baby, Loader } from 'lucide-react';
-import { BabiesMockData } from '../mock/BabiesMockData';
+import { ArrowLeft } from 'lucide-react';
 import { SleepTracker } from '../components/babyDetails/SleepTracker';
 import { FeedingTracker } from '../components/babyDetails/FeedingTracker';
 import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
 import { BabyLogo } from '../components/ui/BabyLogo';
 import { useSingleBaby } from '../hooks/useSingleBaby';
+import { Loader } from '../components/ui/Loader';
+import NotFoundBaby from '../components/babyDetails/NotFoundBaby';
+import { Title } from '../components/ui/Title';
+import { SubTitle } from '../components/ui/SubTitle';
 
 const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
   const { baby, loading, error } = useSingleBaby(babyId);
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('sleep');
+  const navigate = useNavigate();
 
   if (loading) return <Loader />;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!baby) return <p>לא נמצא תינוק</p>;
-
-  if (!babyId) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">לא נמצא תינוק</h2>
-          <Button onClick={() => navigate('/dashboard')}>
-            חזרה ללוח הראשי
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  if (error || !baby) return <NotFoundBaby />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50">
@@ -47,9 +35,9 @@ const BabyDetails = () => {
 
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center overflow-hidden">
-              {baby.photo ? (
+              {baby?.image ? (
                 <img
-                  src={baby.photo}
+                  src={baby.image}
                   alt={baby.name}
                   className="w-full h-full object-cover"
                 />
@@ -58,10 +46,10 @@ const BabyDetails = () => {
               )}
             </div>
             <div>
-              <h1 className="text-2xl font-bold">{baby.name}</h1>
-              <p className="text-sm text-gray-500">
+              <Title className="text-2xl font-bold">{baby.name}</Title>
+              <SubTitle className="text-sm text-gray-500">
                 מעקב שינה, האכלה והחלפת חיתולים
-              </p>
+              </SubTitle>
             </div>
           </div>
         </div>

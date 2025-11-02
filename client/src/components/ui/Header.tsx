@@ -25,7 +25,7 @@ export const Header = () => {
           </Link>
           <div>
             <Title className="text-xl font-bold">מעקב תינוקות</Title>
-            <SubTitle className="text-sm text-muted-foreground">
+            <SubTitle className="text-sm font-bold text-gray-600 font-sans">
               ברוך הבא! {userName}
             </SubTitle>
           </div>
