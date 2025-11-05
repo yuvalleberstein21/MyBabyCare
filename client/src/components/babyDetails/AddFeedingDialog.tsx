@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { Title } from '../ui/Title';
-import { SubTitle } from '../ui/SubTitle';
+
 import Button from '../ui/Button';
 
-interface AddFeedingModalProps {
+interface AddFeedingDialogProps {
   open: boolean;
   onClose: () => void;
-  onSave?: () => void;
+  onSave?: (data: any) => void;
 }
-export const AddFeedingDialog: React.FC<AddFeedingModalProps> = ({
+
+export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
   open,
   onClose,
   onSave,
@@ -21,143 +21,145 @@ export const AddFeedingDialog: React.FC<AddFeedingModalProps> = ({
   const [notes, setNotes] = useState('');
 
   const handleSave = () => {
-    console.log({ type, time, amount, duration, side, notes });
+    const data = { type, time, amount, duration, side, notes };
+    if (onSave) onSave(data);
+    // איפוס ערכים
+    setType('breast');
+    setTime('');
+    setAmount('');
+    setDuration('');
+    setSide('');
+    setNotes('');
     onClose();
   };
 
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-      dir="rtl"
-    >
-      <div className="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative animate-fadeIn">
-        {/* Close button */}
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl p-6 max-h-[85vh] overflow-y-auto animate-slideUp">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-gray-800">הוספת האכלה</h2>
         <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-lg font-bold"
           onClick={onClose}
+          className="text-gray-400 hover:text-gray-700 text-2xl leading-none"
         >
-          ✕
+          ×
         </button>
+      </div>
 
-        {/* Header */}
-        <Title className="text-lg font-semibold mb-2">הוספת האכלה</Title>
-        <SubTitle className="text-gray-500 mb-4">
-          עקוב אחרי זמני ההאכלה והכמות שנצרכה
-        </SubTitle>
+      {/* Form */}
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            סוג האכלה *
+          </label>
+          <select
+            className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="breast">חלב אם</option>
+            <option value="bottle">בקבוק</option>
+            <option value="solid">מוצקים</option>
+          </select>
+        </div>
 
-        {/* Form */}
-        <div className="space-y-4">
-          {/* Type */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              סוג האכלה *
-            </label>
-            <select
-              className="w-full border rounded-md p-2"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            >
-              <option value="breast">Breast</option>
-              <option value="bottle">Bottle</option>
-              <option value="solid">Solid Food</option>
-            </select>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            זמן האכלה *
+          </label>
+          <input
+            type="datetime-local"
+            className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+        </div>
 
-          {/* Time */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              זמן האכלה *
-            </label>
-            <input
-              type="datetime-local"
-              className="w-full border rounded-md p-2"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </div>
-
-          {/* Side & Duration (only for breast) */}
-          {type === 'breast' && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Side
-                </label>
-                <select
-                  className="w-full border rounded-md p-2"
-                  value={side}
-                  onChange={(e) => setSide(e.target.value)}
-                >
-                  <option value="">Select side</option>
-                  <option value="left">Left</option>
-                  <option value="right">Right</option>
-                  <option value="both">Both</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  משך זמן (דקות)
-                </label>
-                <input
-                  type="number"
-                  className="w-full border rounded-md p-2"
-                  placeholder="15"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                />
-              </div>
-            </>
-          )}
-
-          {/* Amount (for bottle or solid) */}
-          {(type === 'bottle' || type === 'solid') && (
+        {type === 'breast' && (
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                כמות (ml)
+                צד
+              </label>
+              <select
+                className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+                value={side}
+                onChange={(e) => setSide(e.target.value)}
+              >
+                <option value="">בחר צד</option>
+                <option value="left">שמאל</option>
+                <option value="right">ימין</option>
+                <option value="both">שני הצדדים</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                משך זמן (דקות)
               </label>
               <input
                 type="number"
-                className="w-full border rounded-md p-2"
-                placeholder="120"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                placeholder="15"
               />
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Notes */}
+        {(type === 'bottle' || type === 'solid') && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              הערות
+              כמות (ml)
             </label>
-            <textarea
-              className="w-full border rounded-md p-2"
-              placeholder="הוספת הערות אופצינליות..."
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+            <input
+              type="number"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-green-400 transition"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="120"
             />
           </div>
-        </div>
+        )}
 
-        {/* Actions */}
-        <div className="flex justify-end gap-2 mt-6">
-          <Button
-            variant="secondary"
-            className="flex-1 border border-gray-300 rounded-xl py-2 hover:bg-gray-500 transition"
-            onClick={onClose}
-          >
-            ביטול
-          </Button>
-          <Button
-            className="flex-1 bg-blue-600 text-white rounded-xl py-2 hover:bg-blue-700 transition"
-            onClick={handleSave}
-          >
-            רשום האכלה
-          </Button>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            הערות
+          </label>
+          <textarea
+            className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-gray-300 transition"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="הוספת הערות אופציונליות..."
+          />
         </div>
       </div>
+
+      {/* Actions */}
+      <div className="flex gap-3 mt-6">
+        <Button
+          variant="secondary"
+          className="flex-1 border border-gray-300 rounded-xl py-2 hover:bg-gray-100 transition"
+          onClick={onClose}
+        >
+          ביטול
+        </Button>
+        <Button
+          className="flex-1 bg-blue-600 text-white rounded-xl py-2 hover:bg-blue-700 transition"
+          onClick={handleSave}
+        >
+          שמור
+        </Button>
+      </div>
+
+      <style>{`
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slideUp { animation: slideUp 0.35s ease-out; }
+      `}</style>
     </div>
   );
 };
+
+export default AddFeedingDialog;

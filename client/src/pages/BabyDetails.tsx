@@ -1,36 +1,79 @@
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { SleepTracker } from '../components/babyDetails/SleepTracker';
-import { FeedingTracker } from '../components/babyDetails/FeedingTracker';
-import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
+import { ArrowLeft, Baby, Moon, Milk, Heart } from 'lucide-react';
 import { BabyLogo } from '../components/ui/BabyLogo';
 import { useSingleBaby } from '../hooks/useSingleBaby';
 import { Loader } from '../components/ui/Loader';
 import NotFoundBaby from '../components/babyDetails/NotFoundBaby';
 import { Title } from '../components/ui/Title';
 import { SubTitle } from '../components/ui/SubTitle';
+import { AddFeedingDialog } from '../components/babyDetails/AddFeedingDialog';
+import { SleepTracker } from '../components/babyDetails/SleepTracker';
+import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
 
-const BabyDetails = () => {
+export const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
   const { baby, loading, error } = useSingleBaby(babyId);
-  const [activeTab, setActiveTab] = useState('sleep');
   const navigate = useNavigate();
+
+  const [activeActivity, setActiveActivity] = useState<string | null>(null);
 
   if (loading) return <Loader />;
   if (error || !baby) return <NotFoundBaby />;
 
+  const activities = [
+    {
+      key: 'sleep',
+      label: 'שינה',
+      color: 'from-blue-400 to-blue-600',
+      icon: <Moon className="w-10 h-10 text-white" />,
+    },
+    {
+      key: 'feeding',
+      label: 'האכלה',
+      color: 'from-green-400 to-green-600',
+      icon: <Milk className="w-10 h-10 text-white" />,
+    },
+    {
+      key: 'diaper',
+      label: 'חיתולים',
+      color: 'from-yellow-400 to-yellow-600',
+      icon: <Baby className="w-10 h-10 text-white" />,
+    },
+    {
+      key: 'health',
+      label: 'בריאות',
+      color: 'from-pink-400 to-pink-600',
+      icon: <Heart className="w-10 h-10 text-white" />,
+    },
+  ];
+
+  const activityComponents: Record<string, JSX.Element> = {
+    feeding: (
+      <AddFeedingDialog
+        open={true}
+        onClose={() => setActiveActivity(null)}
+        onSave={(data) => console.log('Saved Feeding:', data)}
+      />
+    ),
+    sleep: <SleepTracker onClose={() => setActiveActivity(null)} />,
+    diaper: <DiaperTracker onClose={() => setActiveActivity(null)} />,
+    // ניתן להוסיף diaper, health וכו׳
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 relative overflow-hidden">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <button
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center text-gray-600 hover:bg-accent rounded-full p-2 mb-3"
+            onClick={() =>
+              activeActivity ? setActiveActivity(null) : navigate('/dashboard')
+            }
+            className="flex items-center text-gray-600 hover:bg-gray-100 rounded-full p-2 mb-3 transition"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            חזרה ללוח הראשי
+            {activeActivity ? 'חזרה לבחירה' : 'חזרה ללוח הראשי'}
           </button>
 
           <div className="flex items-center gap-4">
@@ -55,52 +98,30 @@ const BabyDetails = () => {
         </div>
       </header>
 
-      {/* Tabs */}
+      {/* Main grid */}
       <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-center mb-8 gap-4">
-          {['sleep', 'feeding', 'diaper'].map((tab) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+          {activities.map((act) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                activeTab === tab
-                  ? 'bg-blue-500 text-white shadow'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+              key={act.key}
+              onClick={() => setActiveActivity(act.key)}
+              className={`bg-gradient-to-br ${act.color} text-white rounded-2xl shadow-md p-8 flex flex-col items-center justify-center gap-3 transform hover:scale-105 transition duration-300`}
             >
-              {tab === 'sleep' && 'שינה'}
-              {tab === 'feeding' && 'האכלה'}
-              {tab === 'diaper' && 'חיתולים'}
+              {act.icon}
+              <span className="text-lg font-semibold">{act.label}</span>
             </button>
           ))}
         </div>
-
-        {/* Tab content */}
-        <div className="bg-white shadow-md rounded-2xl p-6 text-center">
-          {activeTab === 'sleep' && (
-            <div>
-              <h2 className="text-xl font-semibold mb-3">מעקב שינה</h2>
-              <SleepTracker />
-            </div>
-          )}
-
-          {activeTab === 'feeding' && (
-            <div>
-              <h2 className="text-xl font-semibold mb-3">מעקב האכלה</h2>
-              <FeedingTracker />
-            </div>
-          )}
-
-          {activeTab === 'diaper' && (
-            <div>
-              <h2 className="text-xl font-semibold mb-3">מעקב חיתולים</h2>
-              <DiaperTracker />
-            </div>
-          )}
-        </div>
       </main>
+      {activeActivity && activityComponents[activeActivity]}
+
+      {/* Feeding popup
+      <AddFeedingDialog
+        open={activeActivity === 'feeding'}
+        onClose={() => setActiveActivity(null)}
+        onSave={(data) => console.log('Saved Feeding:', data)}
+      /> */}
     </div>
   );
 };
-
 export default BabyDetails;
