@@ -1,36 +1,30 @@
+import { ArrowLeft } from 'lucide-react';
 import { Title } from './Title';
 import { SubTitle } from './SubTitle';
-import { Link } from 'react-router-dom';
-import { BabyLogo } from './BabyLogo';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import BabyAvatar from './BabyAvatar';
 
-export const Header = () => {
-  const auth = useContext(AuthContext);
-  const { user, loading } = auth || {};
+const Header = ({ baby, activeActivity, onBack }: any) => (
+  <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
+    <div className="container mx-auto px-4 py-4">
+      <button
+        onClick={onBack}
+        className="flex items-center text-gray-600 hover:bg-gray-100 rounded-full p-2 mb-3 transition"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        {activeActivity ? 'חזרה לבחירה' : 'חזרה ללוח הראשי'}
+      </button>
 
-  const userName = !loading && user ? user.name : 'אורח';
-  return (
-    <header
-      className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm"
-      dir="rtl"
-    >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            to={'/'}
-            className="w-15 h-15 rounded-full bg-gradient-primary flex items-center justify-center"
-          >
-            <BabyLogo size={50} iconColor="text-white" />
-          </Link>
-          <div>
-            <Title className="text-xl font-bold">מעקב תינוקות</Title>
-            <SubTitle className="text-sm font-bold text-gray-600 font-sans">
-              ברוך הבא! {userName}
-            </SubTitle>
-          </div>
+      <div className="flex items-center gap-4">
+        <BabyAvatar image={baby.image} name={baby.name} />
+        <div>
+          <Title className="text-2xl font-bold">{baby.name}</Title>
+          <SubTitle className="text-sm text-gray-500">
+            מעקב שינה, האכלה והחלפת חיתולים
+          </SubTitle>
         </div>
       </div>
-    </header>
-  );
-};
+    </div>
+  </header>
+);
+
+export default Header;

@@ -20,7 +20,7 @@ const AuthForm = ({
   handleSubmit: () => void;
 }) => (
   <div className="space-y-4">
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-3">
       <div className="relative">
         <input
           type="email"

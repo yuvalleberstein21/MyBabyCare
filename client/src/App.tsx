@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import { Header } from './components/ui/Header';
+import { Header } from './components/ui/AppHeader';
 import BabyDetails from './pages/BabyDetails';
 import { AuthPage } from './pages/AuthPage';
 import { PublicRoute } from './components/routes/PublicRoute';
