@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Button from '../ui/Button';
+import { Title } from '../ui/Title';
+import { X } from 'lucide-react';
 
 interface AddFeedingDialogProps {
   open: boolean;
@@ -45,11 +47,13 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
           onClick={onClose}
         >
-          ✕
+          <X className="w-6 h-6" />
         </button>
 
         {/* Header */}
-        <h2 className="text-lg font-semibold mb-4 text-center">הוספת האכלה</h2>
+        <Title className="text-lg font-semibold mb-4 text-center">
+          הוספת האכלה
+        </Title>
 
         {/* Form Fields */}
         <div className="space-y-4">
@@ -58,7 +62,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
               סוג האכלה *
             </label>
             <select
-              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
@@ -74,7 +78,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
             </label>
             <input
               type="datetime-local"
-              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={time}
               onChange={(e) => setTime(e.target.value)}
             />
@@ -87,7 +91,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
                   צד
                 </label>
                 <select
-                  className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+                  className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
                   value={side}
                   onChange={(e) => setSide(e.target.value)}
                 >
@@ -103,7 +107,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
                 </label>
                 <input
                   type="number"
-                  className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
+                  className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   placeholder="15"
@@ -119,7 +123,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
               </label>
               <input
                 type="number"
-                className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-green-400 transition"
+                className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="120"
@@ -132,7 +136,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
               הערות
             </label>
             <textarea
-              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-gray-300 transition"
+              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="הוספת הערות אופציונליות..."
@@ -142,15 +146,11 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
 
         {/* Actions */}
         <div className="flex gap-3 mt-6">
-          <Button
-            variant="secondary"
-            className="flex-1 border border-gray-300 rounded-xl py-2 hover:bg-gray-100 transition"
-            onClick={onClose}
-          >
+          <Button variant="outline" className="flex-1" onClick={onClose}>
             ביטול
           </Button>
           <Button
-            className="flex-1 bg-blue-600 text-white rounded-xl py-2 hover:bg-blue-700 transition"
+            className="flex-1 bg-gradient-primary transition"
             onClick={handleSave}
           >
             שמירה

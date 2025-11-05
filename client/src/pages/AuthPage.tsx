@@ -14,12 +14,12 @@ export const AuthPage: React.FC = () => {
 
   const { handleLogin } = useAuth();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError(null);
     if (activeTab === 'login') {
       try {
         await handleLogin(email, password);
-        console.log('sucessfull', email, password);
       } catch (err: any) {
         setError(err.message || 'Login failed');
       }

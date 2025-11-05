@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
+import Button from '../ui/Button';
 
 interface AddBabyDialogProps {
   open: boolean;
@@ -164,12 +165,12 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
           </div>
 
           {/* כפתור שמירה */}
-          <button
+          <Button
             type="submit"
             className="w-full bg-gradient-primary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
             שמור תינוק
-          </button>
+          </Button>
         </form>
       </div>
     </div>

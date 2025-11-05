@@ -22,7 +22,8 @@ function Button({
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
     secondary: 'bg-gray-600 text-white hover:bg-gray-700',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50',
+    outline:
+      'border-2 border-gray-300 text-gray-600 hover:bg-gray-100 transition',
   };
 
   return (
