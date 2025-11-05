@@ -9,7 +9,7 @@ import { Title } from '../components/ui/Title';
 import { SubTitle } from '../components/ui/SubTitle';
 import { AddFeedingDialog } from '../components/babyDetails/AddFeedingDialog';
 import { SleepTracker } from '../components/babyDetails/SleepTracker';
-import { DiaperTracker } from '../components/babyDetails/DiaperTracker';
+import { AddDiaperModal } from '../components/babyDetails/AddDiaperDialog';
 
 export const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
@@ -48,19 +48,29 @@ export const BabyDetails = () => {
     },
   ];
 
-  const activityComponents: Record<string, JSX.Element> = {
-    feeding: (
-      <AddFeedingDialog
-        open={true}
-        onClose={() => setActiveActivity(null)}
-        onSave={(data) => console.log('Saved Feeding:', data)}
-      />
-    ),
-    sleep: <SleepTracker onClose={() => setActiveActivity(null)} />,
-    diaper: <DiaperTracker onClose={() => setActiveActivity(null)} />,
-    // ניתן להוסיף diaper, health וכו׳
+  const renderActiveActivity = () => {
+    switch (activeActivity) {
+      case 'feeding':
+        return (
+          <AddFeedingDialog
+            open={true}
+            onClose={() => setActiveActivity(null)}
+            onSave={(data) => console.log('Saved Feeding:', data)}
+          />
+        );
+      case 'diaper':
+        return (
+          <AddDiaperModal
+            babyId={babyId!}
+            onClose={() => setActiveActivity(null)}
+          />
+        );
+      case 'sleep':
+        return <SleepTracker onClose={() => setActiveActivity(null)} />;
+      default:
+        return null;
+    }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 relative overflow-hidden">
       {/* Header */}
@@ -113,14 +123,7 @@ export const BabyDetails = () => {
           ))}
         </div>
       </main>
-      {activeActivity && activityComponents[activeActivity]}
-
-      {/* Feeding popup
-      <AddFeedingDialog
-        open={activeActivity === 'feeding'}
-        onClose={() => setActiveActivity(null)}
-        onSave={(data) => console.log('Saved Feeding:', data)}
-      /> */}
+      {activeActivity && renderActiveActivity()}
     </div>
   );
 };

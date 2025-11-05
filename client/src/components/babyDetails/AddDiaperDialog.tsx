@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import Button from '../ui/Button';
 
-export const AddDiaperModal = ({ babyId, onClose }) => {
+interface AddDiaperModalProps {
+  babyId: string;
+  onClose: () => void;
+}
+
+export const AddDiaperModal: React.FC<AddDiaperModalProps> = ({
+  babyId,
+  onClose,
+}) => {
   const [type, setType] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -12,20 +20,22 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm animate-fadeIn"
       dir="rtl"
     >
-      <div className="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative">
-        {/* Close Button (X) */}
+      <div className="bg-white w-full max-w-md rounded-t-3xl shadow-2xl p-6 animate-slideUp relative">
+        {/* Close Button */}
         <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
           onClick={onClose}
         >
           ✕
         </button>
 
         {/* Header */}
-        <h2 className="text-lg font-semibold mb-4">הוספת החלפה לתינוק</h2>
+        <h2 className="text-lg font-semibold mb-4 text-center">
+          הוספת החלפה לתינוק
+        </h2>
 
         {/* Form Fields */}
         <div className="space-y-4">
@@ -34,7 +44,7 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
               סוג החלפה
             </label>
             <select
-              className="w-full border rounded-md p-2"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 transition"
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
@@ -51,8 +61,8 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
               הערות
             </label>
             <input
-              className="w-full border rounded-md p-2"
-              placeholder="הערות אופצינליות..."
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-gray-300 transition"
+              placeholder="הערות אופציונליות..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
@@ -60,11 +70,19 @@ export const AddDiaperModal = ({ babyId, onClose }) => {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 mt-6 justify-center">
-          <Button variant="secondary" onClick={onClose}>
+        <div className="flex gap-3 mt-6">
+          <Button
+            variant="secondary"
+            className="flex-1 border border-gray-300 rounded-xl py-2 hover:bg-gray-100 transition"
+            onClick={onClose}
+          >
             ביטול
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button
+            variant="primary"
+            className="flex-1 bg-blue-600 text-white rounded-xl py-2 hover:bg-blue-700 transition"
+            onClick={handleSave}
+          >
             שמירה
           </Button>
         </div>
