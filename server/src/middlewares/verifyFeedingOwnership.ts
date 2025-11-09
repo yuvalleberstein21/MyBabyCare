@@ -28,7 +28,7 @@ export const verifyFeedingOwnership = async (
       .populate<{
         babyId: IBaby;
       }>('babyId', 'userId')
-      .lean(); // טיפוס נכון
+      .lean();
 
     if (
       !feeding ||

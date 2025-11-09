@@ -13,7 +13,7 @@ export const validateFeeding = (
   }
 
   if (amount === undefined || typeof amount !== 'number') {
-    res.status(400).json({ error: 'כמות ההאכלה נדרשת' });
+    res.status(400).json({ message: 'כמות ההאכלה נדרשת' });
     return;
   }
 

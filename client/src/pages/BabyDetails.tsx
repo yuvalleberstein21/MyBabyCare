@@ -16,7 +16,6 @@ export const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
   const { baby, loading, error } = useSingleBaby(babyId);
   const navigate = useNavigate();
-
   const [activeActivity, setActiveActivity] = useState<string | null>(null);
 
   if (loading) return <Loader />;
@@ -27,9 +26,9 @@ export const BabyDetails = () => {
       case 'feeding':
         return (
           <AddFeedingDialog
+            babyId={babyId}
             open={true}
             onClose={() => setActiveActivity(null)}
-            onSave={(data) => console.log('Saved Feeding:', data)}
           />
         );
       case 'diaper':

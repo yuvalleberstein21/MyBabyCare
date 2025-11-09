@@ -22,7 +22,6 @@ export const useSingleBaby = (babyId: string | undefined) => {
         setBaby(data.baby);
       }
     } catch (err: any) {
-      console.error('❌ שגיאה בטעינת תינוק יחיד:', err);
       setError(err.message || 'שגיאה בנתונים');
     } finally {
       setLoading(false);

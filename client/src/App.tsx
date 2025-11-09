@@ -8,6 +8,7 @@ import { AuthPage } from './pages/AuthPage';
 import { PublicRoute } from './components/routes/PublicRoute';
 import { ProtectedRoute } from './components/routes/ProtectedRoute';
 import { PageNotFound } from './pages/Page404';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Toaster position="top-center" />
     </BrowserRouter>
   );
 }
