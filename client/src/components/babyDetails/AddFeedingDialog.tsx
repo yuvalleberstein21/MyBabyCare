@@ -25,10 +25,6 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
 
-  // send to backend with real time
-  const localTime = new Date(time);
-  const isoTime = localTime.toISOString();
-
   useEffect(() => {
     if (success) {
       toast.success('ההאכלה נוספה בהצלחה 🍼');
@@ -45,7 +41,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
   }, [success, error, onClose]);
 
   const handleSave = async () => {
-    const data = { type, time: isoTime, amount, notes };
+    const data = { type, time, amount, notes };
     await handleCreateFeeding(data);
   };
 
@@ -82,9 +78,9 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
               onChange={(e) => setType(e.target.value)}
               disabled={loading}
             >
-              <option value="breast">חלב אם</option>
-              <option value="bottle">בקבוק</option>
-              <option value="solid">מוצקים</option>
+              <option value="חלב אם">חלב אם</option>
+              <option value="בקבוק">בקבוק</option>
+              <option value="מוצקים">מוצקים</option>
             </select>
           </div>
 

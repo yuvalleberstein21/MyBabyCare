@@ -59,11 +59,9 @@ export const BabyDetails = () => {
       />
 
       {/* ⚙️ Activities Grid */}
-      {!activeActivity && (
-        <main className="container mx-auto px-4 py-8">
-          <ActivityGrid activities={activities} onSelect={setActiveActivity} />
-        </main>
-      )}
+      <main className="container mx-auto px-4 py-8">
+        <ActivityGrid activities={activities} onSelect={setActiveActivity} />
+      </main>
 
       {/* 💤 Active Modal */}
       {activeActivity && renderActiveActivity()}

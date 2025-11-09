@@ -9,6 +9,7 @@ const AuthForm = ({
   confirmPassword,
   setConfirmPassword,
   handleSubmit,
+  loading,
 }: {
   activeTab: 'login' | 'register';
   email: string;
@@ -18,6 +19,7 @@ const AuthForm = ({
   confirmPassword: string;
   setConfirmPassword: (val: string) => void;
   handleSubmit: () => void;
+  loading: boolean;
 }) => (
   <div className="space-y-4">
     <form onSubmit={handleSubmit} className="space-y-3">
@@ -61,7 +63,7 @@ const AuthForm = ({
         className="w-full text-white rounded-xl py-3 font-semibold hover:opacity-90 transition shadow-lg"
         type="submit"
       >
-        {activeTab === 'login' ? 'התחברות' : 'הרשמה'}
+        {loading ? 'טוען...' : activeTab === 'login' ? 'התחברות' : 'הרשמה'}
       </Button>
     </form>
   </div>

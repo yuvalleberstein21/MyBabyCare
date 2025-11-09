@@ -4,25 +4,31 @@ import AuthTabs from '../components/auth/AuthTabs';
 import AuthForm from '../components/auth/AuthForm';
 import ToggleLink from '../components/auth/ToggleLink';
 import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 export const AuthPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { handleLogin } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    if (activeTab === 'login') {
-      try {
+    setLoading(true);
+    try {
+      if (activeTab === 'login') {
         await handleLogin(email, password);
-      } catch (err: any) {
-        setError(err.message || 'Login failed');
+        toast.success('התחברת בהצלחה 🎉');
+      } else {
+        // כאן אפשר להוסיף הרשמה
       }
+    } catch (err: any) {
+      toast.error(err.message || 'ההתחברות נכשלה ❌');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,11 +53,8 @@ export const AuthPage: React.FC = () => {
           confirmPassword={confirmPassword}
           setConfirmPassword={setConfirmPassword}
           handleSubmit={handleSubmit}
+          loading={loading}
         />
-
-        {error && (
-          <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-        )}
 
         <ToggleLink activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
