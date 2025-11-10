@@ -1,5 +1,5 @@
 import { Baby, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../components/ui/Button';
 import BabyCard from '../components/Dashboard/BabyCard';
 import { AddBabyDialog } from '../components/Dashboard/AddBabyDialog';
@@ -7,14 +7,37 @@ import { Title } from '../components/ui/Title';
 import { SubTitle } from '../components/ui/SubTitle';
 import { useBabies } from '../hooks/useBabies';
 import { Loader } from '../components/ui/Loader';
+import { useDeleteBaby } from '../hooks/useDeleteBaby';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const { babies, loading, error, refetch } = useBabies();
+  const {
+    handleDeleteBaby,
+    loading: loadingDelBaby,
+    error: errorDelBaby,
+    success,
+  } = useDeleteBaby();
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  if (loading) return <Loader />;
+  const onDeleteBaby = async (id: string) => {
+    try {
+      await handleDeleteBaby(id);
+      toast.success('התינוק נמחק בהצלחה 🧸');
+      await refetch();
+    } catch (err) {
+      toast.error('שגיאה במחיקה');
+    }
+  };
+
+  useEffect(() => {
+    if (errorDelBaby) toast.error(errorDelBaby);
+  }, [errorDelBaby]);
+
+  if (loading || loadingDelBaby) return <Loader />;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-background via-secondary/10 to-accent/10"
@@ -40,7 +63,7 @@ const Dashboard = () => {
         {babies && babies.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {babies.map((baby) => (
-              <BabyCard key={baby._id} baby={baby} />
+              <BabyCard key={baby._id} baby={baby} onDelete={onDeleteBaby} />
             ))}
           </div>
         ) : (

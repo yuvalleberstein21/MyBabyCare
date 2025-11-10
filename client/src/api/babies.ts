@@ -30,3 +30,17 @@ export const createNewBaby = async (babyData: BabyData) => {
   });
   return data;
 };
+
+export const updateBaby = async (babyData: BabyData) => {
+  const { data } = await axiosInstance.put('/babies', babyData, {
+    withCredentials: true,
+  });
+  return data;
+};
+
+export const deleteBaby = async (babyId: string) => {
+  const { data } = await axiosInstance.delete(`/babies/${babyId}`, {
+    withCredentials: true,
+  });
+  return data;
+};
