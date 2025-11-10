@@ -13,8 +13,6 @@ const Dashboard = () => {
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  console.log(babies);
-
   if (loading) return <Loader />;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   return (
@@ -68,12 +66,7 @@ const Dashboard = () => {
       <AddBabyDialog
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onAdd={(newBaby) =>
-          setBabies((prev) => [
-            ...prev,
-            { ...newBaby, id: Date.now().toString() },
-          ])
-        }
+        onAdded={refetch}
       />
     </div>
   );

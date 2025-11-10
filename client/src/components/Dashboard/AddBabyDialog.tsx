@@ -1,40 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';
+import { useCreateNewBaby } from '../../hooks/useCreateNewBaby';
+import toast from 'react-hot-toast';
 
 interface AddBabyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdd?: (baby: {
-    name: string;
-    birthDate: string;
-    gender: string;
-    weight: string;
-    height: string;
-    photo?: string;
-  }) => void;
+  onAdded?: () => void;
 }
-
 export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
   open,
   onOpenChange,
-  onAdd,
+  onAdded,
 }) => {
+  const { handleCreateNewBaby, loading, error, success } = useCreateNewBaby();
+
   const [formData, setFormData] = useState({
     name: '',
     birthDate: '',
-    gender: 'female',
+    gender: 'נקבה',
     weight: '',
     height: '',
     photo: '',
   });
 
+  useEffect(() => {
+    if (success) {
+      toast.success('תינוק נוסף בהצלחה 👶');
+      setFormData({
+        name: '',
+        birthDate: '',
+        gender: 'נקבה',
+        weight: '',
+        height: '',
+        photo: '',
+      });
+      onOpenChange(false);
+
+      if (onAdded) onAdded();
+    }
+
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error, onOpenChange, onAdded]);
+
   if (!open) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onAdd?.(formData);
-    onOpenChange(false);
+
+    const babyData = {
+      name: formData.name,
+      birthDate: formData.birthDate,
+      gender: formData.gender,
+      weight: formData.weight ? Number(formData.weight) : undefined,
+      height: formData.height ? Number(formData.height) : undefined,
+      image: formData.photo || undefined,
+    };
+
+    await handleCreateNewBaby(babyData);
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,8 +153,8 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
                 setFormData({ ...formData, gender: e.target.value })
               }
             >
-              <option value="female">נקבה</option>
-              <option value="male">זכר</option>
+              <option value="נקבה">נקבה</option>
+              <option value="זכר">זכר</option>
             </select>
           </div>
 
@@ -167,9 +193,10 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
           {/* כפתור שמירה */}
           <Button
             type="submit"
+            disabled={loading}
             className="w-full bg-gradient-primary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            שמור תינוק
+            {loading ? 'שומר...' : 'שמור תינוק'}
           </Button>
         </form>
       </div>

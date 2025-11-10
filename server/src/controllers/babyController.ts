@@ -5,7 +5,7 @@ import { IBaby, UpdateBabyRequestBody } from '../types/baby';
 
 export const createBaby: RequestHandler = async (req, res) => {
   try {
-    const { name, gender, birthDate, notes } = req.body;
+    const { name, gender, birthDate, weight, height, notes } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const baby = await Baby.create({
@@ -13,6 +13,8 @@ export const createBaby: RequestHandler = async (req, res) => {
       name,
       gender,
       birthDate,
+      weight,
+      height,
       notes,
       image,
     });
@@ -30,7 +32,7 @@ export const createBaby: RequestHandler = async (req, res) => {
 export const getBabies: RequestHandler = async (req, res) => {
   try {
     const babies = await Baby.find({ userId: req.user!.id })
-      .select('name gender notes birthDate image createdAt')
+      .select('name gender notes birthDate weight height image createdAt')
       .lean()
       .sort({ createdAt: -1 });
     res.status(200).json(babies);
@@ -51,8 +53,8 @@ export const updateBaby: RequestHandler<
 > = async (req, res) => {
   try {
     const { babyId } = req.params;
-    const { name, gender, birthDate, notes } = req.body;
-    const updateFields = { name, gender, birthDate, notes };
+    const { name, gender, birthDate, weight, height, notes } = req.body;
+    const updateFields = { name, gender, birthDate, weight, height, notes };
     const userId = req.user?.id;
 
     if (!validateObjectId(babyId, res, 'מזהה תינוק')) return;

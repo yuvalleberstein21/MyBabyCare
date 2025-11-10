@@ -6,6 +6,8 @@ export interface IBaby extends Document {
   name: string;
   gender: 'זכר' | 'נקבה';
   birthDate: Date;
+  weight?: number;
+  height?: number;
   notes?: string;
   image?: string;
   createdAt: Date;
@@ -16,6 +18,8 @@ export interface CreateBabyRequestBody {
   name: string;
   gender: 'זכר' | 'נקבה';
   birthDate: string;
+  weight?: number;
+  height?: number;
   notes?: string;
   image?: string;
 }
@@ -24,5 +28,7 @@ export interface UpdateBabyRequestBody {
   name?: string;
   gender?: 'זכר' | 'נקבה';
   birthDate?: string;
+  weight?: number;
+  height?: number;
   notes?: string;
 }

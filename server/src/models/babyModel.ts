@@ -33,6 +33,18 @@ const babySchema = new mongoose.Schema<IBaby>(
         message: 'תאריך הלידה לא יכול להיות בעתיד',
       },
     },
+    weight: {
+      type: Number,
+      min: [0, 'המשקל לא יכול להיות שלילי'],
+      max: [20, 'המשקל לא יכול להיות מעל 20 ק"ג'],
+      default: null,
+    },
+    height: {
+      type: Number,
+      min: [0, 'הגובה לא יכול להיות שלילי'],
+      max: [120, 'הגובה לא יכול להיות מעל 120 ס"מ'],
+      default: null,
+    },
     notes: {
       type: String,
       maxlength: [200, 'הערות לא יכולות להיות יותר מ-200 תווים'],
@@ -40,7 +52,7 @@ const babySchema = new mongoose.Schema<IBaby>(
     },
     image: {
       type: String,
-      default: '/images/default-baby.png', // תמונת ברירת מחדל
+      default: '/images/default-baby.png',
     },
   },
   { timestamps: true }

@@ -68,7 +68,6 @@ export const BabyDetails = () => {
 
       {/* 📅 Day summary */}
       <section className="container mx-auto px-4 py-6">
-        <Title className="text-lg font-semibold mb-2">מעקב יומי</Title>
         <DayActivities />
       </section>
     </div>
