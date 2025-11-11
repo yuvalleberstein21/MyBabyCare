@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';
-import { useCreateNewBaby } from '../../hooks/useCreateNewBaby';
 import toast from 'react-hot-toast';
 
 interface AddBabyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdded?: () => void;
+  onAdded?: (babyData: any) => Promise<any>;
+  addLoading: boolean;
 }
 export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
   open,
   onOpenChange,
   onAdded,
+  addLoading,
 }) => {
-  const { handleCreateNewBaby, loading, error, success } = useCreateNewBaby();
-
   const [formData, setFormData] = useState({
     name: '',
     birthDate: '',
@@ -24,27 +23,6 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
     height: '',
     photo: '',
   });
-
-  useEffect(() => {
-    if (success) {
-      toast.success('תינוק נוסף בהצלחה 👶');
-      setFormData({
-        name: '',
-        birthDate: '',
-        gender: 'נקבה',
-        weight: '',
-        height: '',
-        photo: '',
-      });
-      onOpenChange(false);
-
-      if (onAdded) onAdded();
-    }
-
-    if (error) {
-      toast.error(error);
-    }
-  }, [success, error, onOpenChange, onAdded]);
 
   if (!open) return null;
 
@@ -60,7 +38,24 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
       image: formData.photo || undefined,
     };
 
-    await handleCreateNewBaby(babyData);
+    try {
+      const newBaby = await onAdded?.(babyData);
+
+      toast.success('תינוק נוסף בהצלחה 👶');
+
+      setFormData({
+        name: '',
+        birthDate: '',
+        gender: 'נקבה',
+        weight: '',
+        height: '',
+        photo: '',
+      });
+
+      onOpenChange(false);
+    } catch (err: any) {
+      toast.error(err.message || 'שגיאה בהוספת תינוק');
+    }
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,10 +188,10 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
           {/* כפתור שמירה */}
           <Button
             type="submit"
-            disabled={loading}
+            disabled={addLoading}
             className="w-full bg-gradient-primary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            {loading ? 'שומר...' : 'שמור תינוק'}
+            {addLoading ? 'טוען...' : 'הוסף תינוק'}
           </Button>
         </form>
       </div>

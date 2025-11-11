@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSingleBaby } from '../hooks/useSingleBaby';
 import { Loader } from '../components/ui/Loader';
@@ -11,13 +11,24 @@ import ActivityGrid from '../components/babyDetails/ActivityGrid';
 import { activities } from '../mock/ActivitiesData';
 import { Title } from '../components/ui/Title';
 import DayActivities from '../components/babyDetails/DayActivities';
+import { useBabies } from '../hooks/useBabies';
 
 export const BabyDetails = () => {
   const { babyId } = useParams<{ babyId: string }>();
-  const { baby, loading, error } = useSingleBaby(babyId);
+  const {
+    singleBaby: baby,
+    loadingSingle: loading,
+    errorSingle: error,
+    fetchSingleBaby,
+  } = useBabies();
   const navigate = useNavigate();
   const [activeActivity, setActiveActivity] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (babyId) fetchSingleBaby(babyId);
+  }, [babyId]);
+
+  console.log(baby);
   if (loading) return <Loader />;
   if (error || !baby) return <NotFoundBaby />;
 

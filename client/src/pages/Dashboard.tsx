@@ -7,35 +7,27 @@ import { Title } from '../components/ui/Title';
 import { SubTitle } from '../components/ui/SubTitle';
 import { useBabies } from '../hooks/useBabies';
 import { Loader } from '../components/ui/Loader';
-import { useDeleteBaby } from '../hooks/useDeleteBaby';
+
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  const { babies, loading, error, refetch } = useBabies();
-  const {
-    handleDeleteBaby,
-    loading: loadingDelBaby,
-    error: errorDelBaby,
-    success,
-  } = useDeleteBaby();
-
+  const { babies, loading, error, addBaby, deleteBaby } = useBabies();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const onDeleteBaby = async (id: string) => {
     try {
-      await handleDeleteBaby(id);
+      await deleteBaby(id);
       toast.success('התינוק נמחק בהצלחה 🧸');
-      await refetch();
     } catch (err) {
       toast.error('שגיאה במחיקה');
     }
   };
 
   useEffect(() => {
-    if (errorDelBaby) toast.error(errorDelBaby);
-  }, [errorDelBaby]);
+    if (error) toast.error(error);
+  }, [error]);
 
-  if (loading || loadingDelBaby) return <Loader />;
+  if (loading) return <Loader />;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
@@ -89,7 +81,8 @@ const Dashboard = () => {
       <AddBabyDialog
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onAdded={refetch}
+        onAdded={addBaby}
+        addLoading={loading}
       />
     </div>
   );

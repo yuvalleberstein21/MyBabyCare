@@ -38,7 +38,7 @@ export const updateBaby = async (babyData: BabyData) => {
   return data;
 };
 
-export const deleteBaby = async (babyId: string) => {
+export const deleteBabyApi = async (babyId: string) => {
   const { data } = await axiosInstance.delete(`/babies/${babyId}`, {
     withCredentials: true,
   });
