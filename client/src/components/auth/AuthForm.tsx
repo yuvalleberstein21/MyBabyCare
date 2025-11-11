@@ -2,6 +2,8 @@ import Button from '../ui/Button';
 
 const AuthForm = ({
   activeTab,
+  fullName,
+  setFullName,
   email,
   setEmail,
   password,
@@ -12,6 +14,8 @@ const AuthForm = ({
   loading,
 }: {
   activeTab: 'login' | 'register';
+  fullName: string;
+  setFullName: (val: string) => void;
   email: string;
   setEmail: (val: string) => void;
   password: string;
@@ -23,6 +27,18 @@ const AuthForm = ({
 }) => (
   <div className="space-y-4">
     <form onSubmit={handleSubmit} className="space-y-3">
+      {activeTab === 'register' && (
+        <div className="relative">
+          <input
+            type="fullName"
+            placeholder="שם מלא"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          />
+          <span className="absolute left-3 top-3 text-gray-400">📧</span>
+        </div>
+      )}
       <div className="relative">
         <input
           type="email"

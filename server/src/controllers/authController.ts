@@ -49,7 +49,6 @@ export const Register: RequestHandler = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      console.log('exists');
       res.status(409).json({ error: 'משתמש כבר קיים במערכת' });
       return;
     }
@@ -62,6 +61,11 @@ export const Register: RequestHandler = async (req, res) => {
 
     await newUser.save();
 
+    const payload = { id: newUser._id.toString(), name: newUser.fullName };
+    const { accessToken, refreshToken } = generateTokens(payload);
+
+    setAuthCookies(res, accessToken, refreshToken);
+
     res.status(201).json({
       success: true,
       message: 'נרשמת בהצלחה',
@@ -69,6 +73,7 @@ export const Register: RequestHandler = async (req, res) => {
         id: newUser._id.toString(),
         name: newUser.fullName,
         email: newUser.email,
+        user: payload,
       },
     });
   } catch (error) {

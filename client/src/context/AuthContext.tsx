@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getCurrentUser, login } from '../api/auth';
+import { getCurrentUser, login, register } from '../api/auth';
 
 export const AuthContext = createContext(null);
 
@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ניסיון לטעון משתמש מחיבור קיים
     const fetchUser = async () => {
       try {
         const res = await getCurrentUser();
@@ -33,10 +32,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //   const handleRegister = async (email, password) => {
-  //     const userData = await register(email, password);
-  //     setUser(userData);
-  //   };
+  const handleRegister = async (
+    fullName: string,
+    email: string,
+    password: string
+  ) => {
+    const userData = await register(fullName, email, password);
+    setUser(userData);
+  };
 
   //   const handleLogout = async () => {
   //     await logout();
@@ -44,7 +47,9 @@ export const AuthProvider = ({ children }) => {
   //   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, handleLogin }}>
+    <AuthContext.Provider
+      value={{ user, loading, handleLogin, handleRegister }}
+    >
       {children}
     </AuthContext.Provider>
   );

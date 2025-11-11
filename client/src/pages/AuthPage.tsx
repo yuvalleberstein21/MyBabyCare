@@ -8,12 +8,13 @@ import toast from 'react-hot-toast';
 
 export const AuthPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { handleLogin } = useAuth();
+  const { handleLogin, handleRegister } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +25,8 @@ export const AuthPage: React.FC = () => {
         toast.success('התחברת בהצלחה 🎉');
       } else {
         // כאן אפשר להוסיף הרשמה
+        await handleRegister(fullName, email, password);
+        toast.success(`היי ברוכים הבאים ${fullName}🎉`);
       }
     } catch (err: any) {
       toast.error(err.message || 'ההתחברות נכשלה ❌');
@@ -46,6 +49,8 @@ export const AuthPage: React.FC = () => {
 
         <AuthForm
           activeTab={activeTab}
+          fullName={fullName}
+          setFullName={setFullName}
           email={email}
           setEmail={setEmail}
           password={password}
