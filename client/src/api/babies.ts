@@ -31,8 +31,8 @@ export const createNewBaby = async (babyData: BabyData) => {
   return data;
 };
 
-export const updateBaby = async (babyData: BabyData) => {
-  const { data } = await axiosInstance.put('/babies', babyData, {
+export const updateBabyApi = async (babyId: string, babyData: BabyData) => {
+  const { data } = await axiosInstance.put(`/babies/${babyId}`, babyData, {
     withCredentials: true,
   });
   return data;

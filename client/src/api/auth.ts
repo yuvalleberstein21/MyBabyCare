@@ -21,6 +21,12 @@ export const register = async (
   );
   return data;
 };
+export const logout = async () => {
+  const { data } = await axiosInstance.post('/auth/logout', {
+    withCredentials: true,
+  });
+  return data;
+};
 
 export const getCurrentUser = async () => {
   const { data } = await axiosInstance.get('/auth/me', {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Calendar, Ruler, Scale, User, X } from 'lucide-react';
+import { Calendar, Pencil, Ruler, Scale, User, X } from 'lucide-react';
 import DeleteBabyDialog from './DeleteBabyDialog';
 import { Link } from 'react-router-dom';
+import EditBabyModal from './EditBabyModal';
 
 type Baby = {
   _id: string;
@@ -16,13 +17,15 @@ type Baby = {
 interface BabyCardProps {
   baby: Baby;
   onDelete?: (id: string) => void;
+  onUpdate?: (id: string, updatedData: Baby) => void;
 }
 
-const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete }) => {
+const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
   const { _id, name, birthDate, gender, weight, height, photo } = baby;
 
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   const getDefaultImage = () =>
     gender === 'נקבה'
@@ -71,6 +74,20 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete }) => {
           >
             <X className="h-4 w-4" />
           </button>
+
+          {/* כפתור עריכה */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsModalEditOpen(true);
+            }}
+            className={`absolute top-3 right-10 z-20 bg-green-500 hover:bg-green-600 text-white rounded-full p-1 shadow-lg transition-opacity duration-200 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
         </div>
 
         {/* פרטים */}
@@ -104,6 +121,16 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete }) => {
           name={name}
           setIsModalOpen={setIsModalOpen}
           handleDelete={handleDelete}
+        />
+      )}
+
+      {isModalEditOpen && (
+        <EditBabyModal
+          setIsModalEditOpen={setIsModalEditOpen}
+          baby={baby}
+          handleUpdate={(updatedData: Baby) =>
+            onUpdate?.(baby._id, updatedData)
+          }
         />
       )}
     </>

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getCurrentUser, login, register } from '../api/auth';
+import { getCurrentUser, login, logout, register } from '../api/auth';
 
 export const AuthContext = createContext(null);
 
@@ -41,14 +41,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
-  //   const handleLogout = async () => {
-  //     await logout();
-  //     setUser(null);
-  //   };
+  const handleLogout = async () => {
+    await logout();
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, handleLogin, handleRegister }}
+      value={{ user, loading, handleLogin, handleRegister, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

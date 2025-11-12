@@ -4,6 +4,7 @@ import {
   deleteBabyApi,
   getBabies,
   getSingleBaby,
+  updateBabyApi,
 } from '../api/babies';
 
 export const useBabies = () => {
@@ -60,6 +61,20 @@ export const useBabies = () => {
     }
   };
 
+  // ---- Update baby ----
+  const updateBaby = async (babyId: string, babyData: any) => {
+    try {
+      const updated = await updateBabyApi(babyId, babyData);
+      setBabies((prev) => prev.map((b) => (b._id === babyId ? updated : b)));
+      if (singleBaby?._id === babyId) setSingleBaby(updated);
+      fetchBabies();
+      return updated;
+    } catch (err: any) {
+      setError(err.message || 'שגיאה בעדכון');
+      throw err;
+    }
+  };
+
   const deleteBaby = async (babyId: string) => {
     try {
       await deleteBabyApi(babyId);
@@ -83,7 +98,7 @@ export const useBabies = () => {
     fetchBabies,
     fetchSingleBaby,
     addBaby,
-    // updateBaby,
+    updateBaby,
     deleteBaby,
     setBabies,
     setSingleBaby,

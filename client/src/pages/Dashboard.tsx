@@ -11,7 +11,8 @@ import { Loader } from '../components/ui/Loader';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  const { babies, loading, error, addBaby, deleteBaby } = useBabies();
+  const { babies, loading, error, addBaby, deleteBaby, updateBaby } =
+    useBabies();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const onDeleteBaby = async (id: string) => {
@@ -20,6 +21,15 @@ const Dashboard = () => {
       toast.success('התינוק נמחק בהצלחה 🧸');
     } catch (err) {
       toast.error('שגיאה במחיקה');
+    }
+  };
+  const handleUpdate = async (babyId: string, updatedData: any) => {
+    try {
+      await updateBaby(babyId, updatedData);
+      toast.success('הפרטים עודכנו בהצלחה ✨');
+    } catch (err) {
+      console.log(err);
+      toast.error('שגיאה בעדכון');
     }
   };
 
@@ -55,7 +65,12 @@ const Dashboard = () => {
         {babies && babies.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {babies.map((baby) => (
-              <BabyCard key={baby._id} baby={baby} onDelete={onDeleteBaby} />
+              <BabyCard
+                key={baby._id}
+                baby={baby}
+                onDelete={onDeleteBaby}
+                onUpdate={handleUpdate}
+              />
             ))}
           </div>
         ) : (
