@@ -43,10 +43,6 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // Swagger APIS
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/', requireAuth, (req, res) => {
-  res.send('hello you pass the protected route');
-});
-
 app.use('/auth', authRoutes);
 app.use('/babies', babyRoutes);
 app.use('/feed', feedRoutes);

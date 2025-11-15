@@ -15,8 +15,6 @@ export const useBabies = () => {
   const [loadingSingle, setLoadingSingle] = useState(false);
   const [errorSingle, setErrorSingle] = useState<string | null>(null);
 
-  const [editBabyError, setEditBabyError] = useState<string | null>(null);
-
   const fetchBabies = async () => {
     setLoading(true);
     setError(null);
@@ -106,6 +104,5 @@ export const useBabies = () => {
     deleteBaby,
     setBabies,
     setSingleBaby,
-    editBabyError,
   };
 };

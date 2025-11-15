@@ -28,8 +28,23 @@ axiosInstance.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config;
 
+    // רשימת URLs שלא צריכים refresh אוטומטי
+    const noRefreshUrls = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/refresh-token',
+    ];
+    const shouldSkipRefresh = noRefreshUrls.some((url) =>
+      originalRequest.url?.includes(url)
+    );
+
     // אם השגיאה היא 401 והבקשה לא נכשלה כבר בניסיון refresh
-    if (err.response?.status === 401 && !originalRequest._retry) {
+    // ולא מדובר בבקשה שלא צריכה refresh
+    if (
+      err.response?.status === 401 &&
+      !originalRequest._retry &&
+      !shouldSkipRefresh
+    ) {
       if (isRefreshing) {
         // אם כבר מתבצע refresh, נמתין לסיום
         return new Promise((resolve, reject) => {
@@ -74,7 +89,12 @@ axiosInstance.interceptors.response.use(
         err.response.data?.error ||
         err.response.data?.message ||
         'אירעה שגיאה בלתי צפויה';
-      return Promise.reject(new Error(message));
+
+      // יצירת אובייקט Error עם המסר המקורי
+      const error = new Error(message);
+      (error as any).response = err.response;
+      (error as any).status = err.response.status;
+      return Promise.reject(error);
     }
 
     return Promise.reject(err);

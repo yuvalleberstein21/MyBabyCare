@@ -38,7 +38,9 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
           <X className="h-5 w-5" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4 text-center">הוסף תינוק חדש</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          עריכת פרטי תינוק
+        </h2>
 
         <form onSubmit={onSubmit} className="space-y-4">
           {/* העלאת תמונה */}

@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
       const res = await login(email, password);
       setUser(res.user);
     } catch (error: any) {
-      console.error('Login error:', error);
-      throw error;
+      const errorMessage = error.message || 'התחברות נכשלה';
+      throw new Error(errorMessage);
     }
   };
 
@@ -37,8 +37,13 @@ export const AuthProvider = ({ children }) => {
     email: string,
     password: string
   ) => {
-    const userData = await register(fullName, email, password);
-    setUser(userData);
+    try {
+      const userData = await register(fullName, email, password);
+      setUser(userData);
+    } catch (error: any) {
+      const errorMessage = error.message || 'הרשמה נכשלה';
+      throw new Error(errorMessage);
+    }
   };
 
   const handleLogout = async () => {
