@@ -23,13 +23,24 @@ const Dashboard = () => {
       toast.error('שגיאה במחיקה');
     }
   };
+
   const handleUpdate = async (babyId: string, updatedData: any) => {
     try {
       await updateBaby(babyId, updatedData);
       toast.success('הפרטים עודכנו בהצלחה ✨');
-    } catch (err) {
-      console.log(err);
-      toast.error('שגיאה בעדכון');
+    } catch (err: any) {
+      toast.error(err.message || 'שגיאה בעדכון');
+      throw err;
+    }
+  };
+
+  const handleAddBaby = async (data: any) => {
+    try {
+      await addBaby(data);
+      toast.success('תינוק נוסף בהצלחה 👶');
+    } catch (err: any) {
+      toast.error(err.message || 'שגיאה בהוספה');
+      throw err;
     }
   };
 
@@ -38,7 +49,23 @@ const Dashboard = () => {
   }, [error]);
 
   if (loading) return <Loader />;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) {
+    console.log(error);
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg max-w-md">
+          <h3 className="font-bold mb-2">אירעה שגיאה</h3>
+          <p>{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            נסה שוב
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -96,7 +123,7 @@ const Dashboard = () => {
       <AddBabyDialog
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
-        onAdded={addBaby}
+        onAdded={handleAddBaby}
         addLoading={loading}
       />
     </div>

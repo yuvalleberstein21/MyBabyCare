@@ -2,6 +2,7 @@ import { Request, Response, RequestHandler } from 'express';
 import { Baby } from '../models/babyModel';
 import { validateObjectId } from '../utils/validateObjectId';
 import { IBaby, UpdateBabyRequestBody } from '../types/baby';
+import mongoose from 'mongoose';
 
 export const createBaby: RequestHandler = async (req, res) => {
   try {
@@ -24,6 +25,12 @@ export const createBaby: RequestHandler = async (req, res) => {
       baby,
     });
   } catch (error) {
+    // --- ולידציה של Mongoose ---
+    if (error instanceof mongoose.Error.ValidationError) {
+      const firstError = Object.values(error.errors)[0].message;
+      res.status(400).json({ error: firstError });
+      return;
+    }
     console.error('שגיאה ביצירת תינוק:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
   }
@@ -71,9 +78,16 @@ export const updateBaby: RequestHandler<
     }
 
     res.status(200).json({ message: 'התינוק עודכן בהצלחה', baby: updatedBaby });
-  } catch (error) {
+  } catch (error: any) {
+    // --- ולידציה של Mongoose ---
+    // if (error instanceof mongoose.Error.ValidationError) {
+    //   const firstError = Object.values(error.errors)[0].message;
+    //   res.status(400).json({ error: firstError });
+    //   return;
+    // }
     console.error('שגיאה בעדכון תינוק:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
+    return;
   }
 };
 

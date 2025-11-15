@@ -15,6 +15,8 @@ export const useBabies = () => {
   const [loadingSingle, setLoadingSingle] = useState(false);
   const [errorSingle, setErrorSingle] = useState<string | null>(null);
 
+  const [editBabyError, setEditBabyError] = useState<string | null>(null);
+
   const fetchBabies = async () => {
     setLoading(true);
     setError(null);
@@ -56,8 +58,9 @@ export const useBabies = () => {
       fetchBabies();
       return newBaby;
     } catch (err: any) {
-      setError(err.message || 'שגיאה בהוספה');
-      throw err;
+      const message =
+        err?.response?.data?.message || err?.message || 'שגיאה בהוספה';
+      throw new Error(message);
     }
   };
 
@@ -70,8 +73,9 @@ export const useBabies = () => {
       fetchBabies();
       return updated;
     } catch (err: any) {
-      setError(err.message || 'שגיאה בעדכון');
-      throw err;
+      const message =
+        err?.response?.data?.message || err?.message || 'שגיאה בעדכון';
+      throw new Error(message);
     }
   };
 
@@ -102,5 +106,6 @@ export const useBabies = () => {
     deleteBaby,
     setBabies,
     setSingleBaby,
+    editBabyError,
   };
 };

@@ -5,8 +5,12 @@ import AuthForm from '../components/auth/AuthForm';
 import ToggleLink from '../components/auth/ToggleLink';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const AuthPage: React.FC = () => {
+  const { handleLogin, handleRegister } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,7 +18,7 @@ export const AuthPage: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { handleLogin, handleRegister } = useAuth();
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +26,9 @@ export const AuthPage: React.FC = () => {
     try {
       if (activeTab === 'login') {
         await handleLogin(email, password);
+        navigate(from, { replace: true });
         toast.success('התחברת בהצלחה 🎉');
       } else {
-        // כאן אפשר להוסיף הרשמה
         await handleRegister(fullName, email, password);
         toast.success(`היי ברוכים הבאים ${fullName}🎉`);
       }

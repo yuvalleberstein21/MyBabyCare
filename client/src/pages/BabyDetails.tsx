@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSingleBaby } from '../hooks/useSingleBaby';
 import { Loader } from '../components/ui/Loader';
 import NotFoundBaby from '../components/babyDetails/NotFoundBaby';
 import { AddFeedingDialog } from '../components/babyDetails/AddFeedingDialog';
@@ -9,7 +8,6 @@ import { AddDiaperModal } from '../components/babyDetails/AddDiaperDialog';
 import Header from '../components/ui/Header';
 import ActivityGrid from '../components/babyDetails/ActivityGrid';
 import { activities } from '../mock/ActivitiesData';
-import { Title } from '../components/ui/Title';
 import DayActivities from '../components/babyDetails/DayActivities';
 import { useBabies } from '../hooks/useBabies';
 
@@ -28,7 +26,6 @@ export const BabyDetails = () => {
     if (babyId) fetchSingleBaby(babyId);
   }, [babyId]);
 
-  console.log(baby);
   if (loading) return <Loader />;
   if (error || !baby) return <NotFoundBaby />;
 

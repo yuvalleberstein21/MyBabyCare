@@ -16,10 +16,14 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleUpdate(formData);
-    setIsModalEditOpen(false);
-  };
 
+    try {
+      await handleUpdate(formData);
+      setIsModalEditOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div

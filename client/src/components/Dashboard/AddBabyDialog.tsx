@@ -39,9 +39,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
     };
 
     try {
-      const newBaby = await onAdded?.(babyData);
-
-      toast.success('תינוק נוסף בהצלחה 👶');
+      await onAdded?.(babyData);
 
       setFormData({
         name: '',
@@ -51,10 +49,9 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
         height: '',
         photo: '',
       });
-
       onOpenChange(false);
     } catch (err: any) {
-      toast.error(err.message || 'שגיאה בהוספת תינוק');
+      console.log(err);
     }
   };
 
