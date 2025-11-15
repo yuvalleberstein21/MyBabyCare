@@ -15,6 +15,7 @@ const Dashboard = () => {
     useBabies();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
+  // DELETE BABY
   const onDeleteBaby = async (id: string) => {
     try {
       await deleteBaby(id);
@@ -24,6 +25,7 @@ const Dashboard = () => {
     }
   };
 
+  // UPDATE BABY
   const handleUpdate = async (babyId: string, updatedData: any) => {
     try {
       await updateBaby(babyId, updatedData);
@@ -34,6 +36,7 @@ const Dashboard = () => {
     }
   };
 
+  // CREATE BABY
   const handleAddBaby = async (data: any) => {
     try {
       await addBaby(data);
@@ -105,10 +108,12 @@ const Dashboard = () => {
             <div className="w-24 h-24 rounded-full bg-muted mx-auto mb-4 flex items-center justify-center">
               <Baby className="h-12 w-12 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">עדיין אין תינוקות</h3>
-            <p className="text-muted-foreground mb-6">
+            <Title className="text-xl font-semibold mb-2">
+              עדיין אין תינוקות
+            </Title>
+            <SubTitle className="text-muted-foreground mb-6">
               הוסף את התינוק הראשון שלך כדי להתחיל במעקב
-            </p>
+            </SubTitle>
             <Button
               onClick={() => setIsAddDialogOpen(true)}
               className="bg-gradient-primary hover:opacity-90 transition-opacity flex items-center justify-center gap-2"

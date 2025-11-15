@@ -76,6 +76,7 @@ const AuthForm = ({
 
       <Button
         variant="primary"
+        disabled={loading}
         className="w-full text-white rounded-xl py-3 font-semibold hover:opacity-90 transition shadow-lg"
         type="submit"
       >

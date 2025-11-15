@@ -1,59 +1,82 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';
-import toast from 'react-hot-toast';
+
+interface BabyFormData {
+  name: string;
+  birthDate: string;
+  gender: 'נקבה' | 'זכר';
+  weight: string;
+  height: string;
+  photo: string;
+}
+
+interface BabyData {
+  name: string;
+  birthDate: string;
+  gender: string;
+  weight?: number;
+  height?: number;
+  image?: string;
+}
 
 interface AddBabyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdded?: (babyData: any) => Promise<any>;
+  onAdded?: (babyData: BabyData) => void;
   addLoading: boolean;
 }
+
+const INITIAL_FORM_DATA: BabyFormData = {
+  name: '',
+  birthDate: '',
+  gender: 'נקבה',
+  weight: '',
+  height: '',
+  photo: '',
+};
+
 export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
   open,
   onOpenChange,
   onAdded,
   addLoading,
 }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    birthDate: '',
-    gender: 'נקבה',
-    weight: '',
-    height: '',
-    photo: '',
-  });
+  const [formData, setFormData] = useState<BabyFormData>(INITIAL_FORM_DATA);
 
-  if (!open) return null;
+  const handleClose = useCallback(() => {
+    onOpenChange(false);
+  }, [onOpenChange]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const resetForm = useCallback(() => {
+    setFormData(INITIAL_FORM_DATA);
+  }, []);
 
-    const babyData = {
-      name: formData.name,
-      birthDate: formData.birthDate,
-      gender: formData.gender,
-      weight: formData.weight ? Number(formData.weight) : undefined,
-      height: formData.height ? Number(formData.height) : undefined,
-      image: formData.photo || undefined,
-    };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    try {
-      await onAdded?.(babyData);
+      const babyData: BabyData = {
+        name: formData.name,
+        birthDate: formData.birthDate,
+        gender: formData.gender,
+        weight: formData.weight ? Number(formData.weight) : undefined,
+        height: formData.height ? Number(formData.height) : undefined,
+        image: formData.photo || undefined,
+      };
 
-      setFormData({
-        name: '',
-        birthDate: '',
-        gender: 'נקבה',
-        weight: '',
-        height: '',
-        photo: '',
-      });
-      onOpenChange(false);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
+      try {
+        if (onAdded) {
+          onAdded(babyData);
+        }
+        resetForm();
+        handleClose();
+      } catch (err) {
+        console.error('Error adding baby:', err);
+      }
+    },
+    [formData, onAdded, resetForm, handleClose]
+  );
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,6 +88,8 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
       reader.readAsDataURL(file);
     }
   };
+
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">

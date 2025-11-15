@@ -1,9 +1,28 @@
 import { ImagePlus, X } from 'lucide-react';
 import React, { useState } from 'react';
 import Button from '../ui/Button';
+type Baby = {
+  _id: string;
+  name: string;
+  birthDate: string;
+  gender: 'זכר' | 'נקבה';
+  weight: number;
+  height: number;
+  photo?: string;
+};
 
-const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
-  const [formData, setFormData] = useState({
+interface EditBabyDialogProps {
+  setIsModalEditOpen: (open: boolean) => void;
+  baby: Baby;
+  handleUpdate?: (babyData: Baby) => void | Promise<void>;
+}
+const EditBabyModal: React.FC<EditBabyDialogProps> = ({
+  setIsModalEditOpen,
+  baby,
+  handleUpdate,
+}) => {
+  const [formData, setFormData] = useState<Baby>({
+    _id: baby._id,
     name: baby.name,
     birthDate: baby.birthDate
       ? new Date(baby.birthDate).toISOString().split('T')[0]
@@ -11,14 +30,14 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
     gender: baby.gender,
     weight: baby.weight,
     height: baby.height,
-    photo: baby.image,
+    photo: baby.photo,
   });
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await handleUpdate(formData);
+      await handleUpdate?.(formData);
       setIsModalEditOpen(false);
     } catch (err) {
       console.log(err);
@@ -104,7 +123,10 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
               className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
               value={formData.gender}
               onChange={(e) =>
-                setFormData({ ...formData, gender: e.target.value })
+                setFormData({
+                  ...formData,
+                  gender: e.target.value as 'זכר' | 'נקבה',
+                })
               }
             >
               <option value="נקבה">נקבה</option>
@@ -124,7 +146,7 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.weight}
                 onChange={(e) =>
-                  setFormData({ ...formData, weight: e.target.value })
+                  setFormData({ ...formData, weight: Number(e.target.value) })
                 }
               />
             </div>
@@ -138,7 +160,7 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.height}
                 onChange={(e) =>
-                  setFormData({ ...formData, height: e.target.value })
+                  setFormData({ ...formData, height: Number(e.target.value) })
                 }
               />
             </div>
@@ -147,10 +169,8 @@ const EditBabyModal = ({ setIsModalEditOpen, baby, handleUpdate }) => {
           {/* כפתור שמירה */}
           <Button
             type="submit"
-            // disabled={addLoading}
             className="w-full bg-gradient-primary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            {/* {addLoading ? 'טוען...' : 'הוסף תינוק'} */}
             שמור
           </Button>
         </form>
