@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
+import { useCreateDiaper } from '../../hooks/useDiaper';
+import toast from 'react-hot-toast';
 
 interface AddDiaperModalProps {
   babyId: string;
@@ -12,12 +14,30 @@ export const AddDiaperModal: React.FC<AddDiaperModalProps> = ({
   babyId,
   onClose,
 }) => {
+  const { handleCreateDiaper, loading, error, success } =
+    useCreateDiaper(babyId);
+
   const [type, setType] = useState('');
+  const [time, setTime] = useState('');
   const [notes, setNotes] = useState('');
 
-  const handleSave = () => {
-    console.log({ babyId, type, notes });
-    onClose();
+  useEffect(() => {
+    if (success) {
+      toast.success('החלפה בוצעה בהצלחה 🍼');
+      // איפוס ערכים
+      setType('רטוב');
+      setTime('');
+      setNotes('');
+      onClose();
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error, onClose]);
+
+  const handleSave = async () => {
+    const data = { type, time, notes };
+    await handleCreateDiaper(data);
   };
 
   return (
@@ -43,6 +63,18 @@ export const AddDiaperModal: React.FC<AddDiaperModalProps> = ({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              שעת החלפה
+            </label>
+            <input
+              type="datetime-local"
+              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               סוג החלפה
             </label>
             <select
@@ -51,10 +83,10 @@ export const AddDiaperModal: React.FC<AddDiaperModalProps> = ({
               onChange={(e) => setType(e.target.value)}
             >
               <option value="">בחר סוג</option>
-              <option value="wet">Wet</option>
-              <option value="dirty">Dirty</option>
-              <option value="both">שניהם</option>
-              <option value="dry">Dry</option>
+              <option value="רטוב">רטוב</option>
+              <option value="מלוכלך">מלוכלך</option>
+              <option value="שניהם">שניהם</option>
+              <option value="יבש">יבש</option>
             </select>
           </div>
 
