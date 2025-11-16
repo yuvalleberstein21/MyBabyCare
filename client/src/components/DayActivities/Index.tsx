@@ -14,6 +14,7 @@ const DayActivities = ({ summary, loading, error }) => {
     const feedings = summary.data.summary.feedings.map((f) => ({
       ...f,
       type: 'feeding',
+      feedingType: f.type,
     }));
 
     const sleep = summary.data.summary.sleepSessions.map((s) => ({
@@ -24,6 +25,7 @@ const DayActivities = ({ summary, loading, error }) => {
     const diapers = summary.data.summary.diaperChanges.map((d) => ({
       ...d,
       type: 'diaper',
+      diaperType: d.type,
     }));
 
     return [...feedings, ...sleep, ...diapers];
@@ -55,8 +57,10 @@ const DayActivities = ({ summary, loading, error }) => {
 
   return (
     <div dir="rtl" className="container mx-auto px-4 py-6">
-      <Title className="text-xl mb-2">מעקב יומי</Title>
-      <Title className="text-lg mb-4">{summary?.data.date}</Title>
+      <div className="flex justify-between items-center text-center mb-6 from-accent-foreground">
+        <Title className="text-2xl">מעקב יומי</Title>
+        <Title className="text-xl text-gray-500">{summary?.data.date}</Title>
+      </div>
 
       <Filters filter={filter} setFilter={setFilter} />
 

@@ -52,7 +52,7 @@ export const BabyDetails = () => {
         onClose={handleCloseActivity}
       />
 
-      <section className="container mx-auto px-4 py-6">
+      <section className="container mx-auto px-4 py-2">
         <DayActivities summary={summary} loading={false} error={null} />
       </section>
     </div>
