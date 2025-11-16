@@ -3,7 +3,7 @@ import {
   typeIcons,
   typeLabels,
 } from '../../utils/FormatedISDate';
-import { Clock, StickyNote, Timer, Milk } from 'lucide-react';
+import { Clock, StickyNote, Timer, Milk, X, Edit, Baby } from 'lucide-react';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -34,9 +34,9 @@ export const ActivityCard = ({ act }) => {
       icon: Milk,
     },
     act.diaperType && {
-      label: 'סוג האכלה',
+      label: 'סוג החלפה',
       value: `${act.diaperType}`,
-      icon: Milk,
+      icon: Baby,
     },
     act.duration && { label: 'משך', value: `${act.duration} דק'`, icon: Timer },
     act.amount && { label: 'כמות', value: `${act.amount} מ״ל`, icon: Milk },
@@ -50,11 +50,20 @@ export const ActivityCard = ({ act }) => {
       }`}
     >
       {/* כותרת */}
-      <div className="flex items-center gap-2">
-        <span className="text-xl">{typeIcons[act.type]}</span>
-        <span className="font-bold text-gray-900 text-lg">
-          {typeLabels[act.type]}
-        </span>
+      <div className="flex items-center justify-between">
+        {/* ימין — סוג הפעילות */}
+        <div className="flex items-center gap-2">
+          <span className="text-xl">{typeIcons[act.type]}</span>
+          <span className="font-bold text-gray-900 text-lg">
+            {typeLabels[act.type]}
+          </span>
+        </div>
+
+        {/* שמאל — כפתורי עריכה */}
+        <div className="flex items-center gap-3">
+          <Edit className="w-4 h-4 cursor-pointer" />
+          <X className="w-5 h-5 cursor-pointer" />
+        </div>
       </div>
 
       {/* שדות */}
