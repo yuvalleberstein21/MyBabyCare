@@ -11,7 +11,7 @@ export const ActivityModalManager = ({ activeActivity, babyId, onClose }) => {
       return <AddDiaperModal babyId={babyId} onClose={onClose} />;
 
     case 'sleep':
-      return <SleepTracker onClose={onClose} />;
+      return <SleepTracker babyId={babyId} onClose={onClose} />;
 
     default:
       return null;
