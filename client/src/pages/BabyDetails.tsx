@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../components/ui/Loader';
-import NotFoundBaby from '../components/babyDetails/NotFoundBaby';
+import NotFoundBaby from '../components/MainBabyActivities/NotFoundBaby';
 import Header from '../components/ui/Header';
-import ActivityGrid from '../components/babyDetails/ActivityGrid';
+import ActivityGrid from '../components/MainBabyActivities/ActivityGrid';
 import { activities } from '../mock/ActivitiesData';
 import DayActivities from '../components/DayActivities/Index';
-import { ActivityModalManager } from '../components/babyDetails/ActivityModalManager';
+import { ActivityModalManager } from '../components/MainBabyActivities/ActivityModalManager';
 import { useBabyDetailsData } from '../hooks/useBabyDetailsData';
 
 export const BabyDetails = () => {

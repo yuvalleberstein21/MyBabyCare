@@ -10,7 +10,7 @@ interface AddDiaperModalProps {
   onClose: () => void;
 }
 
-export const AddDiaperModal: React.FC<AddDiaperModalProps> = ({
+export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
   babyId,
   onClose,
 }) => {

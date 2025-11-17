@@ -9,7 +9,7 @@ interface SleepTrackerProps {
   onClose: () => void;
 }
 
-export const SleepTracker: React.FC<SleepTrackerProps> = ({
+export const SleepDialog: React.FC<SleepTrackerProps> = ({
   babyId,
   onClose,
 }) => {

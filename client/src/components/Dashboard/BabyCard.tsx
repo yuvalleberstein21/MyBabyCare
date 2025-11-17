@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Calendar, Pencil, Ruler, Scale, User, X } from 'lucide-react';
-import DeleteBabyDialog from './DeleteBabyDialog';
+import DeleteBabyDialog from '../Dialogs/DeleteBabyDialog';
 import { Link } from 'react-router-dom';
-import EditBabyModal from './EditBabyModal';
+import EditBabyModal from '../Dialogs/EditBabyModal';
 
 type Baby = {
   _id: string;
