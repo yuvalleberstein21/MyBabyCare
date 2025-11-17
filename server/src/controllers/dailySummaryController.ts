@@ -10,6 +10,8 @@ import {
   IFeedingSummary,
   ISleepSummary,
 } from '../types/summary';
+import { Health } from '../models/healthModel';
+import { IHealth } from '../types/health';
 
 // סיכום יומי של נתוני תינוק
 export const getDailySummary = async (req: Request, res: Response) => {
@@ -26,32 +28,40 @@ export const getDailySummary = async (req: Request, res: Response) => {
 
     const babyObjectId = new mongoose.Types.ObjectId(babyId);
 
-    const [feedings, diaperChanges, sleepSessions] = await Promise.all([
-      Feeding.find({
-        babyId: babyObjectId,
-        time: { $gte: start, $lt: end },
-      })
-        .select('type amount time notes')
-        .sort({ time: 1 })
-        .lean<IFeedingSummary[]>(),
+    const [feedings, diaperChanges, sleepSessions, healthRecord] =
+      await Promise.all([
+        Feeding.find({
+          babyId: babyObjectId,
+          time: { $gte: start, $lt: end },
+        })
+          .select('type amount time notes')
+          .sort({ time: 1 })
+          .lean<IFeedingSummary[]>(),
 
-      Diaper.find({
-        babyId: babyObjectId,
-        time: { $gte: start, $lt: end },
-      })
-        .select('type time notes')
-        .sort({ time: 1 })
-        .lean<IDiaperSummary[]>(),
+        Diaper.find({
+          babyId: babyObjectId,
+          time: { $gte: start, $lt: end },
+        })
+          .select('type time notes')
+          .sort({ time: 1 })
+          .lean<IDiaperSummary[]>(),
 
-      Sleeping.find({
-        babyId: babyObjectId,
-        startTime: { $lt: end },
-        $or: [{ endTime: { $gte: start } }, { endTime: { $exists: false } }],
-      })
-        .select('startTime endTime')
-        .sort({ startTime: 1 })
-        .lean<ISleepSummary[]>(),
-    ]);
+        Sleeping.find({
+          babyId: babyObjectId,
+          startTime: { $lt: end },
+          $or: [{ endTime: { $gte: start } }, { endTime: { $exists: false } }],
+        })
+          .select('startTime endTime')
+          .sort({ startTime: 1 })
+          .lean<ISleepSummary[]>(),
+
+        Health.find({
+          babyId: babyObjectId,
+        })
+          .select('type value time')
+          .sort({ time: 1 })
+          .lean<IHealth[]>(),
+      ]);
 
     res.status(200).json(<IDailySummaryResponse>{
       success: true,
@@ -62,6 +72,7 @@ export const getDailySummary = async (req: Request, res: Response) => {
           feedings: feedings,
           diaperChanges: diaperChanges,
           sleepSessions: sleepSessions,
+          healthRecords: healthRecord,
         },
         meta: {
           dateRange: {

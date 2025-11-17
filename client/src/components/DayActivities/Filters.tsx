@@ -4,6 +4,7 @@ export const Filters = ({ filter, setFilter }) => {
     { key: 'feeding', label: 'האכלה' },
     { key: 'sleep', label: 'שינה' },
     { key: 'diaper', label: 'חיתולים' },
+    { key: 'health', label: 'בריאות' },
   ];
 
   return (

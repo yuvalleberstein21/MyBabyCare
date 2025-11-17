@@ -4,6 +4,7 @@ import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
+import { useHealth } from '../../hooks/useHealth';
 
 interface AddHealthDialogProps {
   open: boolean;
@@ -25,7 +26,8 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   open,
   onClose,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const { handleCreateHealth, loading, error, success } = useHealth();
+
   const [type, setType] = useState('temperature');
   const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [value, setValue] = useState('');
@@ -41,37 +43,27 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
     }
   }, [open]);
 
+  useEffect(() => {
+    if (error) toast.error(error);
+    if (success) {
+      toast.success('הרשומה הבריאותית נוספה בהצלחה 🏥');
+      onClose();
+    }
+  }, [error, success]);
+
   const handleSave = async () => {
-    // ווליידציה בסיסית
     if (!value.trim()) {
       toast.error('נא למלא את הערך הנדרש');
       return;
     }
 
-    setLoading(true);
-
-    try {
-      // Mock API call - החלף בקריאה אמיתית
-      const data = {
-        babyId,
-        type,
-        time,
-        value,
-        notes,
-      };
-
-      // סימולציה של שליחה לשרת
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log('Saving health data:', data);
-
-      toast.success('הרשומה הבריאותית נוספה בהצלחה 🏥');
-      onClose();
-    } catch (error) {
-      toast.error('שגיאה בשמירת הנתונים');
-    } finally {
-      setLoading(false);
-    }
+    await handleCreateHealth({
+      babyId,
+      type,
+      time,
+      value,
+      notes,
+    });
   };
 
   // טקסטים דינמיים לפי סוג

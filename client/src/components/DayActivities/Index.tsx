@@ -28,7 +28,13 @@ const DayActivities = ({ summary, loading, error }) => {
       diaperType: d.type,
     }));
 
-    return [...feedings, ...sleep, ...diapers];
+    const health = summary.data.summary.healthRecords.map((h) => ({
+      ...h,
+      type: 'health',
+      healthType: h.type,
+    }));
+
+    return [...feedings, ...sleep, ...diapers, ...health];
   }, [summary]);
 
   const filtered = useMemo(
