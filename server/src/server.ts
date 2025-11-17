@@ -9,8 +9,8 @@ import sleepRoutes from './routers/sleepRoutes';
 import diaperRoutes from './routers/diaperRoutes';
 import authRoutes from './routers/authRoutes';
 import babyRoutes from './routers/babyRoutes';
+import healthRoutes from './routers/healthRoutes';
 import dailySummaryRoutes from './routers/dailySummaryRoutes';
-import { requireAuth } from './middlewares/auth';
 import connectDB from './config/dataBase';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger';
@@ -48,6 +48,7 @@ app.use('/babies', babyRoutes);
 app.use('/feed', feedRoutes);
 app.use('/sleep', sleepRoutes);
 app.use('/diaper', diaperRoutes);
+app.use('/health', healthRoutes);
 app.use('/daily-summary', dailySummaryRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {

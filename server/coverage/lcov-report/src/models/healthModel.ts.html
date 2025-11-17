@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/middlewares/verifyBabyOwnership.ts</title>
+    <title>Code coverage report for src/models/healthModel.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/middlewares</a> verifyBabyOwnership.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/models</a> healthModel.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/20</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/20</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,16 +107,7 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -124,77 +115,86 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
-import { Baby } from '../models/babyModel';
-import { IBaby } from '../types/baby';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose from 'mongoose';
+import { IHealth } from '../types/health';
 &nbsp;
-declare global {
-  namespace Express {
-    interface Request {
-      baby?: IBaby;
-    }
-  }
-}
-export async function verifyBabyOwnership(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise&lt;void&gt; {
-  const userId = req.user?.id;
-  const { babyId } = req.params;
+const healthSchema = new mongoose.Schema&lt;IHealth&gt;(
+  {
+    babyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Baby',
+      required: true,
+      index: true,
+    },
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!userId) {
-<span class="cstat-no" title="statement not covered" >    res.status(401).json({ error: 'משתמש לא מזוהה' });</span>
-<span class="cstat-no" title="statement not covered" >    return;</span>
-  }
+    type: {
+      type: String,
+      enum: {
+        values: ['temperature', 'medicine', 'vaccine', 'checkup', 'symptom'],
+        message: 'סוג רשומה לא חוקי',
+      },
+      required: [true, 'סוג רשומה הוא שדה חובה'],
+    },
 &nbsp;
-  if (!babyId || !mongoose.Types.ObjectId.isValid(babyId)) {
-    res.status(400).json({ error: 'מזהה תינוק לא תקין' });
-    return;
-  }
+    time: {
+      type: Date,
+      required: [true, 'תאריך ושעה הם שדות חובה'],
+      default: Date.now,
+    },
 &nbsp;
-  try {
-    const baby = await Baby.findOne({ _id: babyId, userId });
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!baby) {
-<span class="cstat-no" title="statement not covered" >      res.status(404).json({ error: 'תינוק לא נמצא או לא שייך למשתמש' });</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
+    value: {
+      type: mongoose.Schema.Types.Mixed,
+      required: [true, 'ערך הרשומה הוא שדה חובה'],
+    },
 &nbsp;
-    req.baby = baby;
-    next();
-  } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'שגיאה בשרת' });</span>
-<span class="cstat-no" title="statement not covered" >    return;</span>
-  }
-}
+    notes: {
+      type: String,
+      maxlength: [500, 'הערות יכולות להכיל עד 500 תווים'],
+      trim: true,
+    },
+  },
+  { timestamps: true }
+);
+&nbsp;
+healthSchema.index({ babyId: 1, time: -1 });
+&nbsp;
+export const Health = mongoose.model&lt;IHealth&gt;('Health', healthSchema);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

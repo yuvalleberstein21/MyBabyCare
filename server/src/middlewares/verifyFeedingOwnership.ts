@@ -23,7 +23,6 @@ export const verifyFeedingOwnership = async (
   if (!validateObjectId(feedingId, res, 'מזהה שינה')) return;
 
   try {
-    // **רק query אחד!**
     const feeding = await Feeding.findById(feedingId)
       .populate<{
         babyId: IBaby;

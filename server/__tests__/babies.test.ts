@@ -1,7 +1,6 @@
 import request from 'supertest';
 import path from 'path';
 import app from '../src/server';
-import mongoose from 'mongoose';
 import { getAuthCookie } from './testUtilts';
 
 describe('Babies API', () => {
