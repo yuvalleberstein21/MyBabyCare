@@ -9,9 +9,11 @@ const colorMap = {
   feeding: 'bg-green-200 border-green-400',
   diaper: 'bg-yellow-200 border-yellow-400',
   sleep: 'bg-blue-200 border-blue-400',
+  health: 'bg-pink-200 border-pink-400',
 };
 
 export const ActivityCard = ({ act }) => {
+  console.log(act);
   const infoRows = [
     act.time && {
       label: 'שעה',

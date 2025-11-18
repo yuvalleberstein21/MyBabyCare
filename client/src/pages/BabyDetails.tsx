@@ -8,13 +8,16 @@ import { activities } from '../mock/ActivitiesData';
 import DayActivities from '../components/DayActivities/Index';
 import { ActivityModalManager } from '../components/MainBabyActivities/ActivityModalManager';
 import { useBabyDetailsData } from '../hooks/useBabyDetailsData';
+import { DatePicker } from '../components/DayActivities/DatePicker';
 
 export const BabyDetails = () => {
   const { babyId } = useParams();
   const navigate = useNavigate();
 
   const [activeActivity, setActiveActivity] = useState<string | null>(null);
-  const [selectedDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(
+    () => new Date().toISOString().split('T')[0]
+  );
 
   const { baby, loading, error, summary, refreshSummary } = useBabyDetailsData(
     babyId!,
@@ -53,6 +56,10 @@ export const BabyDetails = () => {
       />
 
       <section className="container mx-auto px-4 py-2">
+        <div className="flex justify-end mb-4">
+          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
+        </div>
+
         <DayActivities summary={summary} loading={false} error={null} />
       </section>
     </div>

@@ -9,22 +9,24 @@ export const formatISDate = (dateStr?: string) => {
   });
 };
 
-export const typeLabels = {
-  feeding: 'האכלה',
-  sleep: 'שינה',
-  diaper: 'חיתול',
-};
-
-export const typeIcons = {
-  feeding: '🍼',
-  sleep: '🌙',
-  diaper: '👶',
-};
-
 export const formatTimeOnly = (isoString: string) => {
   const date = new Date(isoString);
   return date.toLocaleTimeString('he-IL', {
     hour: '2-digit',
     minute: '2-digit',
   });
+};
+
+export const typeLabels = {
+  feeding: 'האכלה',
+  sleep: 'שינה',
+  diaper: 'חיתול',
+  health: 'בריאות',
+};
+
+export const typeIcons = {
+  feeding: '🍼',
+  sleep: '🌙',
+  diaper: '👶',
+  health: '👨‍⚕️',
 };

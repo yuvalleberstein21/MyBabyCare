@@ -7,7 +7,6 @@ export const useDailySummary = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchSummary = useCallback(async (babyId: string, date: string) => {
-    if (summary && summary.date === date) return;
     setLoading(true);
     setError(null);
 

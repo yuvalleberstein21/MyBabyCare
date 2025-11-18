@@ -19,7 +19,7 @@ const Header = ({ baby, activeActivity, onBack }: any) => (
         <div>
           <Title className="text-2xl font-bold">{baby.name}</Title>
           <SubTitle className="text-sm text-gray-500">
-            מעקב שינה, האכלה והחלפת חיתולים
+            מעקב שינה, בריאות, האכלה והחלפת חיתולים
           </SubTitle>
         </div>
       </div>
