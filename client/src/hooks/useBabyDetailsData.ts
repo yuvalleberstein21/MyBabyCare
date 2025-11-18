@@ -5,7 +5,12 @@ import { useDailySummary } from './useDailySummary';
 export const useBabyDetailsData = (babyId: string, selectedDate: string) => {
   const { singleBaby, loadingSingle, errorSingle, fetchSingleBaby } =
     useBabies();
-  const { summary, loading, error, fetchSummary } = useDailySummary();
+  const {
+    summary,
+    loading: loadingSummary,
+    error,
+    fetchSummary,
+  } = useDailySummary();
 
   useEffect(() => {
     if (babyId) fetchSingleBaby(babyId);
@@ -23,6 +28,7 @@ export const useBabyDetailsData = (babyId: string, selectedDate: string) => {
     baby: singleBaby,
     loading: loadingSingle,
     error: errorSingle || error,
+    // loadingSummary,
     summary,
     refreshSummary,
   };

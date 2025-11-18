@@ -19,10 +19,8 @@ export const BabyDetails = () => {
     () => new Date().toISOString().split('T')[0]
   );
 
-  const { baby, loading, error, summary, refreshSummary } = useBabyDetailsData(
-    babyId!,
-    selectedDate
-  );
+  const { baby, loading, error, summary, loadingSummary, refreshSummary } =
+    useBabyDetailsData(babyId!, selectedDate);
 
   const handleCloseActivity = () => {
     setActiveActivity(null);
@@ -60,7 +58,7 @@ export const BabyDetails = () => {
           <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
         </div>
 
-        <DayActivities summary={summary} loading={false} error={null} />
+        <DayActivities summary={summary} error={null} loading={false} />
       </section>
     </div>
   );
