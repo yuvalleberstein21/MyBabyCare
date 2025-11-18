@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
 import { useHealth } from '../../hooks/useHealth';
+import { Label } from '../ui/Label';
 
 interface AddHealthDialogProps {
   open: boolean;
@@ -131,9 +132,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
         <div className="space-y-4">
           {/* סוג רשומה */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              סוג רשומה
-            </label>
+            <Label label="סוג רשומה" />
             <select
               className="w-full border bg-background rounded-xl p-3 focus:ring-2 focus:ring-primary outline-none transition"
               value={type}
@@ -153,9 +152,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
 
           {/* תאריך ושעה */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              תאריך ושעה
-            </label>
+            <Label label="תאריך ושעה" />
             <input
               type="datetime-local"
               className="w-full border bg-background rounded-xl p-3 focus:ring-2 focus:ring-primary outline-none transition"
@@ -170,6 +167,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {getValueLabel()}
             </label>
+
             <input
               type={getValueType()}
               className="w-full border bg-background rounded-xl p-3 focus:ring-2 focus:ring-primary outline-none transition"
@@ -185,9 +183,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
 
           {/* הערות */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              הערות (אופציונלי)
-            </label>
+            <Label label="הערות (אופציונלי)" />
             <textarea
               className="w-full border bg-background rounded-xl p-3 focus:ring-2 focus:ring-primary outline-none transition resize-none"
               value={notes}

@@ -1,7 +1,9 @@
+import { Label } from '../../ui/Label';
+
 const HealthFields = ({ formData, handleChange }) => (
   <>
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">סוג טיפול</label>
+      <Label label="סוג טיפול" />
       <select
         value={formData.healthType}
         onChange={(e) => handleChange('healthType', e.target.value)}
@@ -19,7 +21,7 @@ const HealthFields = ({ formData, handleChange }) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">ערך בריאות</label>
+      <Label label="ערך בריאות" />
       <input
         type="text"
         value={formData.value}

@@ -29,7 +29,7 @@ function Button({
   return (
     <button
       className={`
-        rounded-lg font-medium transition-colors
+        rounded-lg font-medium transition-colors font-playful
         ${sizeClasses[size]}
         ${variantClasses[variant]}
         ${className}

@@ -5,7 +5,7 @@ const ToggleLink = ({
   activeTab: 'login' | 'register';
   setActiveTab: (tab: 'login' | 'register') => void;
 }) => (
-  <p className="text-sm text-gray-500 mt-4 text-center">
+  <p className="text-sm text-gray-500 mt-4 text-center font-playful">
     {activeTab === 'login' ? (
       <>
         אין לך עדיין משתמש?{' '}

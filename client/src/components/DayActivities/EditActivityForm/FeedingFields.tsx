@@ -1,7 +1,9 @@
+import { Label } from '../../ui/Label';
+
 const FeedingFields = ({ formData, handleChange }) => (
   <>
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">סוג האכלה</label>
+      <Label label="סוג האכלה" />
       <select
         value={formData.feedingType}
         onChange={(e) => handleChange('feedingType', e.target.value)}
@@ -17,7 +19,7 @@ const FeedingFields = ({ formData, handleChange }) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">כמות (מ״ל)</label>
+      <Label label="כמות (מ״ל)" />
       <input
         type="number"
         value={formData.amount}

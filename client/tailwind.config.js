@@ -6,6 +6,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],    // גוף הטקסטים
+        heading: ['Poppins', 'sans-serif'], // כותרות
+        playful: ['Rubik', 'sans-serif'],  // כותרות/כפתורים “צעירים”
+      },
       colors: {
         background: 'hsl(280 30% 98%)',
         foreground: 'hsl(280 10% 15%)',

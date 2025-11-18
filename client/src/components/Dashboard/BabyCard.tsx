@@ -3,6 +3,8 @@ import { Calendar, Pencil, Ruler, Scale, User, X } from 'lucide-react';
 import DeleteBabyDialog from '../Dialogs/DeleteBabyDialog';
 import { Link } from 'react-router-dom';
 import EditBabyModal from '../Dialogs/EditBabyModal';
+import { Title } from '../ui/Title';
+import { SubTitle } from '../ui/SubTitle';
 
 type Baby = {
   _id: string;
@@ -94,22 +96,26 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
         <div className="p-5 space-y-3">
           <div className="flex items-center gap-2">
             <User className="h-5 w-5 text-indigo-500" />
-            <h3 className="font-semibold text-lg text-gray-800">{name}</h3>
+            <Title className="font-semibold text-lg text-gray-800">
+              {name}
+            </Title>
           </div>
 
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <Calendar className="h-4 w-4 text-gray-400" />
-            <span>תאריך לידה: {new Date(birthDate).toLocaleDateString()}</span>
+            <SubTitle>
+              תאריך לידה: {new Date(birthDate).toLocaleDateString()}
+            </SubTitle>
           </div>
 
           <div className="grid grid-cols-2 gap-2 pt-2 text-sm">
             <div className="flex items-center gap-2 bg-indigo-50 p-2 rounded-lg">
               <Scale className="h-4 w-4 text-indigo-500" />
-              <span>{weight} ק״ג</span>
+              <SubTitle>{weight} ק״ג</SubTitle>
             </div>
             <div className="flex items-center gap-2 bg-indigo-50 p-2 rounded-lg">
               <Ruler className="h-4 w-4 text-indigo-500" />
-              <span>{height} ס״מ</span>
+              <SubTitle>{height} ס״מ</SubTitle>
             </div>
           </div>
         </div>

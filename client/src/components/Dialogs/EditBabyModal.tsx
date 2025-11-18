@@ -1,6 +1,7 @@
 import { ImagePlus, X } from 'lucide-react';
 import React, { useState } from 'react';
 import Button from '../ui/Button';
+import { Label } from '../ui/Label';
 type Baby = {
   _id: string;
   name: string;
@@ -90,7 +91,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
 
           {/* שם */}
           <div>
-            <label className="block text-sm font-medium mb-1">שם התינוק</label>
+            <Label label="שם התינוק" />
             <input
               type="text"
               required
@@ -104,7 +105,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
 
           {/* תאריך לידה */}
           <div>
-            <label className="block text-sm font-medium mb-1">תאריך לידה</label>
+            <Label label="תאריך לידה" />
             <input
               type="date"
               required
@@ -118,7 +119,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
 
           {/* מין */}
           <div>
-            <label className="block text-sm font-medium mb-1">מין</label>
+            <Label label="מין" />
             <select
               className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
               value={formData.gender}
@@ -137,9 +138,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
           {/* משקל וגובה */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium mb-1">
-                משקל (ק"ג)
-              </label>
+              <Label label="משקל (ק״ג)" />
               <input
                 type="number"
                 step="0.1"
@@ -152,9 +151,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">
-                גובה (ס"מ)
-              </label>
+              <Label label="גובה (ס״מ)" />
               <input
                 type="number"
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"

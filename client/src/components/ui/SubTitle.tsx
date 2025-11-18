@@ -6,5 +6,5 @@ interface SubTitleProps {
 }
 
 export const SubTitle: React.FC<SubTitleProps> = ({ children, className }) => {
-  return <p className={className}>{children}</p>;
+  return <p className={`font-sans ${className}`}>{children}</p>;
 };

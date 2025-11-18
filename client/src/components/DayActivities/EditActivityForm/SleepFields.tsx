@@ -1,9 +1,10 @@
 import { formatTimeOnly } from '../../../utils/FormatedISDate';
+import { Label } from '../../ui/Label';
 
 const SleepFields = ({ formData, handleChange }) => (
   <>
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">התחלה</label>
+      <Label label="התחלה" />
       <input
         type="time"
         value={formatTimeOnly(formData.startTime)}
@@ -13,7 +14,7 @@ const SleepFields = ({ formData, handleChange }) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-700">סיום</label>
+      <Label label="סיום" />
       <input
         type="time"
         value={formatTimeOnly(formData.endTime)}

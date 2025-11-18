@@ -27,7 +27,7 @@ export const Header = () => {
             <BabyLogo size={50} iconColor="text-white" />
           </Link>
           <div>
-            <Title className="text-xl font-bold">מעקב תינוקות</Title>
+            <Title className="text-xl font-bold">My Baby Care</Title>
             <SubTitle className="text-sm font-bold text-gray-600 font-sans">
               ברוך הבא! {userName}
             </SubTitle>

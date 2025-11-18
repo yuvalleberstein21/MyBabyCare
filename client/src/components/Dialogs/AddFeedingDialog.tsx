@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { useCreateFeeding } from '../../hooks/useCreateFeeding';
 import toast from 'react-hot-toast';
 import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
+import { Label } from '../ui/Label';
 
 interface AddFeedingDialogProps {
   open: boolean;
@@ -69,9 +70,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
         {/* Form Fields */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              סוג האכלה
-            </label>
+            <Label label="סוג האכלה" />
             <select
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={type}
@@ -85,9 +84,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              זמן האכלה
-            </label>
+            <Label label="זמן האכלה" />
             <input
               type="datetime-local"
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
@@ -98,9 +95,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              כמות (ml)
-            </label>
+            <Label label="כמות (מ״ל)" />
             <input
               type="number"
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
@@ -112,9 +107,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              הערות
-            </label>
+            <Label label="הערות" />
             <textarea
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={notes}

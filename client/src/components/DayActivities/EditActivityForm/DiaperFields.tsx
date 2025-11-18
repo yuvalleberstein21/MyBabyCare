@@ -1,6 +1,8 @@
+import { Label } from '../../ui/Label';
+
 const DiaperFields = ({ formData, handleChange }) => (
   <div className="flex flex-col gap-2">
-    <label className="font-semibold text-gray-700">סוג חיתול</label>
+    <Label label="סוג חיתול" />
 
     <select
       value={formData.diaperType}

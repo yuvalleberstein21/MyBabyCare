@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';
+import { Label } from '../ui/Label';
 
 interface BabyFormData {
   name: string;
@@ -134,7 +135,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
 
           {/* שם */}
           <div>
-            <label className="block text-sm font-medium mb-1">שם התינוק</label>
+            <Label label="שם התינוק" />
             <input
               type="text"
               required
@@ -148,7 +149,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
 
           {/* תאריך לידה */}
           <div>
-            <label className="block text-sm font-medium mb-1">תאריך לידה</label>
+            <Label label="תאריך לידה" />
             <input
               type="date"
               required
@@ -162,7 +163,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
 
           {/* מין */}
           <div>
-            <label className="block text-sm font-medium mb-1">מין</label>
+            <Label label="מין" />
             <select
               className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
               value={formData.gender}
@@ -178,9 +179,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
           {/* משקל וגובה */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium mb-1">
-                משקל (ק"ג)
-              </label>
+              <Label label="משקל (ק״ג)" />
               <input
                 type="number"
                 step="0.1"
@@ -193,9 +192,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">
-                גובה (ס"מ)
-              </label>
+              <Label label="גובה (ס״מ)" />
               <input
                 type="number"
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"

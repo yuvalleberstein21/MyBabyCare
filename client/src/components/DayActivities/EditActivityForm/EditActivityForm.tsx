@@ -5,6 +5,7 @@ import FeedingFields from './FeedingFields';
 import SleepFields from './SleepFields';
 import DiaperFields from './DiaperFields';
 import HealthFields from './HealthFields';
+import { Label } from '../../ui/Label';
 
 export const EditActivityForm = ({ act, onSave, onClose }) => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ export const EditActivityForm = ({ act, onSave, onClose }) => {
 
           {/* Time */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-700">שעה</label>
+            <Label label="שעה" />
             <input
               type="time"
               value={formatTimeOnly(formData.time)}
@@ -51,7 +52,7 @@ export const EditActivityForm = ({ act, onSave, onClose }) => {
 
           {/* Notes */}
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700">הערות</label>
+            <Label label="הערות" />
             <textarea
               value={formData.notes}
               onChange={(e) => handleChange('notes', e.target.value)}

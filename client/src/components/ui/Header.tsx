@@ -8,7 +8,7 @@ const Header = ({ baby, activeActivity, onBack }: any) => (
     <div className="container mx-auto px-4 py-4">
       <button
         onClick={onBack}
-        className="flex items-center text-gray-600 hover:bg-gray-100 rounded-full p-2 mb-3 transition"
+        className="flex items-center font-playful text-gray-600 hover:bg-secondary rounded-full p-2 mb-3 transition"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         {activeActivity ? 'חזרה לבחירה' : 'חזרה ללוח הראשי'}

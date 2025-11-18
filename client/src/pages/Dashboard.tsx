@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 import { DashboardHeader } from '../components/Dashboard/DasboardHeader';
 import { DashboardGrid } from '../components/Dashboard/DashboardGrid';
 import { DashboardEmptyState } from '../components/Dashboard/DashboardEmptyState';
+import { Title } from '../components/ui/Title';
+import Button from '../components/ui/Button';
 
 const Dashboard = () => {
   const { babies, loading, error, addBaby, deleteBaby, updateBaby } =
@@ -55,14 +57,14 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg max-w-md">
-          <h3 className="font-bold mb-2">אירעה שגיאה</h3>
+          <Title className="font-bold mb-2">אירעה שגיאה</Title>
           <p>{error}</p>
-          <button
+          <Button
             onClick={() => window.location.reload()}
             className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
             נסה שוב
-          </button>
+          </Button>
         </div>
       </div>
     );

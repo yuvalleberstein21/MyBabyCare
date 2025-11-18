@@ -71,9 +71,9 @@ const DayActivities = ({ summary, loading, error }) => {
       <Filters filter={filter} setFilter={setFilter} />
 
       {filtered.length === 0 && (
-        <div className="text-center text-gray-500 py-6">
+        <Title className="text-center text-gray-500 py-6">
           אין פעילויות לתאריך זה ✨
-        </div>
+        </Title>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

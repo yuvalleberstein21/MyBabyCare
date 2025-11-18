@@ -6,6 +6,8 @@ import {
 } from '../../utils/FormatedISDate';
 import { Clock, StickyNote, Timer, Milk, X, Edit, Baby } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
+import { SubTitle } from '../ui/SubTitle';
+import { Title } from '../ui/Title';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -94,8 +96,8 @@ export const ActivityCard = ({ act }) => {
             return (
               <div key={i} className="flex items-center gap-2 text-gray-700">
                 <Icon className="w-4 h-4 text-gray-600" />
-                <span className="font-semibold">{row.label}:</span>
-                <span className="text-gray-600">{row.value}</span>
+                <Title className="font-semibold">{row.label}:</Title>
+                <SubTitle className="text-gray-600">{row.value}</SubTitle>
               </div>
             );
           })}

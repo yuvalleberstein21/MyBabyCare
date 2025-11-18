@@ -4,6 +4,7 @@ import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
 import { useCreateDiaper } from '../../hooks/useDiaper';
 import toast from 'react-hot-toast';
+import { Label } from '../ui/Label';
 
 interface AddDiaperModalProps {
   babyId: string;
@@ -62,9 +63,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
         {/* Form Fields */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              שעת החלפה
-            </label>
+            <Label label="שעת החלפה" />
             <input
               type="datetime-local"
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
@@ -74,9 +73,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              סוג החלפה
-            </label>
+            <Label label="סוג חלפה" />
             <select
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={type}
@@ -91,9 +88,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              הערות
-            </label>
+            <Label label="הערות" />
             <input
               className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
               value={notes}
