@@ -13,7 +13,7 @@ const healthSchema = new mongoose.Schema<IHealth>(
     type: {
       type: String,
       enum: {
-        values: ['temperature', 'medicine', 'vaccine', 'checkup', 'symptom'],
+        values: ['חום', 'תרופה', 'חיסון', 'בדיקה', 'תסמין'],
         message: 'סוג רשומה לא חוקי',
       },
       required: [true, 'סוג רשומה הוא שדה חובה'],

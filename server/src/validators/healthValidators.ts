@@ -13,13 +13,7 @@ export const validateHealth = (
   }
 
   // בדיקת סוג רשומה
-  const validTypes = [
-    'temperature',
-    'medicine',
-    'vaccine',
-    'checkup',
-    'symptom',
-  ];
+  const validTypes = ['חום', 'תרופה', 'חיסון', 'בדיקה', 'תסמין'];
 
   if (!type || typeof type !== 'string' || !validTypes.includes(type)) {
     res.status(400).json({ error: 'סוג רשומה לא תקין או חסר' });
