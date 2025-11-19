@@ -1,8 +1,8 @@
-export const DatePicker = ({ selectedDate, onChange }) => {
+export const DatePicker = ({ className, selectedDate, onChange }) => {
   return (
     <input
+      className={className}
       type="date"
-      className="border p-2 rounded"
       value={selectedDate}
       onChange={(e) => onChange(e.target.value)}
     />

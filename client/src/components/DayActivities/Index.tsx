@@ -3,8 +3,16 @@ import { Title } from '../ui/Title';
 import { Filters } from './Filters';
 import { ActivityCard } from './ActivityCard';
 import { Loader } from '../ui/Loader';
+import { DatePicker } from './DatePicker';
 
-const DayActivities = ({ summary, loading, error, refreshSummary }) => {
+const DayActivities = ({
+  summary,
+  loading,
+  error,
+  refreshSummary,
+  selectedDate,
+  onChange,
+}) => {
   const [filter, setFilter] = useState('all');
 
   //  Aggregate activities
@@ -65,7 +73,11 @@ const DayActivities = ({ summary, loading, error, refreshSummary }) => {
     <div dir="rtl" className="container mx-auto px-4 py-6">
       <div className="flex justify-between items-center text-center mb-6 from-accent-foreground">
         <Title className="text-2xl">מעקב יומי</Title>
-        <Title className="text-xl text-gray-500">{summary?.data.date}</Title>
+        <DatePicker
+          className="text-lg text-gray-500 font-playful bg-slate-100 p-1 rounded-md"
+          selectedDate={selectedDate}
+          onChange={onChange}
+        />
       </div>
 
       <Filters filter={filter} setFilter={setFilter} />

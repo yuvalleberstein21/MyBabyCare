@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../components/ui/Loader';
 import NotFoundBaby from '../components/MainBabyActivities/NotFoundBaby';
@@ -27,6 +27,10 @@ export const BabyDetails = () => {
     refreshSummary();
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleBackClick = () => {
     if (activeActivity) setActiveActivity(null);
     else navigate('/dashboard');
@@ -54,15 +58,13 @@ export const BabyDetails = () => {
       />
 
       <section className="container mx-auto px-4 py-2">
-        <div className="flex justify-end mb-4">
-          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
-        </div>
-
         <DayActivities
           summary={summary}
           error={null}
           loading={false}
           refreshSummary={refreshSummary}
+          selectedDate={selectedDate}
+          onChange={setSelectedDate}
         />
       </section>
     </div>
