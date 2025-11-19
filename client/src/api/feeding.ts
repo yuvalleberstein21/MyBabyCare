@@ -16,3 +16,22 @@ export const createFeeding = async (
   });
   return data;
 };
+
+// עדכון
+export const updateFeeding = async (
+  feedingId: string,
+  feedingData: Partial<FeedingData>
+) => {
+  const { data } = await axiosInstance.put(`/feed/${feedingId}`, feedingData, {
+    withCredentials: true,
+  });
+  return data;
+};
+
+// מחיקה
+export const deleteFeeding = async (feedingId: string) => {
+  const { data } = await axiosInstance.delete(`/feed/${feedingId}`, {
+    withCredentials: true,
+  });
+  return data;
+};

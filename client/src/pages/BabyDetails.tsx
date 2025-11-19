@@ -58,7 +58,12 @@ export const BabyDetails = () => {
           <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
         </div>
 
-        <DayActivities summary={summary} error={null} loading={false} />
+        <DayActivities
+          summary={summary}
+          error={null}
+          loading={false}
+          refreshSummary={refreshSummary}
+        />
       </section>
     </div>
   );

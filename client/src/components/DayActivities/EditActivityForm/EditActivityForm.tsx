@@ -40,15 +40,17 @@ export const EditActivityForm = ({ act, onSave, onClose }) => {
           </h2>
 
           {/* Time */}
-          <div className="flex flex-col gap-2">
-            <Label label="שעה" />
-            <input
-              type="time"
-              value={formatTimeOnly(formData.time)}
-              onChange={(e) => handleChange('time', e.target.value)}
-              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
-            />
-          </div>
+          {act.type !== 'sleep' && (
+            <div className="flex flex-col gap-2">
+              <Label label="שעה" />
+              <input
+                type="time"
+                value={formData.time}
+                onChange={(e) => handleChange('time', e.target.value)}
+                className="w-full border rounded-xl p-2"
+              />
+            </div>
+          )}
 
           {/* Notes */}
           <div className="flex flex-col gap-2">

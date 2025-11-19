@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
-import { useCreateFeeding } from '../../hooks/useCreateFeeding';
 import toast from 'react-hot-toast';
 import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
 import { Label } from '../ui/Label';
+import { useFeedingActions } from '../../hooks/useFeeding';
 
 interface AddFeedingDialogProps {
   open: boolean;
@@ -19,8 +19,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
   open,
   onClose,
 }) => {
-  const { handleCreateFeeding, loading, error, success } =
-    useCreateFeeding(babyId);
+  const { create, loading, error, success } = useFeedingActions(babyId);
   const [type, setType] = useState('breast');
   const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [amount, setAmount] = useState('');
@@ -43,7 +42,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
 
   const handleSave = async () => {
     const data = { type, time, amount, notes };
-    await handleCreateFeeding(data);
+    await create(data);
   };
 
   if (!open) return null;

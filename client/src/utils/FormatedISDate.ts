@@ -17,6 +17,19 @@ export const formatTimeOnly = (isoString: string) => {
   });
 };
 
+export const convertTimeToISO = (timeString: string) => {
+  if (!timeString) return null;
+  const today = new Date();
+  const [hours, minutes] = timeString.split(':');
+
+  today.setHours(Number(hours));
+  today.setMinutes(Number(minutes));
+  today.setSeconds(0);
+  today.setMilliseconds(0);
+
+  return today.toISOString();
+};
+
 export const typeLabels = {
   feeding: 'האכלה',
   sleep: 'שינה',

@@ -7,7 +7,7 @@ const SleepFields = ({ formData, handleChange }) => (
       <Label label="התחלה" />
       <input
         type="time"
-        value={formatTimeOnly(formData.startTime)}
+        value={formData.startTime}
         onChange={(e) => handleChange('startTime', e.target.value)}
         className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
       />
@@ -17,7 +17,7 @@ const SleepFields = ({ formData, handleChange }) => (
       <Label label="סיום" />
       <input
         type="time"
-        value={formatTimeOnly(formData.endTime)}
+        value={formData.endTime}
         onChange={(e) => handleChange('endTime', e.target.value)}
         className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
       />

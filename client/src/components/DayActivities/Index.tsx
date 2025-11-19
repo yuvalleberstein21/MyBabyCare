@@ -4,7 +4,7 @@ import { Filters } from './Filters';
 import { ActivityCard } from './ActivityCard';
 import { Loader } from '../ui/Loader';
 
-const DayActivities = ({ summary, loading, error }) => {
+const DayActivities = ({ summary, loading, error, refreshSummary }) => {
   const [filter, setFilter] = useState('all');
 
   //  Aggregate activities
@@ -78,7 +78,11 @@ const DayActivities = ({ summary, loading, error }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((act) => (
-          <ActivityCard key={act._id} act={act} />
+          <ActivityCard
+            key={act._id}
+            act={act}
+            refreshSummary={refreshSummary}
+          />
         ))}
       </div>
     </div>

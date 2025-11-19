@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  convertTimeToISO,
   formatTimeOnly,
   typeIcons,
   typeLabels,
@@ -8,6 +9,13 @@ import { Clock, StickyNote, Timer, Milk, X, Edit, Baby } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
 import { SubTitle } from '../ui/SubTitle';
 import { Title } from '../ui/Title';
+import { useFeedingActions } from '../../hooks/useFeeding';
+import { useParams } from 'react-router-dom';
+import {
+  normalizeFeedingPayload,
+  normalizeSleepingPayload,
+} from '../../utils/normalizeDataPayload';
+import { Loader } from '../ui/Loader';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -16,8 +24,16 @@ const colorMap = {
   health: 'bg-pink-200 border-pink-400',
 };
 
-export const ActivityCard = ({ act }) => {
+export const ActivityCard = ({ act, refreshSummary }) => {
+  const { babyId } = useParams();
   const [openEditActivityForm, setOpenEditActivityForm] = useState(false);
+  console.log(act.type);
+
+  const {
+    update,
+    loading: loadUpdateFeed,
+    error: errUpdateFeed,
+  } = useFeedingActions(babyId!);
 
   const infoRows = [
     act.time && {
@@ -62,6 +78,20 @@ export const ActivityCard = ({ act }) => {
 
   const toggleEditActivityForm = () => setOpenEditActivityForm((prev) => !prev);
 
+  const handleSave = async (updatedData) => {
+    let normalized;
+    if (act.type === 'feeding') {
+      normalized = normalizeFeedingPayload(updatedData);
+    }
+
+    if (act.type === 'sleep') {
+      normalized = normalizeSleepingPayload(updatedData);
+    }
+    await update(act._id, normalized);
+    refreshSummary?.();
+    toggleEditActivityForm();
+  };
+
   return (
     <>
       <div
@@ -94,26 +124,29 @@ export const ActivityCard = ({ act }) => {
           {infoRows.map((row, i) => {
             const Icon = row.icon;
             return (
-              <div key={i} className="flex items-center gap-2 text-gray-700">
+              <div
+                key={i}
+                className="flex items-center gap-2 text-center text-gray-700"
+              >
                 <Icon className="w-4 h-4 text-gray-600" />
-                <Title className="font-semibold">{row.label}:</Title>
-                <SubTitle className="text-gray-600">{row.value}</SubTitle>
+                <SubTitle className="font-semibold">{row.label}:</SubTitle>
+                <span className="text-gray-600">{row.value}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {openEditActivityForm && (
-        <EditActivityForm
-          act={act}
-          onSave={(updated) => {
-            console.log(updated);
-            toggleEditActivityForm(); // נסגור אחרי שמירה
-          }}
-          onClose={toggleEditActivityForm}
-        />
-      )}
+      {openEditActivityForm &&
+        (loadUpdateFeed ? (
+          <Loader />
+        ) : (
+          <EditActivityForm
+            act={act}
+            onSave={handleSave}
+            onClose={toggleEditActivityForm}
+          />
+        ))}
     </>
   );
 };

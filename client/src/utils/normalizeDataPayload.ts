@@ -1,0 +1,18 @@
+import { convertTimeToISO } from './FormatedISDate';
+
+export const normalizeFeedingPayload = (formData) => {
+  return {
+    type: formData.feedingType,
+    amount: Number(formData.amount),
+    time: convertTimeToISO(formData.time),
+    notes: formData.notes || '',
+  };
+};
+
+export const normalizeSleepingPayload = (formData) => {
+  return {
+    startTime: convertTimeToISO(formData.startTime),
+    endTime: convertTimeToISO(formData.endTime),
+    notes: formData.notes || '',
+  };
+};

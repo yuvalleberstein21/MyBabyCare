@@ -12,11 +12,11 @@ const HealthFields = ({ formData, handleChange }) => (
         <option value="" disabled>
           בחר סוג
         </option>
-        <option value="temperature">חום</option>
-        <option value="medicine">תרופה</option>
-        <option value="vaccine">חיסון</option>
-        <option value="checkup">בדיקה</option>
-        <option value="symptom">תסמין</option>
+        <option value="חום">חום</option>
+        <option value="תרופה">תרופה</option>
+        <option value="חיסון">חיסון</option>
+        <option value="בדיקה">בדיקה</option>
+        <option value="תסמין">תסמין</option>
       </select>
     </div>
 

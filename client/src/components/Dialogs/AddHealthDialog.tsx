@@ -15,11 +15,11 @@ interface AddHealthDialogProps {
 
 // Mock data לסוגי בריאות
 const HEALTH_TYPES = [
-  { value: 'temperature', label: '🌡️ חום' },
-  { value: 'medicine', label: '💊 תרופה' },
-  { value: 'vaccine', label: '💉 חיסון' },
-  { value: 'checkup', label: '👨‍⚕️ בדיקה' },
-  { value: 'symptom', label: '🤒 תסמין' },
+  { value: 'חום', label: '🌡️ חום' },
+  { value: 'תרופה', label: '💊 תרופה' },
+  { value: 'חיסון', label: '💉 חיסון' },
+  { value: 'בדיקה', label: '👨‍⚕️ בדיקה' },
+  { value: 'תסמין', label: '🤒 תסמין' },
 ];
 
 export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
@@ -29,7 +29,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
 }) => {
   const { handleCreateHealth, loading, error, success } = useHealth();
 
-  const [type, setType] = useState('temperature');
+  const [type, setType] = useState('חום');
   const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [value, setValue] = useState('');
   const [notes, setNotes] = useState('');
@@ -70,15 +70,15 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   // טקסטים דינמיים לפי סוג
   const getValueLabel = () => {
     switch (type) {
-      case 'temperature':
+      case 'חום':
         return 'חום גוף (°C)';
-      case 'medicine':
+      case 'תרופה':
         return 'שם התרופה';
-      case 'vaccine':
+      case 'חיסון':
         return 'שם החיסון';
-      case 'checkup':
+      case 'בדיקה':
         return 'סוג הבדיקה';
-      case 'symptom':
+      case 'תסמין':
         return 'תיאור התסמין';
       default:
         return 'ערך';
@@ -87,15 +87,15 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
 
   const getValuePlaceholder = () => {
     switch (type) {
-      case 'temperature':
+      case 'חום':
         return '37.5';
-      case 'medicine':
+      case 'תרופה':
         return 'נורופן לילדים';
-      case 'vaccine':
+      case 'חיסון':
         return 'חיסון שישי';
-      case 'checkup':
+      case 'בדיקה':
         return 'בדיקת משקל וגובה';
-      case 'symptom':
+      case 'תסמין':
         return 'נזלת קלה';
       default:
         return '';
@@ -103,7 +103,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   };
 
   const getValueType = () => {
-    return type === 'temperature' ? 'number' : 'text';
+    return type === 'חום' ? 'number' : 'text';
   };
 
   if (!open) return null;
@@ -175,9 +175,9 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
               onChange={(e) => setValue(e.target.value)}
               disabled={loading}
               placeholder={getValuePlaceholder()}
-              step={type === 'temperature' ? '0.1' : undefined}
-              min={type === 'temperature' ? '35' : undefined}
-              max={type === 'temperature' ? '42' : undefined}
+              step={type === 'חום' ? '0.1' : undefined}
+              min={type === 'חום' ? '35' : undefined}
+              max={type === 'חום' ? '42' : undefined}
             />
           </div>
 
