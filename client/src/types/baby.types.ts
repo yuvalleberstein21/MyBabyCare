@@ -5,6 +5,9 @@ export interface Baby {
   name: string;
   gender: 'בן' | 'בת';
   birthDate: string;
+  weight: number;
+  height: number;
+  image?: string;
   createdAt?: string;
   updatedAt?: string;
 }

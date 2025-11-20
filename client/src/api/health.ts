@@ -1,14 +1,10 @@
+import type { HealthPayload, HealthRecord } from '../types';
 import axiosInstance from '../utils/axiosInstance';
 
-interface HealthData {
-  babyId: string;
-  type: ['temperature', 'medicine', 'vaccine', 'checkup', 'symptom'];
-  value: number | string;
-  time: Date;
-  notes?: string;
-}
 // יצירה
-export const createHealth = async (healthData: HealthData) => {
+export const createHealth = async (
+  healthData: HealthPayload
+): Promise<HealthRecord> => {
   const { data } = await axiosInstance.post(`/health/`, healthData, {
     withCredentials: true,
   });
@@ -18,8 +14,8 @@ export const createHealth = async (healthData: HealthData) => {
 // עדכון
 export const updateHealth = async (
   healthId: string,
-  healthData: Partial<HealthData>
-) => {
+  healthData: Partial<HealthPayload>
+): Promise<HealthRecord> => {
   const { data } = await axiosInstance.put(`/health/${healthId}`, healthData, {
     withCredentials: true,
   });
@@ -27,7 +23,9 @@ export const updateHealth = async (
 };
 
 // מחיקה
-export const deleteHealth = async (healthId: string) => {
+export const deleteHealth = async (
+  healthId: string
+): Promise<{ success: boolean }> => {
   const { data } = await axiosInstance.delete(`/health/${healthId}`, {
     withCredentials: true,
   });

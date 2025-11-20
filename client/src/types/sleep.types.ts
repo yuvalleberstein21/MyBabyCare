@@ -1,16 +1,19 @@
 import type { ID } from './baby.types';
 
-export interface SleepSession {
+export interface EndSleepSession {
+  _id: ID;
+  babyId: ID;
+  endTime?: string;
+}
+
+export interface StartSleepSession {
   _id: ID;
   babyId: ID;
   startTime: string;
-  endTime?: string;
-  duration?: number;
-  notes?: string;
 }
 
 export interface SleepPayload {
   startTime: string;
-  endTime?: string;
+  endTime: string;
   notes?: string;
 }

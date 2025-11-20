@@ -7,13 +7,13 @@ export interface HealthRecord {
   babyId: ID;
   type: HealthType;
   value: number | string;
-  time: string;
+  time: Date;
   notes?: string;
 }
 
 export interface HealthPayload {
   type: HealthType;
   value: number | string;
-  time: string;
+  time: Date;
   notes?: string;
 }

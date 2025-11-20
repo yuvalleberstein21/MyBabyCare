@@ -1,12 +1,11 @@
+import type { DiaperChange, DiaperPayload } from '../types';
 import axiosInstance from '../utils/axiosInstance';
 
-interface DiaperData {
-  time: string;
-  type: string;
-  notes?: string;
-}
 //יצירה
-export const createDiaper = async (babyId: string, diaperData: DiaperData) => {
+export const createDiaper = async (
+  babyId: string,
+  diaperData: DiaperPayload
+): Promise<DiaperChange> => {
   const { data } = await axiosInstance.post(`/diaper/${babyId}`, diaperData, {
     withCredentials: true,
   });
@@ -16,8 +15,8 @@ export const createDiaper = async (babyId: string, diaperData: DiaperData) => {
 // עדכון
 export const updateDiaper = async (
   diaperId: string,
-  diaperData: Partial<DiaperData>
-) => {
+  diaperData: Partial<DiaperPayload>
+): Promise<DiaperChange> => {
   const { data } = await axiosInstance.put(`/diaper/${diaperId}`, diaperData, {
     withCredentials: true,
   });
@@ -25,7 +24,9 @@ export const updateDiaper = async (
 };
 
 // מחיקה
-export const deleteDiaper = async (diaperId: string) => {
+export const deleteDiaper = async (
+  diaperId: string
+): Promise<{ success: boolean }> => {
   const { data } = await axiosInstance.delete(`/diaper/${diaperId}`, {
     withCredentials: true,
   });

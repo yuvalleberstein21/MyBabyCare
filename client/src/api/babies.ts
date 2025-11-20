@@ -1,14 +1,5 @@
+import type { Baby } from '../types';
 import axiosInstance from '../utils/axiosInstance';
-
-interface BabyData {
-  name: string;
-  gender: string;
-  birthDate: string;
-  weight: number;
-  height: number;
-  notes?: string;
-  image?: string;
-}
 
 export const getBabies = async () => {
   const { data } = await axiosInstance.get('/babies', {
@@ -24,14 +15,14 @@ export const getSingleBaby = async (babyId: string) => {
   return data;
 };
 
-export const createNewBaby = async (babyData: BabyData) => {
+export const createNewBaby = async (babyData: Baby) => {
   const { data } = await axiosInstance.post('/babies', babyData, {
     withCredentials: true,
   });
   return data;
 };
 
-export const updateBabyApi = async (babyId: string, babyData: BabyData) => {
+export const updateBabyApi = async (babyId: string, babyData: Baby) => {
   const { data } = await axiosInstance.put(`/babies/${babyId}`, babyData, {
     withCredentials: true,
   });

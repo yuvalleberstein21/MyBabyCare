@@ -1,16 +1,10 @@
+import type { FeedingPayload, FeedingType } from '../types';
 import axiosInstance from '../utils/axiosInstance';
-
-interface FeedingData {
-  type: string;
-  amount?: string;
-  time: string;
-  notes?: string;
-}
 
 export const createFeeding = async (
   babyId: string,
-  feedingData: FeedingData
-) => {
+  feedingData: FeedingPayload
+): Promise<FeedingType> => {
   const { data } = await axiosInstance.post(`/feed/${babyId}`, feedingData, {
     withCredentials: true,
   });
@@ -20,8 +14,8 @@ export const createFeeding = async (
 // עדכון
 export const updateFeeding = async (
   feedingId: string,
-  feedingData: Partial<FeedingData>
-) => {
+  feedingData: Partial<FeedingPayload>
+): Promise<FeedingType> => {
   const { data } = await axiosInstance.put(`/feed/${feedingId}`, feedingData, {
     withCredentials: true,
   });
@@ -29,7 +23,9 @@ export const updateFeeding = async (
 };
 
 // מחיקה
-export const deleteFeeding = async (feedingId: string) => {
+export const deleteFeeding = async (
+  feedingId: string
+): Promise<{ success: boolean }> => {
   const { data } = await axiosInstance.delete(`/feed/${feedingId}`, {
     withCredentials: true,
   });
