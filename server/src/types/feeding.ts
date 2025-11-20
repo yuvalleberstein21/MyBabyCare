@@ -4,7 +4,7 @@ import { Document, Types } from 'mongoose';
 export interface IFeeding extends Document {
   babyId: Types.ObjectId;
   type: string;
-  amount: number;
+  amount: string;
   time: Date;
   notes?: string;
   createdAt: Date;
@@ -13,14 +13,14 @@ export interface IFeeding extends Document {
 
 export interface CreateFeedingRequestBody {
   type: string;
-  amount: number;
+  amount: string;
   time?: string;
   notes?: string;
 }
 
 export interface UpdateFeedingRequestBody {
   type?: string;
-  amount?: number;
+  amount: string;
   time?: string;
   notes?: string;
 }
@@ -29,7 +29,7 @@ export interface FeedingResponse {
   _id: string;
   babyId: string;
   type: string;
-  amount: number;
+  amount: string;
   time: Date;
   notes?: string;
   createdAt: Date;

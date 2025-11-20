@@ -14,9 +14,7 @@ const feedSchema = new mongoose.Schema<IFeeding>(
       required: [true, 'סוג ההאכלה נדרש'],
     },
     amount: {
-      type: Number,
-      min: 0,
-      required: [true, 'כמות האכלה נדרשת'],
+      type: String,
     },
     time: {
       type: Date,

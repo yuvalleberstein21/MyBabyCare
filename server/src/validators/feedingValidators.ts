@@ -12,11 +12,6 @@ export const validateFeeding = (
     return;
   }
 
-  if (amount === undefined || typeof amount !== 'number') {
-    res.status(400).json({ message: 'כמות ההאכלה נדרשת' });
-    return;
-  }
-
   if (time && isNaN(Date.parse(time))) {
     res.status(400).json({ error: 'תאריך לא תקין' });
     return;
@@ -30,25 +25,15 @@ export const validateUpdateFeeding = (
   res: Response,
   next: NextFunction
 ) => {
-  let { type, amount, time, notes } = req.body;
+  let { type, time } = req.body;
 
   if (type !== undefined && (typeof type !== 'string' || type.trim() === '')) {
     res.status(400).json({ error: 'סוג ההאכלה לא תקין' });
     return;
   }
 
-  if (amount !== undefined && typeof amount !== 'number') {
-    res.status(400).json({ error: 'כמות ההאכלה לא תקינה' });
-    return;
-  }
-
   if (time !== undefined && time !== '' && isNaN(Date.parse(time))) {
     res.status(400).json({ error: 'זמן ההאכלה אינו תקין' });
-    return;
-  }
-
-  if (notes !== undefined && typeof notes !== 'string') {
-    res.status(400).json({ error: 'הערות צריכות להיות טקסט' });
     return;
   }
 
