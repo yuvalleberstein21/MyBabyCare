@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  convertTimeToISO,
   formatTimeOnly,
   typeIcons,
   typeLabels,
@@ -8,7 +7,6 @@ import {
 import { Clock, StickyNote, Timer, Milk, X, Edit, Baby } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
 import { SubTitle } from '../ui/SubTitle';
-import { Title } from '../ui/Title';
 import { useFeedingActions } from '../../hooks/useFeeding';
 import { useParams } from 'react-router-dom';
 import {
@@ -27,7 +25,6 @@ const colorMap = {
 export const ActivityCard = ({ act, refreshSummary }) => {
   const { babyId } = useParams();
   const [openEditActivityForm, setOpenEditActivityForm] = useState(false);
-  console.log(act.type);
 
   const {
     update,
@@ -72,7 +69,7 @@ export const ActivityCard = ({ act, refreshSummary }) => {
       icon: Baby,
     },
     act.duration && { label: 'משך', value: `${act.duration} דק'`, icon: Timer },
-    act.amount && { label: 'כמות', value: `${act.amount} מ״ל`, icon: Milk },
+    act.amount && { label: 'כמות', value: `${act.amount}`, icon: Milk },
     act.notes && { label: 'הערות', value: act.notes, icon: StickyNote },
   ].filter(Boolean);
 

@@ -28,7 +28,7 @@ export const useBabyDetailsData = (babyId: string, selectedDate: string) => {
     baby: singleBaby,
     loading: loadingSingle,
     error: errorSingle || error,
-    // loadingSummary,
+    loadingSummary,
     summary,
     refreshSummary,
   };

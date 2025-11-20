@@ -19,9 +19,9 @@ const FeedingFields = ({ formData, handleChange }) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <Label label="כמות (מ״ל)" />
+      <Label label="כמות" />
       <input
-        type="number"
+        type="text"
         value={formData.amount}
         onChange={(e) => handleChange('amount', e.target.value)}
         className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"

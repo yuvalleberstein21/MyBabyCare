@@ -2,7 +2,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 interface FeedingData {
   type: string;
-  amount: number;
+  amount?: string;
   time: string;
   notes?: string;
 }

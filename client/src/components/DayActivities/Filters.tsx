@@ -15,8 +15,8 @@ export const Filters = ({ filter, setFilter }) => {
           onClick={() => setFilter(btn.key)}
           className={`px-2 py-1 rounded-full border text-md transition ${
             filter === btn.key
-              ? 'bg-blue-600 text-white border-blue-700'
-              : 'bg-white text-gray-700 border-gray-300'
+              ? 'border-primary border-2 px-4 rounded-lg bg-slate-100 text-primary font-semibold'
+              : 'border-none rounded-lg px-4 bg-gray-100 text-slate-600 font-semibold'
           }`}
         >
           {btn.label}

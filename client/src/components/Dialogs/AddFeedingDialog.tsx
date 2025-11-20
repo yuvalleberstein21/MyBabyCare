@@ -94,14 +94,14 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
           </div>
 
           <div>
-            <Label label="כמות (מ״ל)" />
+            <Label label="כמות" />
             <input
-              type="number"
+              type="text"
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
               disabled={loading}
-              placeholder="120"
+              placeholder="כמות (אופציונלי, 120ml..)"
             />
           </div>
 
@@ -112,7 +112,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               disabled={loading}
-              placeholder="הוספת הערות אופציונליות..."
+              placeholder="הוספת פרטים נוספים..."
             />
           </div>
         </div>

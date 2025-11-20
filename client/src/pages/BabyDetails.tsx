@@ -8,7 +8,6 @@ import { activities } from '../mock/ActivitiesData';
 import DayActivities from '../components/DayActivities/Index';
 import { ActivityModalManager } from '../components/MainBabyActivities/ActivityModalManager';
 import { useBabyDetailsData } from '../hooks/useBabyDetailsData';
-import { DatePicker } from '../components/DayActivities/DatePicker';
 
 export const BabyDetails = () => {
   const { babyId } = useParams();
@@ -65,6 +64,7 @@ export const BabyDetails = () => {
           refreshSummary={refreshSummary}
           selectedDate={selectedDate}
           onChange={setSelectedDate}
+          loadingSummary={loadingSummary}
         />
       </section>
     </div>

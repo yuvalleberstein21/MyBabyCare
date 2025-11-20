@@ -12,6 +12,7 @@ const DayActivities = ({
   refreshSummary,
   selectedDate,
   onChange,
+  loadingSummary,
 }) => {
   const [filter, setFilter] = useState('all');
 
@@ -88,15 +89,22 @@ const DayActivities = ({
         </Title>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((act) => (
-          <ActivityCard
-            key={act._id}
-            act={act}
-            refreshSummary={refreshSummary}
-          />
-        ))}
-      </div>
+      {loadingSummary ? (
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center rounded-xl z-20">
+          <Loader />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((act) => (
+            <ActivityCard
+              key={act._id}
+              act={act}
+              refreshSummary={refreshSummary}
+              loadingSummary={loadingSummary}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -83,7 +83,6 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
               <option value="רטוב">רטוב</option>
               <option value="מלוכלך">מלוכלך</option>
               <option value="שניהם">שניהם</option>
-              <option value="יבש">יבש</option>
             </select>
           </div>
 

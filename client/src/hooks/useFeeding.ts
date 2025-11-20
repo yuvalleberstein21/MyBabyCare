@@ -3,7 +3,7 @@ import { createFeeding, updateFeeding, deleteFeeding } from '../api/feeding';
 
 interface FeedingData {
   type: string;
-  amount: number;
+  amount?: string;
   time: string;
   notes?: string;
 }
