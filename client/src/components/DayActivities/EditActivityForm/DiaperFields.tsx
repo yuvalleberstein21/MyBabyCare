@@ -1,6 +1,12 @@
 import { Label } from '../../ui/Label';
 
-const DiaperFields = ({ formData, handleChange }) => (
+interface DiaperFieldsProps {
+  formData: {
+    diaperType: string;
+  };
+  handleChange: (key: string, value: string) => void;
+}
+const DiaperFields = ({ formData, handleChange }: DiaperFieldsProps) => (
   <div className="flex flex-col gap-2">
     <Label label="סוג חיתול" />
 

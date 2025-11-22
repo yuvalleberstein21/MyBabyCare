@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState } from 'react';
 import { getCurrentUser, login, logout, register } from '../api/auth';
+import type { AuthContextType, AuthProviderProps, AuthUser } from '../types';
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,7 +54,13 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, handleLogin, handleRegister, handleLogout }}
+      value={{
+        user,
+        loading,
+        handleLogin,
+        handleRegister,
+        handleLogout,
+      }}
     >
       {children}
     </AuthContext.Provider>

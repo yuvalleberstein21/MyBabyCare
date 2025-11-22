@@ -2,39 +2,22 @@ import React, { useCallback, useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';
 import { Label } from '../ui/Label';
-
-interface BabyFormData {
-  name: string;
-  birthDate: string;
-  gender: 'נקבה' | 'זכר';
-  weight: string;
-  height: string;
-  photo: string;
-}
-
-interface BabyData {
-  name: string;
-  birthDate: string;
-  gender: string;
-  weight?: number;
-  height?: number;
-  image?: string;
-}
+import type { NewBaby } from '../../types';
 
 interface AddBabyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdded?: (babyData: BabyData) => void;
+  onAdded?: (babyData: NewBaby) => void;
   addLoading: boolean;
 }
 
-const INITIAL_FORM_DATA: BabyFormData = {
+const INITIAL_FORM_DATA: NewBaby = {
   name: '',
   birthDate: '',
   gender: 'נקבה',
-  weight: '',
-  height: '',
-  photo: '',
+  weight: 0,
+  height: 0,
+  image: '',
 };
 
 export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
@@ -43,7 +26,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
   onAdded,
   addLoading,
 }) => {
-  const [formData, setFormData] = useState<BabyFormData>(INITIAL_FORM_DATA);
+  const [formData, setFormData] = useState<NewBaby>(INITIAL_FORM_DATA);
 
   const handleClose = useCallback(() => {
     onOpenChange(false);
@@ -57,13 +40,13 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const babyData: BabyData = {
+      const babyData: NewBaby = {
         name: formData.name,
         birthDate: formData.birthDate,
         gender: formData.gender,
         weight: formData.weight ? Number(formData.weight) : undefined,
         height: formData.height ? Number(formData.height) : undefined,
-        image: formData.photo || undefined,
+        image: formData.image || undefined,
       };
 
       try {
@@ -84,7 +67,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, photo: reader.result as string }));
+        setFormData((prev) => ({ ...prev, image: reader.result as string }));
       };
       reader.readAsDataURL(file);
     }
@@ -112,9 +95,9 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
           {/* העלאת תמונה */}
           <div className="flex flex-col items-center mb-4">
             <label className="relative w-28 h-28 rounded-full bg-muted flex items-center justify-center cursor-pointer overflow-hidden hover:opacity-90 transition">
-              {formData.photo ? (
+              {formData.image ? (
                 <img
-                  src={formData.photo}
+                  src={formData.image}
                   alt="תמונת תינוק"
                   className="w-full h-full object-cover"
                 />
@@ -168,7 +151,10 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
               className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
               value={formData.gender}
               onChange={(e) =>
-                setFormData({ ...formData, gender: e.target.value })
+                setFormData({
+                  ...formData,
+                  gender: e.target.value as 'זכר' | 'נקבה',
+                })
               }
             >
               <option value="נקבה">נקבה</option>
@@ -182,11 +168,15 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
               <Label label="משקל (ק״ג)" />
               <input
                 type="number"
-                step="0.1"
+                step={0.1}
+                min={0}
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.weight}
                 onChange={(e) =>
-                  setFormData({ ...formData, weight: e.target.value })
+                  setFormData({
+                    ...formData,
+                    weight: e.target.value ? parseFloat(e.target.value) : 0,
+                  })
                 }
               />
             </div>
@@ -195,10 +185,15 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
               <Label label="גובה (ס״מ)" />
               <input
                 type="number"
+                step={0.1}
+                min={0}
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.height}
                 onChange={(e) =>
-                  setFormData({ ...formData, height: e.target.value })
+                  setFormData({
+                    ...formData,
+                    height: e.target.value ? parseFloat(e.target.value) : 0,
+                  })
                 }
               />
             </div>

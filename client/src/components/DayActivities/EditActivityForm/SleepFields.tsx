@@ -1,7 +1,14 @@
-import { formatTimeOnly } from '../../../utils/FormatedISDate';
 import { Label } from '../../ui/Label';
 
-const SleepFields = ({ formData, handleChange }) => (
+interface SleepFieldsProps {
+  formData: {
+    startTime: string;
+    endTime: string;
+  };
+  handleChange: (key: string, value: string | number) => void;
+}
+
+const SleepFields = ({ formData, handleChange }: SleepFieldsProps) => (
   <>
     <div className="flex flex-col gap-2">
       <Label label="התחלה" />

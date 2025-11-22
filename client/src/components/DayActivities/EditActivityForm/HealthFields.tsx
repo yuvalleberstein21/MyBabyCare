@@ -1,6 +1,13 @@
 import { Label } from '../../ui/Label';
 
-const HealthFields = ({ formData, handleChange }) => (
+interface HealthFieldsProps {
+  formData: {
+    healthType: string;
+    value: string;
+  };
+  handleChange: (key: string, value: string) => void;
+}
+const HealthFields = ({ formData, handleChange }: HealthFieldsProps) => (
   <>
     <div className="flex flex-col gap-2">
       <Label label="סוג טיפול" />

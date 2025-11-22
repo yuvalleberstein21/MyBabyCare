@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { AddBabyDialog } from '../components/Dialogs/AddBabyDialog';
 import { useBabies } from '../hooks/useBabies';
 import { Loader } from '../components/ui/Loader';
-
 import toast from 'react-hot-toast';
 import { DashboardHeader } from '../components/Dashboard/DasboardHeader';
 import { DashboardGrid } from '../components/Dashboard/DashboardGrid';
 import { DashboardEmptyState } from '../components/Dashboard/DashboardEmptyState';
 import { Title } from '../components/ui/Title';
 import Button from '../components/ui/Button';
+import type { Baby } from '../types';
 
 const Dashboard = () => {
   const { babies, loading, error, addBaby, deleteBaby, updateBaby } =
@@ -20,13 +20,13 @@ const Dashboard = () => {
     try {
       await deleteBaby(id);
       toast.success('התינוק נמחק בהצלחה 🧸');
-    } catch (err) {
+    } catch (err: any) {
       toast.error('שגיאה במחיקה');
     }
   };
 
   // UPDATE BABY
-  const handleUpdate = async (babyId: string, updatedData: any) => {
+  const handleUpdate = async (babyId: string, updatedData: Baby) => {
     try {
       await updateBaby(babyId, updatedData);
       toast.success('הפרטים עודכנו בהצלחה ✨');
@@ -37,7 +37,7 @@ const Dashboard = () => {
   };
 
   // CREATE BABY
-  const handleAddBaby = async (data: any) => {
+  const handleAddBaby = async (data: Baby) => {
     try {
       await addBaby(data);
       toast.success('תינוק נוסף בהצלחה 👶');

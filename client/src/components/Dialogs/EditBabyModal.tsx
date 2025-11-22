@@ -9,7 +9,7 @@ type Baby = {
   gender: 'זכר' | 'נקבה';
   weight: number;
   height: number;
-  photo?: string;
+  image?: string;
 };
 
 interface EditBabyDialogProps {
@@ -31,7 +31,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
     gender: baby.gender,
     weight: baby.weight,
     height: baby.height,
-    photo: baby.photo,
+    image: baby.image,
   });
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -66,9 +66,9 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
           {/* העלאת תמונה */}
           <div className="flex flex-col items-center mb-4">
             <label className="relative w-28 h-28 rounded-full bg-muted flex items-center justify-center cursor-pointer overflow-hidden hover:opacity-90 transition">
-              {formData.photo ? (
+              {formData.image ? (
                 <img
-                  src={formData.photo}
+                  src={formData.image}
                   alt="תמונת תינוק"
                   className="w-full h-full object-cover"
                 />
@@ -82,7 +82,7 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
                 type="file"
                 accept="image/*"
                 onChange={(e) =>
-                  setFormData({ ...formData, photo: e.target.value })
+                  setFormData({ ...formData, image: e.target.value })
                 }
                 className="hidden"
               />

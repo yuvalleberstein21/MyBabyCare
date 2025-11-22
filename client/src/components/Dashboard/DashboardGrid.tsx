@@ -1,16 +1,8 @@
+import type { Baby } from '../../types';
 import BabyCard from './BabyCard';
 
-type BabyType = {
-  _id: string;
-  name: string;
-  gender: string;
-  birthDate: Date;
-  notes: string;
-  image: string;
-};
-
 interface DashboardGridProps {
-  babies: BabyType[];
+  babies: Baby[];
   onDelete: (id: string) => void;
   onUpdate: (id: string, data: any) => void;
 }

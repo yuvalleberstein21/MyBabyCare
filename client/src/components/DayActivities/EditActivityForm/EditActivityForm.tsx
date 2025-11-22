@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatTimeOnly, typeLabels } from '../../../utils/FormatedISDate';
+import { typeLabels } from '../../../utils/FormatedISDate';
 import Button from '../../ui/Button';
 import FeedingFields from './FeedingFields';
 import SleepFields from './SleepFields';

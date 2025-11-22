@@ -1,26 +1,23 @@
-import type { ID } from './baby.types';
+import type { ReactNode } from 'react';
 
-export interface User {
-  _id: ID;
+export interface AuthUser {
+  _id: string;
   fullName: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface AuthResponse<T> {
-  success: boolean;
-  message?: string;
-  data: T;
+export interface AuthContextType {
+  user: AuthUser | null;
+  loading: boolean;
+  handleLogin: (email: string, password: string) => Promise<void>;
+  handleRegister: (
+    fullName: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
+  handleLogout: () => Promise<void>;
 }
 
-export interface LoginPayload {
-  email: string;
-  password: string;
-}
-
-export interface RegisterPayload {
-  fullName: string;
-  email: string;
-  password: string;
+export interface AuthProviderProps {
+  children: ReactNode;
 }

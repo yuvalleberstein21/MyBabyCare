@@ -4,8 +4,18 @@ import { Filters } from './Filters';
 import { ActivityCard } from './ActivityCard';
 import { Loader } from '../ui/Loader';
 import { DatePicker } from './DatePicker';
+import type { DaySummaryResponse } from '../../types';
 
-const DayActivities = ({
+interface DayActivitiesProps {
+  summary: DaySummaryResponse | null;
+  loading: boolean;
+  loadingSummary: boolean;
+  error: string | null;
+  refreshSummary: () => void;
+  selectedDate: string;
+  onChange: (newDate: string) => void;
+}
+const DayActivities: React.FC<DayActivitiesProps> = ({
   summary,
   loading,
   error,
@@ -64,11 +74,6 @@ const DayActivities = ({
 
   if (error)
     return <div className="text-center py-6 text-red-500">{error}</div>;
-
-  if (!summary)
-    return (
-      <div className="text-center py-6 text-gray-500">אין מידע ליום זה</div>
-    );
 
   return (
     <div dir="rtl" className="container mx-auto px-4 py-6">

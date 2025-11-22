@@ -5,16 +5,7 @@ import { Link } from 'react-router-dom';
 import EditBabyModal from '../Dialogs/EditBabyModal';
 import { Title } from '../ui/Title';
 import { SubTitle } from '../ui/SubTitle';
-
-type Baby = {
-  _id: string;
-  name: string;
-  birthDate: string;
-  gender: 'זכר' | 'נקבה';
-  weight: number;
-  height: number;
-  photo?: string | undefined;
-};
+import type { Baby } from '../../types';
 
 interface BabyCardProps {
   baby: Baby;
@@ -23,7 +14,7 @@ interface BabyCardProps {
 }
 
 const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
-  const { _id, name, birthDate, gender, weight, height, photo } = baby;
+  const { _id, name, birthDate, gender, weight, height, image } = baby;
 
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +27,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
 
   const handleDelete = () => {
     setIsModalOpen(false);
-    if (onDelete) onDelete(_id);
+    if (onDelete) onDelete(_id!);
   };
 
   return (
@@ -51,7 +42,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
         {/* תמונה + תג מין */}
         <div className="relative">
           <img
-            src={photo || getDefaultImage()}
+            src={getDefaultImage()}
             alt={name}
             className="w-full h-40 object-cover bg-gray-100"
           />

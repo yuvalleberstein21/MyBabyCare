@@ -22,7 +22,7 @@ const AuthForm = ({
   setPassword: (val: string) => void;
   confirmPassword: string;
   setConfirmPassword: (val: string) => void;
-  handleSubmit: () => void;
+  handleSubmit: (e: React.FormEvent) => void;
   loading: boolean;
 }) => (
   <div className="space-y-4">

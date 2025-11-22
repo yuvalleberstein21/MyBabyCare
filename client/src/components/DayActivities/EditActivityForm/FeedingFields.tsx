@@ -1,6 +1,14 @@
 import { Label } from '../../ui/Label';
 
-const FeedingFields = ({ formData, handleChange }) => (
+interface feedingFieldsProps {
+  formData: {
+    feedingType: string;
+    amount: string | number;
+  };
+  handleChange: (key: string, value: string | number) => void;
+}
+
+const FeedingFields = ({ formData, handleChange }: feedingFieldsProps) => (
   <>
     <div className="flex flex-col gap-2">
       <Label label="סוג האכלה" />
