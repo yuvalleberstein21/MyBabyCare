@@ -1,6 +1,6 @@
 import type { ID } from './baby.types';
 
-export type HealthType = 'טמפרטורה' | 'תרופה' | 'חיסון' | 'בדיקה' | 'תסמין';
+export type HealthType = 'חום' | 'תרופה' | 'חיסון' | 'בדיקה' | 'תסמין';
 
 export interface HealthRecord {
   _id: ID;
@@ -14,6 +14,6 @@ export interface HealthRecord {
 export interface HealthPayload {
   type: HealthType;
   value: number | string;
-  time: Date;
+  time: string;
   notes?: string;
 }

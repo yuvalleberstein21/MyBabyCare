@@ -3,9 +3,10 @@ import axiosInstance from '../utils/axiosInstance';
 
 // יצירה
 export const createHealth = async (
+  babyId: string,
   healthData: HealthPayload
 ): Promise<HealthRecord> => {
-  const { data } = await axiosInstance.post(`/health/`, healthData, {
+  const { data } = await axiosInstance.post(`/health/${babyId}`, healthData, {
     withCredentials: true,
   });
   return data;

@@ -4,8 +4,9 @@ import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
-import { useHealth } from '../../hooks/useHealth';
+import { useHealthActions } from '../../hooks/useHealth';
 import { Label } from '../ui/Label';
+import type { HealthType } from '../../types';
 
 interface AddHealthDialogProps {
   open: boolean;
@@ -27,9 +28,9 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   open,
   onClose,
 }) => {
-  const { handleCreateHealth, loading, error, success } = useHealth();
+  const { create, loading, error, success } = useHealthActions(babyId);
 
-  const [type, setType] = useState('חום');
+  const [type, setType] = useState<HealthType>('חום');
   const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [value, setValue] = useState('');
   const [notes, setNotes] = useState('');
@@ -37,7 +38,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   // איפוס טופס בסגירה
   useEffect(() => {
     if (!open) {
-      setType('temperature');
+      setType('חום');
       setTime(getCurrentDateTimeLocal());
       setValue('');
       setNotes('');
@@ -53,18 +54,12 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
   }, [error, success]);
 
   const handleSave = async () => {
+    const data = { type, time, value, notes };
     if (!value.trim()) {
       toast.error('נא למלא את הערך הנדרש');
       return;
     }
-
-    await handleCreateHealth({
-      babyId,
-      type,
-      time,
-      value,
-      notes,
-    });
+    await create(data);
   };
 
   // טקסטים דינמיים לפי סוג
@@ -137,8 +132,8 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
               className="w-full border bg-background rounded-xl p-3 focus:ring-2 focus:ring-primary outline-none transition"
               value={type}
               onChange={(e) => {
-                setType(e.target.value);
-                setValue(''); // איפוס ערך בשינוי סוג
+                setType(e.target.value as HealthType);
+                setValue('');
               }}
               disabled={loading}
             >

@@ -24,3 +24,12 @@ export const normalizeDiaperPayload = (formData) => {
     notes: formData.notes || '',
   };
 };
+
+export const normalizeHealthPayload = (formData) => {
+  return {
+    time: convertTimeToISO(formData.time),
+    type: formData.healthType,
+    value: formData.value,
+    notes: formData.notes || '',
+  };
+};

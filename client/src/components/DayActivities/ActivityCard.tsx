@@ -61,7 +61,6 @@ export const ActivityCard = ({ act, refreshSummary }) => {
         </div>
 
         {/* שדות */}
-        {/* שדות */}
         <div className="flex flex-col gap-2 mt-1">
           <ActivityInfoRows act={act} />
         </div>
