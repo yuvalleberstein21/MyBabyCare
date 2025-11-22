@@ -6,3 +6,4 @@ export * from './health.types';
 export * from './activity.types';
 export * from './summary.types';
 export * from './api.types';
+export * from './auth.types';

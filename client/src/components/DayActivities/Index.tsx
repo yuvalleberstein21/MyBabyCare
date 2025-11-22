@@ -83,27 +83,24 @@ const DayActivities = ({
 
       <Filters filter={filter} setFilter={setFilter} />
 
-      {filtered.length === 0 && (
-        <Title className="text-center text-gray-500 py-6">
-          אין פעילויות לתאריך זה ✨
-        </Title>
-      )}
-
       {loadingSummary ? (
-        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center rounded-xl z-20">
-          <Loader />
+        <div className="flex flex-col items-center justify-center py-10 text-gray-600">
+          <span className="text-lg font-medium">טוען נתונים...</span>
         </div>
-      ) : (
+      ) : filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((act) => (
             <ActivityCard
               key={act._id}
               act={act}
               refreshSummary={refreshSummary}
-              loadingSummary={loadingSummary}
             />
           ))}
         </div>
+      ) : (
+        <Title className="text-center text-gray-500 py-6">
+          אין פעילויות לתאריך זה ✨
+        </Title>
       )}
     </div>
   );

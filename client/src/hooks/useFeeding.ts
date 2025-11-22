@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { createFeeding, updateFeeding, deleteFeeding } from '../api/feeding';
+import type { FeedingPayload } from '../types';
 
-interface FeedingData {
-  type: string;
-  amount?: string;
-  time: string;
-  notes?: string;
-}
 export const useFeedingActions = (babyId: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,11 +21,11 @@ export const useFeedingActions = (babyId: string) => {
     }
   };
 
-  const create = async (data: FeedingData) => {
+  const create = async (data: FeedingPayload) => {
     await run(() => createFeeding(babyId, data));
   };
 
-  const update = async (feedingId: string, data: Partial<FeedingData>) => {
+  const update = async (feedingId: string, data: Partial<FeedingPayload>) => {
     await run(() => updateFeeding(feedingId, data));
   };
 

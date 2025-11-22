@@ -1,19 +1,14 @@
 import { useState } from 'react';
 
 import { createDiaper } from '../api/diaper';
-
-interface DiaperData {
-  time: string;
-  type: string;
-  notes?: string;
-}
+import type { DiaperPayload } from '../types';
 
 export const useCreateDiaper = (babyId: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleCreateDiaper = async (diaperData: DiaperData) => {
+  const handleCreateDiaper = async (diaperData: DiaperPayload) => {
     setLoading(true);
     setError(null);
     setSuccess(false);

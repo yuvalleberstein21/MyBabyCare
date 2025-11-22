@@ -1,27 +1,26 @@
 import { useCallback, useState } from 'react';
 import { createEndSleeping, createStartSleeping } from '../api/sleeping';
+import type { StartSleepingData, EndSleepingData } from '../types/sleep.types';
 
-interface SleepingData {
-  startTime: string;
-  endTime: string;
-  notes?: string;
-}
 export const useSleeping = (babyId: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const run = useCallback(
-    async (action: 'start' | 'end', data: SleepingData) => {
+    async (
+      action: 'start' | 'end',
+      data: StartSleepingData | EndSleepingData
+    ) => {
       setLoading(true);
       setError(null);
       setSuccess(false);
 
       try {
         if (action === 'start') {
-          await createStartSleeping(babyId, data);
+          await createStartSleeping(babyId, data as StartSleepingData);
         } else {
-          await createEndSleeping(babyId, data);
+          await createEndSleeping(babyId, data as EndSleepingData);
         }
 
         setSuccess(true);
@@ -35,8 +34,8 @@ export const useSleeping = (babyId: string) => {
   );
 
   return {
-    startSleeping: (data: SleepingData) => run('start', data),
-    endSleeping: (data: SleepingData) => run('end', data),
+    startSleeping: (data: StartSleepingData) => run('start', data),
+    endSleeping: (data: EndSleepingData) => run('end', data),
     loading,
     error,
     success,

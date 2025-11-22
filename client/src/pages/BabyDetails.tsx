@@ -21,6 +21,8 @@ export const BabyDetails = () => {
   const { baby, loading, error, summary, loadingSummary, refreshSummary } =
     useBabyDetailsData(babyId!, selectedDate);
 
+  console.log(summary);
+
   const handleCloseActivity = () => {
     setActiveActivity(null);
     refreshSummary();

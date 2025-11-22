@@ -1,20 +1,13 @@
 import { useState } from 'react';
 import { createHealth } from '../api/health';
-
-interface HealthData {
-  babyId: string;
-  type: ['temperature', 'medicine', 'vaccine', 'checkup', 'symptom'];
-  value: number | string;
-  time: Date;
-  notes?: string;
-}
+import type { HealthPayload } from '../types';
 
 export const useHealth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleCreateHealth = async (healthData: HealthData) => {
+  const handleCreateHealth = async (healthData: HealthPayload) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
