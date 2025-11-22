@@ -5,12 +5,7 @@ export const validateHealth = (
   res: Response,
   next: NextFunction
 ) => {
-  const { babyId, type, value, notes, time } = req.body;
-
-  if (!babyId) {
-    res.status(400).json({ error: 'יש לשלוח מזהה תינוק (babyId)' });
-    return;
-  }
+  const { type, value, notes, time } = req.body;
 
   // בדיקת סוג רשומה
   const validTypes = ['חום', 'תרופה', 'חיסון', 'בדיקה', 'תסמין'];
