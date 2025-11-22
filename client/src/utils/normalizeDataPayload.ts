@@ -16,3 +16,11 @@ export const normalizeSleepingPayload = (formData) => {
     notes: formData.notes || '',
   };
 };
+
+export const normalizeDiaperPayload = (formData) => {
+  return {
+    time: convertTimeToISO(formData.time),
+    type: formData.diaperType,
+    notes: formData.notes || '',
+  };
+};

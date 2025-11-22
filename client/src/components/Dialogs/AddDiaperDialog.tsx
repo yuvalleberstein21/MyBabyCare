@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { Title } from '../ui/Title';
 import { X } from 'lucide-react';
-import { useCreateDiaper } from '../../hooks/useDiaper';
+
 import toast from 'react-hot-toast';
 import { Label } from '../ui/Label';
+import { useDiaperActions } from '../../hooks/useDiaper';
 
 interface AddDiaperModalProps {
   babyId: string;
@@ -15,8 +16,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
   babyId,
   onClose,
 }) => {
-  const { handleCreateDiaper, loading, error, success } =
-    useCreateDiaper(babyId);
+  const { create, loading, error, success } = useDiaperActions(babyId);
 
   const [type, setType] = useState('');
   const [time, setTime] = useState('');
@@ -38,7 +38,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
 
   const handleSave = async () => {
     const data = { type, time, notes };
-    await handleCreateDiaper(data);
+    await create(data);
   };
 
   return (
