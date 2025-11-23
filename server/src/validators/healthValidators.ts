@@ -17,7 +17,7 @@ export const validateHealth = (
 
   // בדיקות ספציפיות לפי סוג
 
-  if (type === 'temperature') {
+  if (type === 'חום') {
     if (value === undefined || typeof value !== 'number') {
       res.status(400).json({ error: 'חום גוף נדרש והוא חייב להיות מספר' });
       return;
@@ -29,29 +29,27 @@ export const validateHealth = (
     }
   }
 
-  if (type === 'medicine') {
-    if (!notes || typeof notes !== 'string' || notes.trim() === '') {
-      res.status(400).json({ error: 'בעת תרופה חובה לציין שם התרופה (notes)' });
+  if (type === 'תרופה') {
+    if (!value || typeof value !== 'string' || value.trim() === '') {
+      res.status(400).json({ error: 'בעת תרופה חובה לציין שם התרופה' });
       return;
     }
   }
 
-  if (type === 'vaccine') {
-    if (!notes || typeof notes !== 'string' || notes.trim() === '') {
-      res.status(400).json({ error: 'בעת חיסון חובה לציין שם החיסון (notes)' });
+  if (type === 'חיסון') {
+    if (!notes || typeof value !== 'string' || value.trim() === '') {
+      res.status(400).json({ error: 'בעת חיסון חובה לציין שם החיסון' });
       return;
     }
   }
 
-  if (type === 'checkup' && (!notes || notes.trim() === '')) {
-    res
-      .status(400)
-      .json({ error: 'בעת בדיקה רפואית חובה לציין סוג בדיקה (notes)' });
+  if (type === 'בדיקה' && (!value || value.trim() === '')) {
+    res.status(400).json({ error: 'בעת בדיקה רפואית חובה לציין סוג בדיקה' });
     return;
   }
 
-  if (type === 'symptom' && (!notes || notes.trim() === '')) {
-    res.status(400).json({ error: 'בעת תסמין חובה לתאר את המצב (notes)' });
+  if (type === 'תסמין' && (!value || value.trim() === '')) {
+    res.status(400).json({ error: 'בעת תסמין חובה לתאר את המצב' });
     return;
   }
 
