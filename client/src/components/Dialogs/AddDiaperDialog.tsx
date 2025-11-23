@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Label } from '../ui/Label';
 import { useDiaperActions } from '../../hooks/useDiaper';
+import { getCurrentDateTimeLocal } from '../../utils/getCurrentDateTimeLocal';
 
 interface AddDiaperModalProps {
   babyId: string;
@@ -19,7 +20,7 @@ export const AddDiaperDialog: React.FC<AddDiaperModalProps> = ({
   const { create, loading, error, success } = useDiaperActions(babyId);
 
   const [type, setType] = useState('');
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [notes, setNotes] = useState('');
 
   useEffect(() => {

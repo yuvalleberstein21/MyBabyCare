@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { typeIcons, typeLabels } from '../../utils/FormatedISDate';
-import { X, Edit } from 'lucide-react';
+import { X, Edit, Loader2 } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
 import { useParams } from 'react-router-dom';
-import { Loader } from '../ui/Loader';
 import { useUpdateActivity } from '../../hooks/useUpdateActivity';
+// import { useDeleteActivity } from '../../hooks/useDeleteActivity';
 import { ActivityInfoRows } from './ActivityInfoRows';
 
 const colorMap = {
@@ -16,29 +16,60 @@ const colorMap = {
 
 export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { babyId } = useParams();
-  const [openEditActivityForm, setOpenEditActivityForm] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const { updateActivity, loading } = useUpdateActivity(babyId!);
-
-  const toggleEditActivityForm = () => setOpenEditActivityForm((prev) => !prev);
+  const { updateActivity } = useUpdateActivity(babyId!);
+  // const { deleteActivity } = useDeleteActivity(babyId!);
 
   const handleSave = async (updatedData) => {
-    console.log('Old act:', act);
-    await updateActivity(act, updatedData);
-    refreshSummary?.();
-    setOpenEditActivityForm(false);
+    try {
+      await updateActivity(act, updatedData);
+      setIsEditOpen(false);
+      refreshSummary?.(); // רק refresh, בלי loading
+    } catch (error) {
+      console.error('Failed to update:', error);
+      alert('שגיאה בעדכון הפעילות');
+    }
   };
+
+  // const handleDelete = async () => {
+  //   if (!window.confirm('האם למחוק פעילות זו?')) return;
+
+  //   setIsDeleting(true);
+  //   try {
+  //     await deleteActivity(act._id, act.type);
+  //     // הכרטיס ייעלם לבד כי refreshSummary יקרה
+  //     refreshSummary?.();
+  //   } catch (error) {
+  //     console.error('Failed to delete:', error);
+  //     alert('שגיאה במחיקת הפעילות');
+  //     setIsDeleting(false);
+  //   }
+  // };
+
+  // if (isDeleting) {
+  //   return (
+  //     <div
+  //       className={`p-4 rounded-xl shadow-sm border ${
+  //         colorMap[act.type]
+  //       } opacity-50`}
+  //     >
+  //       <div className="flex items-center justify-center py-4">
+  //         <Loader2 className="w-6 h-6 animate-spin text-gray-600" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
       <div
-        className={`p-4 rounded-xl shadow-sm border flex flex-col gap-3 transition ${
+        className={`p-4 rounded-xl shadow-sm border flex flex-col gap-3 transition hover:shadow-md ${
           colorMap[act.type]
         }`}
       >
-        {/* כותרת */}
         <div className="flex items-center justify-between">
-          {/* ימין — סוג הפעילות */}
           <div className="flex items-center gap-2">
             <span className="text-xl">{typeIcons[act.type]}</span>
             <span className="font-bold text-gray-900 text-lg">
@@ -46,33 +77,31 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
             </span>
           </div>
 
-          {/* שמאל — כפתורי עריכה */}
           <div className="flex items-center gap-3">
             <Edit
-              className="w-4 h-4 cursor-pointer"
-              onClick={toggleEditActivityForm}
+              className="w-4 h-4 cursor-pointer hover:text-blue-600 transition-colors"
+              onClick={() => setIsEditOpen(true)}
             />
-            <X className="w-5 h-5 cursor-pointer" />
+            <X
+              className="w-5 h-5 cursor-pointer hover:text-red-600 transition-colors"
+              // onClick={handleDelete}
+            />
           </div>
         </div>
 
-        {/* שדות */}
         <div className="flex flex-col gap-2 mt-1">
           <ActivityInfoRows act={act} />
         </div>
       </div>
 
-      {openEditActivityForm &&
-        (loading ? (
-          <Loader />
-        ) : (
-          <EditActivityForm
-            act={act}
-            onSave={handleSave}
-            onClose={toggleEditActivityForm}
-            selectedDate={selectedDate}
-          />
-        ))}
+      {isEditOpen && (
+        <EditActivityForm
+          act={act}
+          onSave={handleSave}
+          onClose={() => setIsEditOpen(false)}
+          selectedDate={selectedDate}
+        />
+      )}
     </>
   );
 };

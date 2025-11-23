@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { formatToHHMM, typeLabels } from '../../../utils/FormatedISDate';
+import { Loader2 } from 'lucide-react';
 import Button from '../../ui/Button';
 import FeedingFields from './FeedingFields';
 import SleepFields from './SleepFields';
@@ -8,10 +9,9 @@ import HealthFields from './HealthFields';
 import { Label } from '../../ui/Label';
 
 export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
-  const [activityDate] = useState(act.time);
-
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
-    time: formatToHHMM(activityDate),
+    time: formatToHHMM(act.time),
     notes: act.notes || '',
     feedingType: act.feedingType || '',
     amount: act.amount || '',
@@ -22,30 +22,67 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
     value: act.value || '',
   });
 
-  const handleChange = (key, value) =>
-    setFormData((prev) => ({ ...prev, [key]: value }));
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleChange = (key, value) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: null }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (act.type !== 'sleep' && !formData.time) {
+      newErrors.time = 'שדה חובה';
+    }
+
+    if (act.type === 'feeding' && !formData.feedingType) {
+      newErrors.feedingType = 'בחר סוג האכלה';
+    }
+
+    if (act.type === 'diaper' && !formData.diaperType) {
+      newErrors.diaperType = 'בחר סוג חיתול';
+    }
+
+    if (act.type === 'sleep') {
+      if (!formData.startTime) newErrors.startTime = 'שדה חובה';
+      if (!formData.endTime) newErrors.endTime = 'שדה חובה';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    onSave({
-      ...formData,
-      selectedDate,
-    });
+    if (!validate()) return;
+
+    setIsSaving(true);
+    try {
+      await onSave({ ...formData, selectedDate });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm animate-fadeIn"
       dir="rtl"
+      onClick={onClose}
     >
-      <div className="bg-white w-full max-w-md rounded-t-3xl shadow-2xl p-6 animate-slideUp relative">
+      <div
+        className="bg-white w-full max-w-md rounded-t-3xl shadow-2xl p-6 animate-slideUp"
+        onClick={(e) => e.stopPropagation()}
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-xl font-bold text-gray-800 text-center">
-            עדכון פעילות — {typeLabels[act.type]}
+            עדכון — {typeLabels[act.type]}
           </h2>
 
-          {/* Time */}
           {act.type !== 'sleep' && (
             <div className="flex flex-col gap-2">
               <Label label="שעה" />
@@ -53,52 +90,84 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
                 type="time"
                 value={formData.time}
                 onChange={(e) => handleChange('time', e.target.value)}
-                className="w-full border rounded-xl p-2"
+                disabled={isSaving}
+                className={`w-full border rounded-xl p-2 disabled:opacity-50 ${
+                  errors.time ? 'border-red-500' : ''
+                }`}
               />
+              {errors.time && (
+                <span className="text-red-500 text-sm">{errors.time}</span>
+              )}
             </div>
           )}
 
-          {/* Notes */}
           <div className="flex flex-col gap-2">
             <Label label="הערות" />
             <textarea
               value={formData.notes}
               onChange={(e) => handleChange('notes', e.target.value)}
-              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition"
+              disabled={isSaving}
+              className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition disabled:opacity-50"
               rows={2}
             />
           </div>
 
-          {/* Dynamic-fields */}
           {act.type === 'feeding' && (
-            <FeedingFields formData={formData} handleChange={handleChange} />
+            <FeedingFields
+              formData={formData}
+              handleChange={handleChange}
+              errors={errors}
+              disabled={isSaving}
+            />
           )}
           {act.type === 'sleep' && (
-            <SleepFields formData={formData} handleChange={handleChange} />
+            <SleepFields
+              formData={formData}
+              handleChange={handleChange}
+              errors={errors}
+              disabled={isSaving}
+            />
           )}
           {act.type === 'diaper' && (
-            <DiaperFields formData={formData} handleChange={handleChange} />
+            <DiaperFields
+              formData={formData}
+              handleChange={handleChange}
+              errors={errors}
+              disabled={isSaving}
+            />
           )}
           {act.type === 'health' && (
-            <HealthFields formData={formData} handleChange={handleChange} />
+            <HealthFields
+              formData={formData}
+              handleChange={handleChange}
+              disabled={isSaving}
+            />
           )}
 
-          {/* Buttons */}
           <div className="flex gap-4 mt-4">
             <Button
               type="button"
               onClick={onClose}
               variant="outline"
               className="flex-1"
+              disabled={isSaving}
             >
               בטל
             </Button>
             <Button
               type="submit"
               variant="primary"
-              className="flex-1 bg-gradient-primary"
+              className="flex-1 bg-gradient-primary flex items-center justify-center gap-2"
+              disabled={isSaving}
             >
-              שמור
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  שומר...
+                </>
+              ) : (
+                'שמור'
+              )}
             </Button>
           </div>
         </form>

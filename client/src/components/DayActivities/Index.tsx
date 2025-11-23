@@ -2,61 +2,56 @@ import { useMemo, useState } from 'react';
 import { Title } from '../ui/Title';
 import { Filters } from './Filters';
 import { ActivityCard } from './ActivityCard';
-import { Loader } from '../ui/Loader';
+import { RefreshCw } from 'lucide-react';
 import { DatePicker } from './DatePicker';
 import type { DaySummaryResponse } from '../../types';
 
 interface DayActivitiesProps {
   summary: DaySummaryResponse | null;
-  loading: boolean;
-  loadingSummary: boolean;
+  isFetching: boolean;
   error: string | null;
   refreshSummary: () => void;
   selectedDate: string;
   onChange: (newDate: string) => void;
 }
+
 const DayActivities: React.FC<DayActivitiesProps> = ({
   summary,
-  loading,
+  isFetching,
   error,
   refreshSummary,
   selectedDate,
   onChange,
-  loadingSummary,
 }) => {
   const [filter, setFilter] = useState('all');
 
-  //  Aggregate activities
   const allActivities = useMemo(() => {
-    if (!summary || !summary.data) return [];
+    if (!summary?.data) return [];
 
-    const feedings = summary.data.summary.feedings.map((f) => ({
-      ...f,
-      type: 'feeding',
-      feedingType: f.type,
-    }));
+    const {
+      feedings = [],
+      sleepSessions = [],
+      diaperChanges = [],
+      healthRecords = [],
+    } = summary.data.summary;
 
-    const sleep = summary.data.summary.sleepSessions.map((s) => ({
-      ...s,
-      type: 'sleep',
-    }));
-
-    const diapers = summary.data.summary.diaperChanges.map((d) => ({
-      ...d,
-      type: 'diaper',
-      diaperType: d.type,
-    }));
-
-    const health = summary.data.summary.healthRecords.map((h) => ({
-      ...h,
-      type: 'health',
-      healthType: h.type,
-    }));
-
-    return [...feedings, ...sleep, ...diapers, ...health];
+    return [
+      ...feedings.map((f) => ({ ...f, type: 'feeding', feedingType: f.type })),
+      ...sleepSessions.map((s) => ({ ...s, type: 'sleep' })),
+      ...diaperChanges.map((d) => ({
+        ...d,
+        type: 'diaper',
+        diaperType: d.type,
+      })),
+      ...healthRecords.map((h) => ({
+        ...h,
+        type: 'health',
+        healthType: h.type,
+      })),
+    ];
   }, [summary]);
 
-  const filtered = useMemo(
+  const filteredActivities = useMemo(
     () =>
       filter === 'all'
         ? allActivities
@@ -64,21 +59,17 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
     [allActivities, filter]
   );
 
-  //  Loading & Error
-  if (loading)
-    return (
-      <div className="flex justify-center py-10">
-        <Loader />
-      </div>
-    );
-
-  if (error)
-    return <div className="text-center py-6 text-red-500">{error}</div>;
-
   return (
     <div dir="rtl" className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center text-center mb-6 from-accent-foreground">
-        <Title className="text-2xl">מעקב יומי</Title>
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-3">
+          <Title className="text-2xl">מעקב יומי</Title>
+          {/* אינדיקטור קטן במקום loader מלא */}
+          {isFetching && (
+            <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
+          )}
+        </div>
+
         <DatePicker
           className="text-lg text-gray-500 font-playful bg-slate-100 p-1 rounded-md"
           selectedDate={selectedDate}
@@ -88,13 +79,27 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
 
       <Filters filter={filter} setFilter={setFilter} />
 
-      {loadingSummary ? (
-        <div className="flex flex-col items-center justify-center py-10 text-gray-600">
-          <span className="text-lg font-medium">טוען נתונים...</span>
+      {/* Error state - רק אם יש שגיאה */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <p className="text-red-600 text-sm mb-2">{error}</p>
+          <button
+            onClick={refreshSummary}
+            className="text-sm text-red-700 hover:text-red-800 underline"
+          >
+            נסה שוב
+          </button>
         </div>
-      ) : filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((act) => (
+      )}
+
+      {/* תוכן - תמיד מוצג, גם בזמן fetching */}
+      {filteredActivities.length > 0 ? (
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200 ${
+            isFetching ? 'opacity-60' : 'opacity-100'
+          }`}
+        >
+          {filteredActivities.map((act) => (
             <ActivityCard
               key={act._id}
               act={act}
@@ -104,9 +109,15 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
           ))}
         </div>
       ) : (
-        <Title className="text-center text-gray-500 py-6">
-          אין פעילויות לתאריך זה ✨
-        </Title>
+        <div
+          className={`text-center py-12 transition-opacity ${
+            isFetching ? 'opacity-60' : 'opacity-100'
+          }`}
+        >
+          <Title className="text-gray-500">
+            {isFetching ? 'טוען...' : 'אין פעילויות לתאריך זה ✨'}
+          </Title>
+        </div>
       )}
     </div>
   );
