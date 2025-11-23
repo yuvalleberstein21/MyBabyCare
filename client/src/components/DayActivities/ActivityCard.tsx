@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import {
-  formatTimeOnly,
-  typeIcons,
-  typeLabels,
-} from '../../utils/FormatedISDate';
-import { Clock, StickyNote, Timer, Milk, X, Edit, Baby } from 'lucide-react';
+import { typeIcons, typeLabels } from '../../utils/FormatedISDate';
+import { X, Edit } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
-import { SubTitle } from '../ui/SubTitle';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../ui/Loader';
 import { useUpdateActivity } from '../../hooks/useUpdateActivity';
@@ -19,7 +14,7 @@ const colorMap = {
   health: 'bg-pink-200 border-pink-400',
 };
 
-export const ActivityCard = ({ act, refreshSummary }) => {
+export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { babyId } = useParams();
   const [openEditActivityForm, setOpenEditActivityForm] = useState(false);
 
@@ -28,6 +23,7 @@ export const ActivityCard = ({ act, refreshSummary }) => {
   const toggleEditActivityForm = () => setOpenEditActivityForm((prev) => !prev);
 
   const handleSave = async (updatedData) => {
+    console.log('Old act:', act);
     await updateActivity(act, updatedData);
     refreshSummary?.();
     setOpenEditActivityForm(false);
@@ -74,6 +70,7 @@ export const ActivityCard = ({ act, refreshSummary }) => {
             act={act}
             onSave={handleSave}
             onClose={toggleEditActivityForm}
+            selectedDate={selectedDate}
           />
         ))}
     </>

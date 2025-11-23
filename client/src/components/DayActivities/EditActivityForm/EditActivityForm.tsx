@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { typeLabels } from '../../../utils/FormatedISDate';
+import { formatToHHMM, typeLabels } from '../../../utils/FormatedISDate';
 import Button from '../../ui/Button';
 import FeedingFields from './FeedingFields';
 import SleepFields from './SleepFields';
@@ -7,9 +7,11 @@ import DiaperFields from './DiaperFields';
 import HealthFields from './HealthFields';
 import { Label } from '../../ui/Label';
 
-export const EditActivityForm = ({ act, onSave, onClose }) => {
+export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
+  const [activityDate] = useState(act.time);
+
   const [formData, setFormData] = useState({
-    time: act.time || '',
+    time: formatToHHMM(activityDate),
     notes: act.notes || '',
     feedingType: act.feedingType || '',
     amount: act.amount || '',
@@ -25,7 +27,11 @@ export const EditActivityForm = ({ act, onSave, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+
+    onSave({
+      ...formData,
+      selectedDate,
+    });
   };
 
   return (

@@ -17,6 +17,22 @@ export const formatTimeOnly = (isoString: string) => {
   });
 };
 
+export const formatToHHMM = (iso) => {
+  const d = new Date(iso);
+  return `${String(d.getHours()).padStart(2, '0')}:${String(
+    d.getMinutes()
+  ).padStart(2, '0')}`;
+};
+
+export const combineDateAndTime = (date: string, time: string) => {
+  if (!date || !time) return undefined;
+
+  const [hours, minutes] = time.split(':');
+  const dt = new Date(date);
+  dt.setHours(Number(hours), Number(minutes), 0, 0);
+  return dt.toISOString();
+};
+
 export const convertTimeToISO = (timeString: string) => {
   if (!timeString) return null;
   const today = new Date();

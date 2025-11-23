@@ -99,6 +99,7 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
               key={act._id}
               act={act}
               refreshSummary={refreshSummary}
+              selectedDate={selectedDate}
             />
           ))}
         </div>

@@ -1,10 +1,10 @@
-import { convertTimeToISO } from './FormatedISDate';
+import { combineDateAndTime, convertTimeToISO } from './FormatedISDate';
 
 export const normalizeFeedingPayload = (formData) => {
   return {
     type: formData.feedingType,
     amount: Number(formData.amount),
-    time: convertTimeToISO(formData.time),
+    time: combineDateAndTime(formData.selectedDate, formData.time),
     notes: formData.notes || '',
   };
 };
@@ -19,15 +19,17 @@ export const normalizeSleepingPayload = (formData) => {
 
 export const normalizeDiaperPayload = (formData) => {
   return {
-    time: convertTimeToISO(formData.time),
+    time: combineDateAndTime(formData.selectedDate, formData.time),
     type: formData.diaperType,
     notes: formData.notes || '',
   };
 };
 
 export const normalizeHealthPayload = (formData) => {
+  const combinedTime = combineDateAndTime(formData.selectedDate, formData.time);
+
   return {
-    time: convertTimeToISO(formData.time),
+    ...(combinedTime && { time: combinedTime }),
     type: formData.healthType,
     value: formData.value,
     notes: formData.notes || '',
