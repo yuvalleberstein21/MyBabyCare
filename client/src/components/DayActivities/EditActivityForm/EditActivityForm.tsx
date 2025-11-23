@@ -31,34 +31,8 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
     }
   };
 
-  const validate = () => {
-    const newErrors = {};
-
-    if (act.type !== 'sleep' && !formData.time) {
-      newErrors.time = 'שדה חובה';
-    }
-
-    if (act.type === 'feeding' && !formData.feedingType) {
-      newErrors.feedingType = 'בחר סוג האכלה';
-    }
-
-    if (act.type === 'diaper' && !formData.diaperType) {
-      newErrors.diaperType = 'בחר סוג חיתול';
-    }
-
-    if (act.type === 'sleep') {
-      if (!formData.startTime) newErrors.startTime = 'שדה חובה';
-      if (!formData.endTime) newErrors.endTime = 'שדה חובה';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validate()) return;
 
     setIsSaving(true);
     try {

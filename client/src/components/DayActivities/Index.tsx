@@ -79,7 +79,6 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
 
       <Filters filter={filter} setFilter={setFilter} />
 
-      {/* Error state - רק אם יש שגיאה */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
           <p className="text-red-600 text-sm mb-2">{error}</p>
@@ -92,7 +91,6 @@ const DayActivities: React.FC<DayActivitiesProps> = ({
         </div>
       )}
 
-      {/* תוכן - תמיד מוצג, גם בזמן fetching */}
       {filteredActivities.length > 0 ? (
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200 ${

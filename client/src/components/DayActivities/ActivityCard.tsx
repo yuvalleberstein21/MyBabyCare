@@ -17,7 +17,7 @@ const colorMap = {
 export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { babyId } = useParams();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [isDeleting, setIsDeleting] = useState(false);
 
   const { updateActivity } = useUpdateActivity(babyId!);
   // const { deleteActivity } = useDeleteActivity(babyId!);
@@ -26,7 +26,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
     try {
       await updateActivity(act, updatedData);
       setIsEditOpen(false);
-      refreshSummary?.(); // רק refresh, בלי loading
+      refreshSummary?.();
     } catch (error) {
       console.error('Failed to update:', error);
       alert('שגיאה בעדכון הפעילות');
