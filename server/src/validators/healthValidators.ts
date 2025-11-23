@@ -37,7 +37,7 @@ export const validateHealth = (
   }
 
   if (type === 'חיסון') {
-    if (!notes || typeof value !== 'string' || value.trim() === '') {
+    if (typeof value !== 'string' || value.trim() === '') {
       res.status(400).json({ error: 'בעת חיסון חובה לציין שם החיסון' });
       return;
     }
