@@ -73,3 +73,58 @@ export const validateCreateBaby = (
 
   next();
 };
+
+export const validateUpdateBaby = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { name, gender, birthDate, weight, height, notes } = req.body;
+  const errors: string[] = [];
+
+  if (
+    name !== undefined &&
+    (typeof name !== 'string' || name.trim().length < 2)
+  ) {
+    errors.push('השם חייב להכיל לפחות 2 תווים');
+  }
+
+  if (gender !== undefined && !['זכר', 'נקבה'].includes(gender)) {
+    errors.push('מין התינוק חייב להיות זכר או נקבה');
+  }
+
+  if (birthDate !== undefined) {
+    const parsed = Date.parse(birthDate);
+    if (isNaN(parsed)) errors.push('תאריך לידה לא תקין');
+    else if (new Date(parsed) > new Date())
+      errors.push('תאריך הלידה לא יכול להיות בעתיד');
+  }
+
+  if (
+    weight !== undefined &&
+    (typeof weight !== 'number' || weight < 0 || weight > 20)
+  ) {
+    errors.push('משקל חייב להיות מספר תקין בין 0 ל-20 ק"ג');
+  }
+
+  if (
+    height !== undefined &&
+    (typeof height !== 'number' || height < 0 || height > 120)
+  ) {
+    errors.push('גובה חייב להיות מספר תקין בין 0 ל-120 ס"מ');
+  }
+
+  if (
+    notes !== undefined &&
+    (typeof notes !== 'string' || notes.length > 200)
+  ) {
+    errors.push('הערות לא יכולות להיות מעל 200 תווים');
+  }
+
+  if (errors.length > 0) {
+    res.status(400).json({ error: errors[0] });
+    return;
+  }
+
+  next();
+};

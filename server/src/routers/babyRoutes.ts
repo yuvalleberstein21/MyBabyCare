@@ -8,7 +8,10 @@ import {
 } from '../controllers/babyController';
 import { requireAuth } from '../middlewares/auth';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
-import { validateCreateBaby } from '../validators/babyValidators';
+import {
+  validateCreateBaby,
+  validateUpdateBaby,
+} from '../validators/babyValidators';
 import upload from '../middlewares/uploadImageMiddleware';
 
 const router = express.Router();
@@ -26,7 +29,7 @@ router.get('/:babyId', requireAuth, verifyBabyOwnership, getSingleBaby);
 router.put(
   '/:babyId',
   requireAuth,
-  validateCreateBaby,
+  validateUpdateBaby,
   verifyBabyOwnership,
   updateBaby
 ); // עריכת פרטי תינוק
