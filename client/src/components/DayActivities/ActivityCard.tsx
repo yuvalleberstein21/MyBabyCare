@@ -4,8 +4,9 @@ import { X, Edit, Loader2 } from 'lucide-react';
 import { EditActivityForm } from './EditActivityForm/EditActivityForm';
 import { useParams } from 'react-router-dom';
 import { useUpdateActivity } from '../../hooks/useUpdateActivity';
-// import { useDeleteActivity } from '../../hooks/useDeleteActivity';
 import { ActivityInfoRows } from './ActivityInfoRows';
+import { useDeleteActivity } from '../../hooks/useDeleteActivity';
+import toast from 'react-hot-toast';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -17,10 +18,10 @@ const colorMap = {
 export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { babyId } = useParams();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  // const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { updateActivity } = useUpdateActivity(babyId!);
-  // const { deleteActivity } = useDeleteActivity(babyId!);
+  const { deleteActivity, loading, error } = useDeleteActivity(babyId!);
 
   const handleSave = async (updatedData) => {
     try {
@@ -33,34 +34,34 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
     }
   };
 
-  // const handleDelete = async () => {
-  //   if (!window.confirm('האם למחוק פעילות זו?')) return;
+  const handleDelete = async () => {
+    if (!window.confirm('האם למחוק פעילות זו?')) return;
 
-  //   setIsDeleting(true);
-  //   try {
-  //     await deleteActivity(act._id, act.type);
-  //     // הכרטיס ייעלם לבד כי refreshSummary יקרה
-  //     refreshSummary?.();
-  //   } catch (error) {
-  //     console.error('Failed to delete:', error);
-  //     alert('שגיאה במחיקת הפעילות');
-  //     setIsDeleting(false);
-  //   }
-  // };
+    setIsDeleting(true);
+    try {
+      await deleteActivity(act._id, act.type);
+      toast.success('פעולה נמחקה בהצלחה 👏🏼');
+      refreshSummary?.();
+    } catch (error) {
+      console.error('Failed to delete:', error);
+      toast.error('שגיאה במחיקת הפעולה');
+      setIsDeleting(false);
+    }
+  };
 
-  // if (isDeleting) {
-  //   return (
-  //     <div
-  //       className={`p-4 rounded-xl shadow-sm border ${
-  //         colorMap[act.type]
-  //       } opacity-50`}
-  //     >
-  //       <div className="flex items-center justify-center py-4">
-  //         <Loader2 className="w-6 h-6 animate-spin text-gray-600" />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (isDeleting) {
+    return (
+      <div
+        className={`p-4 rounded-xl shadow-sm border ${
+          colorMap[act.type]
+        } opacity-50`}
+      >
+        <div className="flex items-center justify-center py-4">
+          <Loader2 className="w-6 h-6 animate-spin text-gray-600" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -84,7 +85,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
             />
             <X
               className="w-5 h-5 cursor-pointer hover:text-red-600 transition-colors"
-              // onClick={handleDelete}
+              onClick={handleDelete}
             />
           </div>
         </div>

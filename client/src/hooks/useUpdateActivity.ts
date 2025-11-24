@@ -33,7 +33,6 @@ export const useUpdateActivity = (babyId: string) => {
       default:
         return;
     }
-    console.log('Updated on server:', normalized);
 
     await hookToUse.update(act._id, normalized);
   };
