@@ -7,22 +7,27 @@ import {
   getFeedings,
 } from '../controllers/feedingsController';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
+import { verifyFeedingOwnership } from '../middlewares/verifyFeedingOwnership';
 import {
   validateFeeding,
   validateUpdateFeeding,
 } from '../validators/feedingValidators';
-import { verifyFeedingOwnership } from '../middlewares/verifyFeedingOwnership';
 
 const router = express.Router();
 
+// GET feedings של תינוק מסוים
 router.get('/:babyId', requireAuth, verifyBabyOwnership, getFeedings);
+
+// POST - יצירת האכלה
 router.post(
   '/:babyId',
   requireAuth,
-  validateFeeding,
   verifyBabyOwnership,
+  validateFeeding,
   createFeeding
 );
+
+// PUT - עדכון האכלה
 router.put(
   '/:feedingId',
   requireAuth,
@@ -30,6 +35,8 @@ router.put(
   validateUpdateFeeding,
   editFeeding
 );
+
+// DELETE - מחיקת האכלה
 router.delete(
   '/:feedingId',
   requireAuth,
