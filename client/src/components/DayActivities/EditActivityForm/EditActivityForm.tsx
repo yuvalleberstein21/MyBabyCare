@@ -10,33 +10,57 @@ import { Label } from '../../ui/Label';
 
 export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
   const [isSaving, setIsSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    time: formatToHHMM(act.time),
-    notes: act.notes || '',
-    feedingType: act.feedingType || '',
-    amount: act.amount || '',
-    startTime: act.startTime || '',
-    endTime: act.endTime || '',
-    diaperType: act.diaperType || '',
-    healthType: act.healthType || '',
-    value: act.value || '',
+
+  console.log(act.type);
+
+  const [formData, setFormData] = useState(() => {
+    switch (act.type) {
+      case 'sleep':
+        return {
+          startTime: act.startTime ? formatToHHMM(act.startTime) : '',
+          endTime: act.endTime ? formatToHHMM(act.endTime) : '',
+          notes: act.notes || '',
+        };
+      case 'feeding':
+        return {
+          time: act.time ? formatToHHMM(act.time) : '',
+          notes: act.notes || '',
+          feedingType: act.feedingType || '',
+          amount: act.amount || '',
+        };
+      case 'diaper':
+        return {
+          time: act.time ? formatToHHMM(act.time) : '',
+          notes: act.notes || '',
+          diaperType: act.diaperType || '',
+        };
+      case 'health':
+        return {
+          time: act.time ? formatToHHMM(act.time) : '',
+          notes: act.notes || '',
+          healthType: act.healthType || '',
+          value: act.value || '',
+        };
+      default:
+        return {};
+    }
   });
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) {
-      setErrors((prev) => ({ ...prev, [key]: null }));
-    }
+    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: null }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsSaving(true);
     try {
       await onSave({ ...formData, selectedDate });
+      console.log('Submitted formData:', formData);
+    } catch (err) {
+      console.error('Failed to save activity:', err);
     } finally {
       setIsSaving(false);
     }
@@ -57,12 +81,13 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
             עדכון — {typeLabels[act.type]}
           </h2>
 
+          {/* שעה רק לפעילויות שאינן שינה */}
           {act.type !== 'sleep' && (
             <div className="flex flex-col gap-2">
               <Label label="שעה" />
               <input
                 type="time"
-                value={formData.time}
+                value={formData.time || ''}
                 onChange={(e) => handleChange('time', e.target.value)}
                 disabled={isSaving}
                 className={`w-full border rounded-xl p-2 disabled:opacity-50 ${
@@ -75,10 +100,11 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
             </div>
           )}
 
+          {/* שדות הערות */}
           <div className="flex flex-col gap-2">
             <Label label="הערות" />
             <textarea
-              value={formData.notes}
+              value={formData.notes || ''}
               onChange={(e) => handleChange('notes', e.target.value)}
               disabled={isSaving}
               className="w-full border bg-background rounded-xl p-2 focus:ring-2 focus:ring-primary outline-none transition disabled:opacity-50"
@@ -86,6 +112,7 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
             />
           </div>
 
+          {/* שדות מיוחדים לכל סוג פעילות */}
           {act.type === 'feeding' && (
             <FeedingFields
               formData={formData}
@@ -118,6 +145,7 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
             />
           )}
 
+          {/* כפתורי פעולה */}
           <div className="flex gap-4 mt-4">
             <Button
               type="button"

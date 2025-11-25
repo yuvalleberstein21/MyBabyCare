@@ -1,4 +1,4 @@
-import { combineDateAndTime, convertTimeToISO } from './FormatedISDate';
+import { combineDateAndTime } from './FormatedISDate';
 
 export const normalizeFeedingPayload = (formData) => {
   return {
@@ -9,10 +9,16 @@ export const normalizeFeedingPayload = (formData) => {
   };
 };
 
-export const normalizeSleepingPayload = (formData) => {
+export const normalizeSleepingPayload = (formData: any) => {
+  const startTime = combineDateAndTime(
+    formData.selectedDate,
+    formData.startTime
+  );
+  const endTime = combineDateAndTime(formData.selectedDate, formData.endTime);
+
   return {
-    startTime: convertTimeToISO(formData.startTime),
-    endTime: convertTimeToISO(formData.endTime),
+    ...(startTime && { startTime }),
+    ...(endTime && { endTime }),
     notes: formData.notes || '',
   };
 };

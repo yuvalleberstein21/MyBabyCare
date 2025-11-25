@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Button from '../ui/Button';
-import { Play } from 'lucide-react';
+import { Play, StopCircle } from 'lucide-react';
 import { useSleeping } from '../../hooks/useSleeping';
 import { Loader } from '../ui/Loader';
 
@@ -16,79 +16,86 @@ export const SleepDialog: React.FC<SleepTrackerProps> = ({
   const [isSleeping, setIsSleeping] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const { startSleeping, endSleeping, loading, error, success } =
-    useSleeping(babyId);
+  const { startSleeping, endSleeping, loading, error } = useSleeping(babyId);
 
-  // טיימר לריצה בזמן שינה
+  // טיימר
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isSleeping && startTime) {
       interval = setInterval(() => {
         const diff = Math.floor((Date.now() - startTime.getTime()) / 60000);
         setElapsedMinutes(diff);
-      }, 10000);
+      }, 10000); // עדכון כל 10 שניות
     }
     return () => clearInterval(interval);
   }, [isSleeping, startTime]);
 
-  // ▶ התחלת שינה
   const handleStart = async () => {
     const now = new Date();
     setStartTime(now);
     setIsSleeping(true);
     setElapsedMinutes(0);
+    setSuccessMsg(null);
 
-    await startSleeping({
-      startTime: now.toISOString(),
-      notes: 'התחיל שינה',
-    });
+    try {
+      await startSleeping({
+        startTime: now.toISOString(),
+        notes: 'התחלת שינה',
+      });
+      setSuccessMsg('השינה החלה בהצלחה!');
+    } catch {
+      setIsSleeping(false);
+    }
   };
 
-  // ⏹ סיום שינה
   const handleStop = async () => {
     setIsSleeping(false);
 
-    await endSleeping({
-      endTime: new Date().toISOString(),
-    });
-
-    onClose(); // סגור את המודל אחרי סיום
+    try {
+      await endSleeping({
+        endTime: new Date().toISOString(),
+      });
+      setSuccessMsg('השינה הסתיימה בהצלחה!');
+      setTimeout(onClose, 1000);
+    } catch {
+      setIsSleeping(true);
+    }
   };
+
   return (
-    <div className="p-4">
-      {/* טעינה */}
+    <div className="p-6 flex flex-col items-center gap-4">
       {loading && <Loader />}
 
-      {/* שגיאה */}
-      {error && <p className="text-center text-red-600 mb-3">{error}</p>}
+      {error && <p className="text-red-600 text-center">{error}</p>}
+      {successMsg && <p className="text-green-600 text-center">{successMsg}</p>}
 
       {/* כפתור התחל שינה */}
       {!isSleeping && elapsedMinutes === 0 && (
-        <div className="flex justify-center">
-          <Button
-            className="bg-blue-600 text-white w-40 rounded-md flex justify-center items-center gap-2"
-            onClick={handleStart}
-            disabled={loading}
-          >
-            <Play className="w-6 h-6" />
-            התחל שינה
-          </Button>
-        </div>
+        <Button
+          className="bg-blue-600 hover:bg-blue-500 text-white w-48 rounded-md flex justify-center items-center gap-2"
+          onClick={handleStart}
+          disabled={loading}
+        >
+          <Play className="w-6 h-6" />
+          התחל שינה
+        </Button>
       )}
 
       {/* בזמן שינה */}
       {isSleeping && (
-        <div className="bg-white rounded-xl shadow-lg p-4 text-center space-y-2">
-          <p className="text-gray-700 font-medium">שינה בפעולה</p>
-          <p className="text-2xl font-bold">{elapsedMinutes} דקות</p>
+        <div className="bg-gray-50 rounded-xl shadow-lg p-6 text-center flex flex-col items-center gap-4 w-72">
+          <p className="text-gray-700 font-semibold text-lg">שינה פעילה</p>
+          <p className="text-3xl font-bold">{elapsedMinutes} דקות</p>
 
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center gap-4">
             <Button
-              className="bg-red-600 hover:bg-red-500 text-white w-40 rounded-md flex justify-center items-center"
+              className="bg-red-600 hover:bg-red-500 text-white w-40 rounded-md flex justify-center items-center gap-2"
               onClick={handleStop}
               disabled={loading}
             >
+              <StopCircle className="w-5 h-5" />
               עצור שינה
             </Button>
           </div>

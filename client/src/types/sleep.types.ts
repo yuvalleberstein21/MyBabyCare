@@ -22,6 +22,12 @@ export interface EndSleepSession {
   endTime: string;
 }
 
+export interface UpdateSleepSession {
+  startTime: string;
+  endTime: string;
+  notes?: string;
+}
+
 export interface SleepSession {
   _id: ID;
   babyId: ID;

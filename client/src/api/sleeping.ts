@@ -1,4 +1,9 @@
-import type { EndSleepingData, StartSleepingData } from '../types';
+import type {
+  EndSleepingData,
+  SleepSession,
+  StartSleepingData,
+  UpdateSleepSession,
+} from '../types';
 import axiosInstance from '../utils/axiosInstance';
 
 export const createStartSleeping = async (
@@ -16,6 +21,16 @@ export const createEndSleeping = async (
   payload: EndSleepingData
 ) => {
   const { data } = await axiosInstance.post(`/sleep/${babyId}/end`, payload, {
+    withCredentials: true,
+  });
+  return data;
+};
+
+export const updateSleeping = async (
+  sleepId: string,
+  payload: Partial<UpdateSleepSession>
+): Promise<SleepSession> => {
+  const { data } = await axiosInstance.put(`/sleep/${sleepId}`, payload, {
     withCredentials: true,
   });
   return data;

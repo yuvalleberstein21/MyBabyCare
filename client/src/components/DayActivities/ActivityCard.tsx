@@ -24,6 +24,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { deleteActivity, loading, error } = useDeleteActivity(babyId!);
 
   const handleSave = async (updatedData) => {
+    console.log('Updated Data:', updatedData);
     try {
       await updateActivity(act, updatedData);
       setIsEditOpen(false);
