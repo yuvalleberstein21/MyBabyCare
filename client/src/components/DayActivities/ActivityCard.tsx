@@ -21,17 +21,17 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { updateActivity } = useUpdateActivity(babyId!);
-  const { deleteActivity, loading, error } = useDeleteActivity(babyId!);
+  const { deleteActivity } = useDeleteActivity(babyId!);
 
   const handleSave = async (updatedData) => {
-    console.log('Updated Data:', updatedData);
     try {
       await updateActivity(act, updatedData);
       setIsEditOpen(false);
       refreshSummary?.();
-    } catch (error) {
-      console.error('Failed to update:', error);
-      alert('שגיאה בעדכון הפעילות');
+      toast.success('הפעילות עודכנה בהצלחה ✅');
+    } catch (err: any) {
+      console.error('Failed to update:', err);
+      toast.error(err.message || 'שגיאה בעדכון הפעילות');
     }
   };
 

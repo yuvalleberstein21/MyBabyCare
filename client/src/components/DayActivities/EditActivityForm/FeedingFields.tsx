@@ -27,7 +27,7 @@ const FeedingFields = ({ formData, handleChange }: feedingFieldsProps) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <Label label="כמות" />
+      <Label label="כמות / תיאור" />
       <input
         type="text"
         value={formData.amount}

@@ -35,3 +35,13 @@ export const updateSleeping = async (
   });
   return data;
 };
+
+// מחיקה
+export const deleteSleep = async (
+  sleepId: string
+): Promise<{ success: boolean }> => {
+  const { data } = await axiosInstance.delete(`/sleep/${sleepId}`, {
+    withCredentials: true,
+  });
+  return data;
+};

@@ -3,7 +3,7 @@ import { combineDateAndTime } from './FormatedISDate';
 export const normalizeFeedingPayload = (formData) => {
   return {
     type: formData.feedingType,
-    amount: Number(formData.amount),
+    amount: formData.amount,
     time: combineDateAndTime(formData.selectedDate, formData.time),
     notes: formData.notes || '',
   };

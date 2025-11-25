@@ -58,7 +58,6 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
     setIsSaving(true);
     try {
       await onSave({ ...formData, selectedDate });
-      console.log('Submitted formData:', formData);
     } catch (err) {
       console.error('Failed to save activity:', err);
     } finally {

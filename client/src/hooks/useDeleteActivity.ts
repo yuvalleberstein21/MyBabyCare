@@ -1,11 +1,13 @@
 import { useDiaperActions } from './useDiaper';
 import { useFeedingActions } from './useFeeding';
 import { useHealthActions } from './useHealth';
+import { useSleeping } from './useSleeping';
 
 export const useDeleteActivity = (babyId: string) => {
   const feeding = useFeedingActions(babyId);
   const diaper = useDiaperActions(babyId);
   const health = useHealthActions(babyId);
+  const sleep = useSleeping(babyId);
 
   const deleteActivity = async (id: string, type: string) => {
     let hookToUse;
@@ -19,6 +21,9 @@ export const useDeleteActivity = (babyId: string) => {
         break;
       case 'health':
         hookToUse = health;
+        break;
+      case 'sleep':
+        hookToUse = sleep;
         break;
       default:
         throw new Error('Unsupported activity type');

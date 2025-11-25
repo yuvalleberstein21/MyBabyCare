@@ -16,6 +16,7 @@ export const useHealthActions = (babyId: string) => {
       setSuccess(true);
     } catch (err: any) {
       setError(err.message || 'שגיאה בביצוע פעולה');
+      throw err;
     } finally {
       setLoading(false);
     }
