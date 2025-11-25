@@ -71,8 +71,6 @@ export const createStartSleep: RequestHandler<
   try {
     const { babyId } = req.params;
 
-    if (!validateStartSleepBody(req.body, res)) return;
-
     const { notes, startTime } = req.body;
 
     // בדיקה אם יש כבר שינה פתוחה
@@ -116,8 +114,6 @@ export const createEndSleep: RequestHandler<
   try {
     const { babyId } = req.params;
 
-    if (!validateEndSleepBody(req.body, res)) return;
-
     const { endTime } = req.body;
     const parsedEndTime = endTime ? new Date(endTime) : new Date();
 
@@ -125,7 +121,7 @@ export const createEndSleep: RequestHandler<
     const openSleep: ISleep | null = await Sleeping.findOne({
       babyId,
       endTime: { $exists: false },
-    }).sort({ startTime: -1 }); // אם יש יותר מאחת, קח את האחרונה
+    }).sort({ startTime: -1 });
 
     if (!openSleep) {
       res.status(404).json({ error: 'לא נמצאה שינה פתוחה לסיום' });
@@ -160,7 +156,6 @@ export const editSleeping = async (
     const { sleepingId } = req.params;
 
     if (!validateObjectId(sleepingId, res, 'מזהה שינה')) return;
-    if (!validateEditSleepBody(req.body, res)) return;
 
     const { startTime, endTime, notes } = req.body;
 

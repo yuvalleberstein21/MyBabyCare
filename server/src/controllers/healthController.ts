@@ -40,12 +40,10 @@ export const updateHealth: RequestHandler = async (req, res) => {
 
     const updateData: any = {};
 
-    if (req.body.type) updateData.type = req.body.type;
-    if (req.body.value) updateData.value = req.body.value;
-    if (req.body.notes) updateData.notes = req.body.notes;
-    if (req.body.time) {
-      updateData.time = new Date(req.body.time);
-    }
+    if (req.body.type !== undefined) updateData.type = req.body.type;
+    if (req.body.value !== undefined) updateData.value = req.body.value;
+    if (req.body.notes !== undefined) updateData.notes = req.body.notes;
+    if (req.body.time) updateData.time = new Date(req.body.time);
 
     const updatedRecord = await Health.findByIdAndUpdate(
       healthId,

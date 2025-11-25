@@ -8,6 +8,7 @@ import {
   IDailySummaryResponse,
   IDiaperSummary,
   IFeedingSummary,
+  IHealthSummary,
   ISleepSummary,
 } from '../types/summary';
 import { Health } from '../models/healthModel';
@@ -25,10 +26,9 @@ export const getDailySummary = async (req: Request, res: Response) => {
     }
 
     const { start, end } = getDateRange(date as string);
-
     const babyObjectId = new mongoose.Types.ObjectId(babyId);
 
-    const [feedings, diaperChanges, sleepSessions, healthRecord] =
+    const [feedings, diaperChanges, sleepSessions, healthRecords] =
       await Promise.all([
         Feeding.find({
           babyId: babyObjectId,
@@ -60,20 +60,20 @@ export const getDailySummary = async (req: Request, res: Response) => {
           time: { $gte: start, $lt: end },
         })
           .select('type value time')
-          .sort({ startTime: 1 })
-          .lean<IHealth[]>(),
+          .sort({ time: 1 })
+          .lean<IHealthSummary[]>(),
       ]);
 
-    res.status(200).json(<IDailySummaryResponse>{
+    res.status(200).json({
       success: true,
       data: {
         babyId,
         date: start.toISOString().split('T')[0],
         summary: {
-          feedings: feedings,
-          diaperChanges: diaperChanges,
-          sleepSessions: sleepSessions,
-          healthRecords: healthRecord,
+          feedings,
+          diaperChanges,
+          sleepSessions,
+          healthRecords,
         },
         meta: {
           dateRange: {

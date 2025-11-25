@@ -13,13 +13,11 @@ declare module 'express-serve-static-core' {
 export const verifyDiaperOwnership: RequestHandler = async (req, res, next) => {
   const { diaperId } = req.params;
 
-  if (!validateObjectId(diaperId, res, 'מזהה שינה')) return;
+  if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
   try {
     const diaper = await Diaper.findById(diaperId)
-      .populate<{
-        babyId: IBaby;
-      }>('babyId', 'userId')
+      .populate<{ babyId: IBaby }>('babyId', 'userId')
       .lean();
 
     if (!diaper || diaper.babyId.userId.toString() !== req.user!.id) {

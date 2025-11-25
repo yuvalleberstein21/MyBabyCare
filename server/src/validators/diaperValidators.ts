@@ -1,52 +1,52 @@
-import { Response } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 
 const validTypes = ['רטוב', 'מלוכלך', 'שניהם'];
 
-export function validateCreateDiaperBody(body: any, res: Response): boolean {
-  const { type, time, notes } = body;
+export const validateCreateDiaper: RequestHandler = (req, res, next) => {
+  const { type, time, notes } = req.body;
 
   if (!type) {
     res.status(400).json({ error: 'עלייך לבחור סוג תקין' });
-    return false;
+    return;
   }
 
   if (!validTypes.includes(type)) {
     res
       .status(400)
-      .json({ error: `סוג לא חוקי: ${type} אנא בחר בין רטוב ,מלוכלך ,שניהם` });
-    return false;
+      .json({ error: `סוג לא חוקי: ${type}. אפשר: רטוב / מלוכלך / שניהם` });
+    return;
   }
 
   if (time && isNaN(Date.parse(time))) {
     res.status(400).json({ error: 'זמן אינו תקין' });
-    return false;
+    return;
   }
 
   if (notes !== undefined && typeof notes !== 'string') {
-    res.status(400).json({ error: 'הערות צריכות להיות טקסט' });
-    return false;
+    res.status(400).json({ error: 'הערות חייבות להיות טקסט' });
+    return;
   }
 
-  return true;
-}
+  next();
+};
 
-export function validateEditDiaperBody(body: any, res: Response): boolean {
-  const { type, time, notes } = body;
+export const validateUpdateDiaper: RequestHandler = (req, res, next) => {
+  const { type, time, notes } = req.body;
 
   if (type !== undefined && !validTypes.includes(type)) {
     res.status(400).json({ error: `סוג לא חוקי: ${type}` });
-    return false;
+    return;
   }
 
-  if (time && isNaN(Date.parse(time))) {
+  if (time !== undefined && isNaN(Date.parse(time))) {
     res.status(400).json({ error: 'זמן אינו תקין' });
-    return false;
+    return;
   }
 
   if (notes !== undefined && typeof notes !== 'string') {
-    res.status(400).json({ error: 'הערות צריכות להיות טקסט' });
-    return false;
+    res.status(400).json({ error: 'הערות חייבות להיות טקסט' });
+    return;
   }
 
-  return true;
-}
+  next();
+};

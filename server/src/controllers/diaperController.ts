@@ -7,10 +7,7 @@ import {
   IDiaper,
 } from '../types/diaper';
 import { Diaper } from '../models/DiaperModel';
-import {
-  validateCreateDiaperBody,
-  validateEditDiaperBody,
-} from '../validators/diaperValidators';
+import { validateCreateDiaper } from '../validators/diaperValidators';
 
 interface BabyIdParams {
   babyId?: string;
@@ -77,8 +74,6 @@ export const createDiaper = async (
   try {
     const { babyId } = req.params;
 
-    if (!validateCreateDiaperBody(req.body, res)) return;
-
     const { time, type, notes } = req.body;
 
     const diaperTime = time ? new Date(time) : new Date();
@@ -107,7 +102,6 @@ export const editDiaper = async (
   try {
     const { diaperId } = req.params;
 
-    if (!validateEditDiaperBody(req.body, res)) return;
     if (!validateObjectId(diaperId, res, 'מזהה חיתולים')) return;
 
     const { type, time, notes } = req.body;

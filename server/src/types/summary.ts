@@ -13,6 +13,12 @@ export type IDiaperSummary = {
   notes?: string;
 };
 
+export interface IHealthSummary {
+  type: string;
+  value: number | string;
+  time: Date;
+}
+
 export type ISleepSummary = {
   _id: string;
   startTime: Date;
