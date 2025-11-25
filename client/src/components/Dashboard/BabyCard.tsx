@@ -35,9 +35,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
       {/* כרטיס התינוק */}
       <Link
         to={`/baby/${_id}`}
-        className="relative block rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all border border-gray-100"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="group relative block rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all border border-gray-100"
       >
         {/* תמונה + תג מין */}
         <div className="relative">
@@ -55,32 +53,45 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
           </div>
 
           {/* כפתור מחיקה (רק בהובר) */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsModalOpen(true);
-            }}
-            className={`absolute top-3 right-3 z-20 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-opacity duration-200 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsModalOpen(true);
+              }}
+              className="
+                absolute top-3 right-3 z-20 
+                bg-red-500 hover:bg-red-600 text-white 
+                rounded-full p-1 shadow-lg 
+                transition-opacity duration-200
+                opacity-100 
+                md:opacity-100
+                sm:opacity-0
+                sm:group-hover:opacity-100"
+            >
+              <X className="h-4 w-4" />
+            </button>
 
-          {/* כפתור עריכה */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsModalEditOpen(true);
-            }}
-            className={`absolute top-3 right-10 z-20 bg-green-500 hover:bg-green-600 text-white rounded-full p-1 shadow-lg transition-opacity duration-200 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <Pencil className="h-4 w-4" />
-          </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsModalEditOpen(true);
+              }}
+              className="
+                absolute top-3 right-10 z-20
+                bg-green-500 hover:bg-green-600 text-white
+                rounded-full p-1 shadow-lg
+                transition-opacity duration-200
+                opacity-100
+                md:opacity-100
+                sm:opacity-0
+                sm:group-hover:opacity-100"
+            >
+              <Pencil className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
         {/* פרטים */}

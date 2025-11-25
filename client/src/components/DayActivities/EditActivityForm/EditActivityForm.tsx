@@ -77,7 +77,7 @@ export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-xl font-bold text-gray-800 text-center">
-            עדכון — {typeLabels[act.type]}
+            עדכון ({typeLabels[act.type]})
           </h2>
 
           {/* שעה רק לפעילויות שאינן שינה */}
