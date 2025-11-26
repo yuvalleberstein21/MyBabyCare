@@ -7,7 +7,7 @@ interface DeleteBabyDialogProps {
   handleDelete: () => void;
 }
 
-const DeleteBabyDialog: React.FC<DeleteBabyDialogProps> = ({
+const DeleteDialog: React.FC<DeleteBabyDialogProps> = ({
   setIsModalOpen,
   name,
   handleDelete,
@@ -39,4 +39,4 @@ const DeleteBabyDialog: React.FC<DeleteBabyDialogProps> = ({
   );
 };
 
-export default DeleteBabyDialog;
+export default DeleteDialog;

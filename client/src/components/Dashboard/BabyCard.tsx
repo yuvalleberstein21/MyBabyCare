@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, Pencil, Ruler, Scale, User, X } from 'lucide-react';
-import DeleteBabyDialog from '../Dialogs/DeleteBabyDialog';
 import { Link } from 'react-router-dom';
 import EditBabyModal from '../Dialogs/EditBabyModal';
 import { Title } from '../ui/Title';
 import { SubTitle } from '../ui/SubTitle';
 import type { Baby } from '../../types';
+import DeleteDialog from '../Dialogs/DeleteBabyDialog';
 
 interface BabyCardProps {
   baby: Baby;
@@ -124,7 +124,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
 
       {/* מודל אישור מחיקה */}
       {isModalOpen && (
-        <DeleteBabyDialog
+        <DeleteDialog
           name={name}
           setIsModalOpen={setIsModalOpen}
           handleDelete={handleDelete}

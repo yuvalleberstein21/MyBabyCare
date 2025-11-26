@@ -7,6 +7,7 @@ import { useUpdateActivity } from '../../hooks/useUpdateActivity';
 import { ActivityInfoRows } from './ActivityInfoRows';
 import { useDeleteActivity } from '../../hooks/useDeleteActivity';
 import toast from 'react-hot-toast';
+import DeleteDialog from '../Dialogs/DeleteBabyDialog';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -19,6 +20,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
   const { babyId } = useParams();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { updateActivity } = useUpdateActivity(babyId!);
   const { deleteActivity } = useDeleteActivity(babyId!);
@@ -35,9 +37,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('האם למחוק פעילות זו?')) return;
-
+  const handleDeleteConfirm = async () => {
     setIsDeleting(true);
     try {
       await deleteActivity(act._id, act.type);
@@ -46,7 +46,9 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
     } catch (error) {
       console.error('Failed to delete:', error);
       toast.error('שגיאה במחיקת הפעולה');
+    } finally {
       setIsDeleting(false);
+      setIsDeleteDialogOpen(false);
     }
   };
 
@@ -86,7 +88,7 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
             />
             <X
               className="w-5 h-5 cursor-pointer hover:text-red-600 transition-colors"
-              onClick={handleDelete}
+              onClick={() => setIsDeleteDialogOpen(true)}
             />
           </div>
         </div>
@@ -102,6 +104,15 @@ export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
           onSave={handleSave}
           onClose={() => setIsEditOpen(false)}
           selectedDate={selectedDate}
+        />
+      )}
+
+      {/* דיאלוג מחיקה */}
+      {isDeleteDialogOpen && (
+        <DeleteDialog
+          name={typeLabels[act.type]}
+          setIsModalOpen={setIsDeleteDialogOpen}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </>
