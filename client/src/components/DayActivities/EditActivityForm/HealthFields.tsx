@@ -28,7 +28,7 @@ const HealthFields = ({ formData, handleChange }: HealthFieldsProps) => (
     </div>
 
     <div className="flex flex-col gap-2">
-      <Label label="ערך בריאות" />
+      <Label label="תיאור רשומה" />
       <input
         type="text"
         value={formData.value}

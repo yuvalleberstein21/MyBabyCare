@@ -55,6 +55,7 @@ export const AddHealthDialog: React.FC<AddHealthDialogProps> = ({
 
   const handleSave = async () => {
     const data = { type, time, value, notes };
+    console.log(data, 'Health data');
     if (!value.trim()) {
       toast.error('נא למלא את הערך הנדרש');
       return;

@@ -67,7 +67,7 @@ export const useSleeping = (babyId: string) => {
   return {
     startSleeping: (data: StartSleepingData) => run('start', data),
     endSleeping: (data: EndSleepingData) => run('end', data),
-    updateSleeping: (sleepId: string, payload: Partial<UpdateSleepSession>) =>
+    update: (sleepId: string, payload: Partial<UpdateSleepSession>) =>
       run('update', { sleepId, payload }),
     remove: (sleepId: string) => run('remove', sleepId),
     loading,

@@ -22,7 +22,7 @@ export const ActivityInfoRows = ({ act }) => {
     },
     act.diaperType && { label: 'סוג החלפה', value: act.diaperType, icon: Baby },
     act.healthType && { label: 'סוג טיפול', value: act.healthType, icon: Baby },
-    act.value && { label: 'מצב בריאות', value: act.value, icon: Baby },
+    act.value && { label: 'תיאור רשומה', value: act.value, icon: Baby },
     act.duration && { label: 'משך', value: `${act.duration} דק'`, icon: Timer },
     act.amount && { label: 'כמות', value: act.amount, icon: Milk },
     act.notes && { label: 'הערות', value: act.notes, icon: StickyNote },

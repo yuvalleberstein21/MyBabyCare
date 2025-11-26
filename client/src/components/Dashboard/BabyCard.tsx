@@ -16,7 +16,6 @@ interface BabyCardProps {
 const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
   const { _id, name, birthDate, gender, weight, height, image } = baby;
 
-  const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
