@@ -7,6 +7,10 @@ interface BabyIdParams {
   babyId?: string;
 }
 
+interface HealthIdParams {
+  healthId?: string | any;
+}
+
 export const createHealth = async (
   req: Request<BabyIdParams>,
   res: Response
@@ -64,5 +68,28 @@ export const updateHealth: RequestHandler = async (req, res) => {
     res.status(400).json({
       message: error.message || 'שגיאה בעדכון רשומת בריאות',
     });
+  }
+};
+
+export const deleteHealth = async (
+  req: Request<HealthIdParams>,
+  res: Response
+) => {
+  try {
+    const { healthId } = req.params;
+
+    if (!validateObjectId(healthId, res, 'מזהה רשומה')) return;
+
+    const result = await Health.deleteOne({ _id: healthId });
+
+    if (result.deletedCount === 0) {
+      res.status(404).end();
+      return;
+    }
+
+    res.status(204).end();
+  } catch (error) {
+    console.error('שגיאה במחיקת רשומת בריאות:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
   }
 };

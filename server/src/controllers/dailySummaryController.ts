@@ -59,7 +59,7 @@ export const getDailySummary = async (req: Request, res: Response) => {
           babyId: babyObjectId,
           time: { $gte: start, $lt: end },
         })
-          .select('type value time')
+          .select('type value time notes')
           .sort({ time: 1 })
           .lean<IHealthSummary[]>(),
       ]);

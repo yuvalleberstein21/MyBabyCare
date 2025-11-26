@@ -18,7 +18,7 @@ export const validateHealth = (
   // בדיקות ספציפיות לפי סוג
 
   if (type === 'חום') {
-    if (value === undefined || typeof value !== 'number') {
+    if (value === undefined) {
       res.status(400).json({ error: 'חום גוף נדרש והוא חייב להיות מספר' });
       return;
     }

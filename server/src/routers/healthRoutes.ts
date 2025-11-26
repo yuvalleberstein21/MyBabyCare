@@ -1,6 +1,10 @@
 import express from 'express';
 import { requireAuth } from '../middlewares/auth';
-import { createHealth, updateHealth } from '../controllers/healthController';
+import {
+  createHealth,
+  deleteHealth,
+  updateHealth,
+} from '../controllers/healthController';
 import { validateHealth } from '../validators/healthValidators';
 import { verifyBabyOwnership } from '../middlewares/verifyBabyOwnership';
 import { verifyHealthOwnership } from '../middlewares/vertifyHealthOwnership';
@@ -22,4 +26,5 @@ router.put(
   updateHealth
 );
 
+router.delete('/:healthId', requireAuth, verifyHealthOwnership, deleteHealth);
 export default router;
