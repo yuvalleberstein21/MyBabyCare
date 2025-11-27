@@ -2,6 +2,8 @@ import { ArrowLeft } from 'lucide-react';
 import { Title } from './Title';
 import { SubTitle } from './SubTitle';
 import BabyAvatar from './BabyAvatar';
+import axiosInstance from '../../utils/axiosInstance';
+import { getDefaultImage } from '../../utils/getDefaultBabyImage';
 
 const Header = ({ baby, activeActivity, onBack }: any) => (
   <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
@@ -15,7 +17,14 @@ const Header = ({ baby, activeActivity, onBack }: any) => (
       </button>
 
       <div className="flex items-center gap-4">
-        <BabyAvatar image={baby.image} name={baby.name} />
+        <BabyAvatar
+          image={
+            baby.image
+              ? `${axiosInstance.defaults.baseURL}${baby.image}`
+              : getDefaultImage(baby.gender)
+          }
+          name={baby.name}
+        />
         <div>
           <Title className="text-2xl font-bold">{baby.name}</Title>
           <SubTitle className="text-sm text-gray-500">

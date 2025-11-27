@@ -50,12 +50,12 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
       if (formData.height) fd.append('height', String(formData.height));
 
       if (imageFile) {
-        fd.append('image', imageFile); // 👈 הכי חשוב
+        fd.append('image', imageFile);
       }
 
       try {
         if (onAdded) {
-          onAdded(fd as any); // 👈 שלח FormData ולא JSON
+          await onAdded(fd as any);
         }
 
         resetForm();

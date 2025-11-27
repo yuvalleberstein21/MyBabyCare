@@ -45,7 +45,6 @@ export const BabyDetails = () => {
     }
   }, [activeActivity, navigate]);
 
-  // רק טעינה ראשונית מציגה loader מלא
   if (initialLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

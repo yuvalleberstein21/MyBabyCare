@@ -1,4 +1,4 @@
-import { Heart, Milk, Moon } from 'lucide-react';
+import { Baby, Milk, Moon, ScanHeart } from 'lucide-react';
 import Button from '../components/ui/Button';
 import { SubTitle } from '../components/ui/SubTitle';
 import { Title } from '../components/ui/Title';
@@ -49,9 +49,15 @@ const Home = () => {
             />
 
             <StaticCard
-              icon={Heart}
+              icon={Baby}
               title="החלפות חיתולים"
               description="עקוב אחר החלפות ונתח דפוסים לשיפור שגרת הטיפול בתינוק."
+            />
+
+            <StaticCard
+              icon={ScanHeart}
+              title="מעקב בריאותי"
+              description="עקוב אחר בריאות הילד וצור פעילויות מתקדמות"
             />
           </div>
         </div>
