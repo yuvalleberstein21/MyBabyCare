@@ -4,7 +4,7 @@ interface BabyLogoProps {
   size?: number; // גודל הריבוע
   bgColor?: string; // צבע רקע
   iconColor?: string; // צבע האייקון
-  text?: string; // טקסט פנימי אם רוצים
+  text?: string; // טקסט פנימי
 }
 export const BabyLogo = ({
   size = 64,

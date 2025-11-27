@@ -11,8 +11,6 @@ import { Label } from '../../ui/Label';
 export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
   const [isSaving, setIsSaving] = useState(false);
 
-  console.log(act.type);
-
   const [formData, setFormData] = useState(() => {
     switch (act.type) {
       case 'sleep':

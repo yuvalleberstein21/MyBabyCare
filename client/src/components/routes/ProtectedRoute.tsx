@@ -11,7 +11,6 @@ export const ProtectedRoute = ({ children }: Props) => {
   const authContext = useContext(AuthContext);
   const location = useLocation();
 
-  // בדיקת תקינות Context
   if (!authContext) {
     console.error('ProtectedRoute must be used within AuthProvider');
     return <Navigate to="/auth" replace />;
