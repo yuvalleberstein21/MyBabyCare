@@ -100,18 +100,18 @@ export const validateUpdateBaby = (
       errors.push('תאריך הלידה לא יכול להיות בעתיד');
   }
 
-  if (
-    weight !== undefined &&
-    (typeof weight !== 'number' || weight < 0 || weight > 20)
-  ) {
-    errors.push('משקל חייב להיות מספר תקין בין 0 ל-20 ק"ג');
+  if (weight !== undefined) {
+    const n = Number(weight);
+    if (isNaN(n) || n < 0 || n > 20) {
+      errors.push('משקל חייב להיות מספר תקין בין 0 ל-20 ק"ג');
+    }
   }
 
-  if (
-    height !== undefined &&
-    (typeof height !== 'number' || height < 0 || height > 120)
-  ) {
-    errors.push('גובה חייב להיות מספר תקין בין 0 ל-120 ס"מ');
+  if (height !== undefined) {
+    const n = Number(height);
+    if (isNaN(n) || n < 0 || n > 120) {
+      errors.push('גובה חייב להיות מספר תקין בין 0 ל-120 ס"מ');
+    }
   }
 
   if (

@@ -52,7 +52,7 @@ const babySchema = new mongoose.Schema<IBaby>(
     },
     image: {
       type: String,
-      default: '/images/default-baby.png',
+      default: '',
     },
   },
   { timestamps: true }

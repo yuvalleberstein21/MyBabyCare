@@ -1,15 +1,21 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 // הגדרת תיקיית יעד ושם קובץ
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '..', '..', 'public', 'uploads'));
+  destination: (req, file, cb) => {
+    const folder = path.join(__dirname, '../public/uploads');
+
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder, { recursive: true });
+    }
+
+    cb(null, folder);
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+  filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, 'baby-' + uniqueSuffix + ext);
+    cb(null, `baby-${Date.now()}${ext}`);
   },
 });
 

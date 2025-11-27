@@ -112,13 +112,16 @@ export const createBaby: RequestHandler = async (req, res) => {
     const { name, gender, birthDate, weight, height, notes } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
+    const parsedWeight = weight ? Number(weight) : undefined;
+    const parsedHeight = height ? Number(height) : undefined;
+
     const baby = await Baby.create({
       userId: req.user!.id,
       name,
       gender,
       birthDate,
-      weight,
-      height,
+      weight: parsedWeight,
+      height: parsedHeight,
       notes,
       image,
     });
@@ -169,12 +172,15 @@ export const updateBaby: RequestHandler<
     const userId = req.user!.id;
     const { name, gender, birthDate, weight, height, notes } = req.body;
 
+    const parsedWeight = weight ? Number(weight) : undefined;
+    const parsedHeight = height ? Number(height) : undefined;
+
     const updateFields: any = {
       ...(name && { name }),
       ...(gender && { gender }),
       ...(birthDate && { birthDate }),
-      ...(weight !== undefined && { weight }),
-      ...(height !== undefined && { height }),
+      ...(weight !== undefined && { parsedWeight }),
+      ...(height !== undefined && { parsedHeight }),
       ...(notes !== undefined && { notes }),
     };
 

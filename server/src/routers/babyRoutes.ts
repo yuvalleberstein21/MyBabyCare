@@ -29,6 +29,7 @@ router.get('/:babyId', requireAuth, verifyBabyOwnership, getSingleBaby);
 router.put(
   '/:babyId',
   requireAuth,
+  upload.single('image'),
   validateUpdateBaby,
   verifyBabyOwnership,
   updateBaby
