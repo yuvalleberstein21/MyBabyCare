@@ -22,28 +22,42 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
   baby,
   handleUpdate,
 }) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const [formData, setFormData] = useState<Baby>({
     _id: baby._id,
-    name: baby.name,
+    name: baby.name || '',
     birthDate: baby.birthDate
       ? new Date(baby.birthDate).toISOString().split('T')[0]
       : '',
-    gender: baby.gender,
-    weight: baby.weight,
-    height: baby.height,
-    image: baby.image,
+    gender: baby.gender || 'נקבה',
+    weight: baby.weight ?? 0,
+    height: baby.height ?? 0,
+    image: baby.image || '',
   });
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const fd = new FormData();
+    fd.append('name', formData.name);
+    fd.append('birthDate', formData.birthDate);
+    fd.append('gender', formData.gender);
+    fd.append('weight', String(formData.weight));
+    fd.append('height', String(formData.height));
+
+    if (imageFile) {
+      fd.append('image', imageFile);
+    }
+
     try {
-      await handleUpdate?.(formData);
+      await handleUpdate?.(fd);
       setIsModalEditOpen(false);
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div
@@ -68,7 +82,13 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
             <label className="relative w-28 h-28 rounded-full bg-muted flex items-center justify-center cursor-pointer overflow-hidden hover:opacity-90 transition">
               {formData.image ? (
                 <img
-                  src={formData.image}
+                  src={
+                    imageFile
+                      ? URL.createObjectURL(imageFile)
+                      : formData.image.startsWith('/uploads')
+                      ? import.meta.env.VITE_API_URL + formData.image
+                      : formData.image
+                  }
                   alt="תמונת תינוק"
                   className="w-full h-full object-cover"
                 />
@@ -81,10 +101,17 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.value })
-                }
                 className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setImageFile(file);
+                    setFormData({
+                      ...formData,
+                      image: URL.createObjectURL(file),
+                    });
+                  }
+                }}
               />
             </label>
           </div>
@@ -145,7 +172,10 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.weight}
                 onChange={(e) =>
-                  setFormData({ ...formData, weight: Number(e.target.value) })
+                  setFormData({
+                    ...formData,
+                    weight: Number(e.target.value) || 0,
+                  })
                 }
               />
             </div>
@@ -157,7 +187,10 @@ const EditBabyModal: React.FC<EditBabyDialogProps> = ({
                 className="w-full p-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={formData.height}
                 onChange={(e) =>
-                  setFormData({ ...formData, height: Number(e.target.value) })
+                  setFormData({
+                    ...formData,
+                    height: Number(e.target.value) || 0,
+                  })
                 }
               />
             </div>

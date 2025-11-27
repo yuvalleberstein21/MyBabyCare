@@ -27,6 +27,7 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
   addLoading,
 }) => {
   const [formData, setFormData] = useState<NewBaby>(INITIAL_FORM_DATA);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleClose = useCallback(() => {
     onOpenChange(false);
@@ -40,36 +41,40 @@ export const AddBabyDialog: React.FC<AddBabyDialogProps> = ({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const babyData: NewBaby = {
-        name: formData.name,
-        birthDate: formData.birthDate,
-        gender: formData.gender,
-        weight: formData.weight ? Number(formData.weight) : undefined,
-        height: formData.height ? Number(formData.height) : undefined,
-        image: formData.image || undefined,
-      };
+      const fd = new FormData();
+      fd.append('name', formData.name);
+      fd.append('birthDate', formData.birthDate);
+      fd.append('gender', formData.gender);
+
+      if (formData.weight) fd.append('weight', String(formData.weight));
+      if (formData.height) fd.append('height', String(formData.height));
+
+      if (imageFile) {
+        fd.append('image', imageFile); // 👈 הכי חשוב
+      }
 
       try {
         if (onAdded) {
-          onAdded(babyData);
+          onAdded(fd as any); // 👈 שלח FormData ולא JSON
         }
+
         resetForm();
         handleClose();
       } catch (err) {
         console.error('Error adding baby:', err);
       }
     },
-    [formData, onAdded, resetForm, handleClose]
+    [formData, onAdded, resetForm, handleClose, imageFile]
   );
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, image: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
+      setImageFile(file);
+      setFormData((prev) => ({
+        ...prev,
+        image: URL.createObjectURL(file),
+      }));
     }
   };
 

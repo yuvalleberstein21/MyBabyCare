@@ -6,6 +6,7 @@ import { Title } from '../ui/Title';
 import { SubTitle } from '../ui/SubTitle';
 import type { Baby } from '../../types';
 import DeleteDialog from '../Dialogs/DeleteBabyDialog';
+import axiosInstance from '../../utils/axiosInstance';
 
 interface BabyCardProps {
   baby: Baby;
@@ -39,7 +40,11 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDelete, onUpdate }) => {
         {/* תמונה + תג מין */}
         <div className="relative">
           <img
-            src={getDefaultImage()}
+            src={
+              image
+                ? `${axiosInstance.defaults.baseURL}${image}`
+                : getDefaultImage()
+            }
             alt={name}
             className="w-full h-40 object-cover bg-gray-100"
           />
