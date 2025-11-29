@@ -172,15 +172,12 @@ export const updateBaby: RequestHandler<
     const userId = req.user!.id;
     const { name, gender, birthDate, weight, height, notes } = req.body;
 
-    const parsedWeight = weight ? Number(weight) : undefined;
-    const parsedHeight = height ? Number(height) : undefined;
-
     const updateFields: any = {
       ...(name && { name }),
       ...(gender && { gender }),
       ...(birthDate && { birthDate }),
-      ...(weight !== undefined && { parsedWeight }),
-      ...(height !== undefined && { parsedHeight }),
+      ...(weight !== undefined && { weight }),
+      ...(height !== undefined && { height }),
       ...(notes !== undefined && { notes }),
     };
 

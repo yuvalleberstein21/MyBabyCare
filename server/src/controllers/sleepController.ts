@@ -7,11 +7,6 @@ import {
   EditSleepBody,
   ISleep,
 } from '../types/sleep';
-import {
-  validateEditSleepBody,
-  validateEndSleepBody,
-  validateStartSleepBody,
-} from '../validators/sleepValidators';
 
 interface BabyIdParams {
   babyId?: string;
@@ -63,6 +58,32 @@ export const getSleepings: RequestHandler<BabyIdParams> = async (req, res) => {
   }
 };
 
+export const getActiveSleep: RequestHandler<BabyIdParams> = async (
+  req,
+  res
+) => {
+  try {
+    const { babyId } = req.params;
+
+    const activeSleep = await Sleeping.findOne({
+      babyId,
+      endTime: { $exists: false },
+    })
+      .sort({ startTime: -1 })
+      .lean();
+
+    if (!activeSleep) {
+      res.status(200).json({ activeSleep: null });
+      return;
+    }
+
+    res.status(200).json({ activeSleep });
+  } catch (error) {
+    console.error('שגיאה בשליפת שינה פעילה:', error);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+};
+
 export const createStartSleep: RequestHandler<
   BabyIdParams,
   {},
@@ -82,6 +103,7 @@ export const createStartSleep: RequestHandler<
     if (existingOpenSleep) {
       res.status(400).json({
         error: 'יש כבר שינה פתוחה עבור התינוק הזה',
+        startTime: existingOpenSleep.startTime,
       });
       return;
     }
