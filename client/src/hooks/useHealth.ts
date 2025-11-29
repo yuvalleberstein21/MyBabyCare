@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createHealth, updateHealth, deleteHealth } from '../api/health';
 import type { HealthPayload } from '../types';
+import { getActiveSleep } from '../api/sleeping';
 
 export const useHealthActions = (babyId: string) => {
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,10 @@ export const useHealthActions = (babyId: string) => {
     }
   };
 
+  const getActiveSleeps = async (babyId: string) => {
+    await run(() => getActiveSleep(babyId));
+  };
+
   const create = async (data: HealthPayload) => {
     await run(() => createHealth(babyId, data));
   };
@@ -34,5 +39,5 @@ export const useHealthActions = (babyId: string) => {
     await run(() => deleteHealth(healthId));
   };
 
-  return { create, update, remove, loading, error, success };
+  return { getActiveSleeps, create, update, remove, loading, error, success };
 };

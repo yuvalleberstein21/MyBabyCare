@@ -20,7 +20,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
   onClose,
 }) => {
   const { create, loading, error, success } = useFeedingActions(babyId);
-  const [type, setType] = useState('breast');
+  const [type, setType] = useState('חלב אם');
   const [time, setTime] = useState(getCurrentDateTimeLocal());
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
@@ -29,7 +29,7 @@ export const AddFeedingDialog: React.FC<AddFeedingDialogProps> = ({
     if (success) {
       toast.success('ההאכלה נוספה בהצלחה 🍼');
       // איפוס ערכים
-      setType('breast');
+      setType('חלב אם');
       setTime('');
       setAmount('');
       setNotes('');

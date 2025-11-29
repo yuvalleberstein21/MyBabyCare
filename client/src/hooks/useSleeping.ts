@@ -4,6 +4,7 @@ import {
   createEndSleeping,
   updateSleeping,
   deleteSleep,
+  getActiveSleep,
 } from '../api/sleeping';
 import type {
   StartSleepingData,
@@ -18,7 +19,7 @@ export const useSleeping = (babyId: string) => {
 
   const run = useCallback(
     async (
-      action: 'start' | 'end' | 'update' | 'remove',
+      action: 'getSleep' | 'start' | 'end' | 'update' | 'remove',
       data?:
         | StartSleepingData
         | EndSleepingData
@@ -31,6 +32,9 @@ export const useSleeping = (babyId: string) => {
 
       try {
         switch (action) {
+          case 'getSleep':
+            await getActiveSleep(babyId);
+            break;
           case 'start':
             await createStartSleeping(babyId, data as StartSleepingData);
             break;
@@ -65,6 +69,7 @@ export const useSleeping = (babyId: string) => {
   );
 
   return {
+    getActiveSleeps: (babyId: string) => run('getSleep', babyId),
     startSleeping: (data: StartSleepingData) => run('start', data),
     endSleeping: (data: EndSleepingData) => run('end', data),
     update: (sleepId: string, payload: Partial<UpdateSleepSession>) =>

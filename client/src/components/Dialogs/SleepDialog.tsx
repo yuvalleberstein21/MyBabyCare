@@ -17,8 +17,34 @@ export const SleepDialog: React.FC<SleepTrackerProps> = ({
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [initialLoading, setInitialLoading] = useState(true);
 
-  const { startSleeping, endSleeping, loading, error } = useSleeping(babyId);
+  const { getActiveSleeps, startSleeping, endSleeping, loading, error } =
+    useSleeping(babyId);
+
+  useEffect(() => {
+    const loadActiveSleep = async () => {
+      try {
+        const activeSleep = await getActiveSleeps(babyId);
+        if (activeSleep) {
+          console.log(activeSleep);
+          setIsSleeping(true);
+          setStartTime(new Date(activeSleep.startTime));
+          // חישוב הזמן שעבר
+          const elapsed = Math.floor(
+            (Date.now() - new Date(activeSleep.startTime).getTime()) / 60000
+          );
+          setElapsedMinutes(elapsed);
+        }
+      } catch (err) {
+        console.error('שגיאה בטעינת שינה פעילה:', err);
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    loadActiveSleep();
+  }, [babyId]);
 
   // טיימר
   useEffect(() => {
@@ -47,22 +73,29 @@ export const SleepDialog: React.FC<SleepTrackerProps> = ({
       setSuccessMsg('השינה החלה בהצלחה!');
     } catch {
       setIsSleeping(false);
+      setStartTime(null);
     }
   };
 
   const handleStop = async () => {
-    setIsSleeping(false);
-
     try {
       await endSleeping({
         endTime: new Date().toISOString(),
       });
       setSuccessMsg('השינה הסתיימה בהצלחה!');
+      setIsSleeping(false);
+      setStartTime(null);
+      setElapsedMinutes(0);
       setTimeout(onClose, 1000);
-    } catch {
-      setIsSleeping(true);
+    } catch (err) {
+      // במקרה של שגיאה, נשאיר את המצב כמו שהוא
+      console.error('שגיאה בעצירת שינה:', err);
     }
   };
+
+  if (initialLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="p-6 flex flex-col items-center gap-4">
