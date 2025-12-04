@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, type JSX } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 interface Props {
@@ -7,7 +7,11 @@ interface Props {
 }
 
 export const PublicRoute = ({ children }: Props) => {
-  const { user, loading } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error('useContext(AuthContext) must be used within AuthProvider');
+  }
+  const { user, loading } = auth;
 
   if (loading) return <div>טוען...</div>;
 
