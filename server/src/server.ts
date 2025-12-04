@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
-app.use('/uploads', express.static('public/uploads'));
+app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
