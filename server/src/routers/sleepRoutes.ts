@@ -4,7 +4,6 @@ import {
   createStartSleep,
   deleteSleeping,
   editSleeping,
-  getActiveSleep,
   getSleepings,
 } from '../controllers/sleepController';
 import { requireAuth } from '../middlewares/auth';
@@ -19,8 +18,6 @@ import {
 const router = express.Router();
 
 router.get('/:babyId', requireAuth, verifyBabyOwnership, getSleepings);
-
-router.get('/:babyId/active', requireAuth, verifyBabyOwnership, getActiveSleep);
 
 router.post(
   '/:babyId/start',
