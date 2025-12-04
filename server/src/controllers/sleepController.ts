@@ -58,68 +58,6 @@ export const getSleepings: RequestHandler<BabyIdParams> = async (req, res) => {
   }
 };
 
-// export const getActiveSleep: RequestHandler<BabyIdParams> = async (
-//   req,
-//   res
-// ) => {
-//   try {
-//     const { babyId } = req.params;
-
-//     const activeSleep = await Sleeping.findOne({
-//       babyId,
-//       endTime: { $exists: false },
-//     })
-//       .sort({ startTime: -1 })
-//       .lean();
-
-//     if (!activeSleep) {
-//       res.status(200).json({ activeSleep: null });
-//       return;
-//     }
-
-//     res.status(200).json({ activeSleep });
-//   } catch (error) {
-//     console.error('שגיאה בשליפת שינה פעילה:', error);
-//     res.status(500).json({ error: 'שגיאה בשרת' });
-//   }
-// };
-
-// Controller - הוסף את זה לקובץ שלך
-// export const createCompleteSleep: RequestHandler = async (req, res) => {
-//   try {
-//     const { babyId } = req.params;
-//     const { startTime, endTime, notes } = req.body;
-
-//     // המרת הזמנים
-//     const parsedStartTime = new Date(startTime);
-//     const parsedEndTime = new Date(endTime);
-
-//     // בדיקה שהזמנים תקינים
-//     if (parsedEndTime <= parsedStartTime) {
-//       res.status(400).json({ error: 'שעת סיום חייבת להיות אחרי שעת התחלה' });
-//       return;
-//     }
-
-//     // יצירת רשומת שינה שלמה
-//     const newSleep: ISleep = new Sleeping({
-//       babyId,
-//       startTime: parsedStartTime,
-//       endTime: parsedEndTime,
-//       notes: notes || 'שינה',
-//     });
-
-//     await newSleep.save();
-
-//     res.status(201).json({
-//       message: 'השינה נשמרה בהצלחה',
-//       sleeping: newSleep,
-//     });
-//   } catch (error) {
-//     console.error('שגיאה בשמירת שינה:', error);
-//     res.status(500).json({ error: 'שגיאה בשרת' });
-//   }
-// };
-
 export const createStartSleep: RequestHandler<
   BabyIdParams,
   {},
