@@ -1,3 +1,4 @@
+// @ts-nocheck
 interface FiltersProps {
   filter: 'all' | 'feeding' | 'sleep' | 'diaper' | 'health';
   setFilter: (

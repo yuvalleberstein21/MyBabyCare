@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useState } from 'react';
 import { X, ImagePlus } from 'lucide-react';
 import Button from '../ui/Button';

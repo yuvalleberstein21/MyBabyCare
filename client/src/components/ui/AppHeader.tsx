@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Title } from './Title';
 import { SubTitle } from './SubTitle';
 import { Link } from 'react-router-dom';

@@ -5,8 +5,7 @@ import { useDailySummary } from './useDailySummary';
 export const useBabyDetailsData = (babyId: string, selectedDate: string) => {
   const [initialLoading, setInitialLoading] = useState(true);
 
-  const { singleBaby, loadingSingle, errorSingle, fetchSingleBaby } =
-    useBabies();
+  const { singleBaby, errorSingle, fetchSingleBaby } = useBabies();
   const {
     summary,
     loading: loadingSummary,
