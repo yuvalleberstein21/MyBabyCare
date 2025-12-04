@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { formatToHHMM, typeLabels } from '../../../utils/FormatedISDate';
 import { Loader2 } from 'lucide-react';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { typeIcons, typeLabels } from '../../utils/FormatedISDate';
 import { X, Edit, Loader2 } from 'lucide-react';

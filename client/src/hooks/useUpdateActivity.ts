@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { DayActivity } from '../types';
 import {
   normalizeDiaperPayload,

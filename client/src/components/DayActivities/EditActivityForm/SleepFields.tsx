@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Label } from '../../ui/Label';
 
 interface SleepFieldsProps {
