@@ -11,34 +11,35 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // לא מנסים לרענן ב־login/register/refresh-token
-    const skipUrls = ['/auth/login', '/auth/register', '/auth/refresh-token'];
+    const skipUrls = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/refresh-token',
+      '/auth/me',
+    ];
     const shouldSkip = skipUrls.some((url) =>
       originalRequest.url?.includes(url)
     );
 
     if (error.response?.status === 401 && !shouldSkip) {
       try {
-        // מנסים לרענן טוקן
         await axios.post(
           `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
           {},
           { withCredentials: true }
         );
-        // חוזרים לבצע את הבקשה המקורית
         return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        // אם רענון נכשל → יוצרים אירוע logout
+      } catch {
         window.dispatchEvent(new Event('auth:logout'));
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
       }
     }
 
-    // כל שגיאה אחרת
     const message =
       error.response?.data?.error ||
       error.response?.data?.message ||
       'אירעה שגיאה בלתי צפויה';
+
     return Promise.reject(new Error(message));
   }
 );
