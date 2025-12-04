@@ -1,6 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Health } from '../models/healthModel';
-import { IHealth } from '../types/health';
 import { validateObjectId } from '../utils/validateObjectId';
 
 interface BabyIdParams {

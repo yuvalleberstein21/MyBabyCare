@@ -7,7 +7,6 @@ import {
   IDiaper,
 } from '../types/diaper';
 import { Diaper } from '../models/DiaperModel';
-import { validateCreateDiaper } from '../validators/diaperValidators';
 
 interface BabyIdParams {
   babyId?: string;
