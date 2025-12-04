@@ -3,7 +3,7 @@ const cookieOptions = {
   accessToken: {
     httpOnly: true,
     secure: true,
-    sameSite: 'lax' as const,
+    sameSite: 'none' as const,
     maxAge: 15 * 60 * 1000,
   },
   refreshToken: {
