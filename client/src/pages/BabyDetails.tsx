@@ -52,9 +52,6 @@ export const BabyDetails = () => {
     return () => clearInterval(interval);
   }, [isSleepActive, sleepStartTime]);
 
-  console.log(sleepStartTime);
-  console.log(elapsedMinutes);
-
   const handleActivitySelect = async (key: string) => {
     if (key !== 'sleep') {
       setActiveActivity(key);

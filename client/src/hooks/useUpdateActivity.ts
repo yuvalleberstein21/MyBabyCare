@@ -17,7 +17,6 @@ export const useUpdateActivity = (babyId: string) => {
   const sleep = useSleeping(babyId);
 
   const updateActivity = async (act: DayActivity, updatedData: any) => {
-    console.log(act.type);
     let normalized;
     let hookToUse;
 
