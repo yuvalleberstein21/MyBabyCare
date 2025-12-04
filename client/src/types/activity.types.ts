@@ -12,7 +12,7 @@ export type DayActivity =
   | (HealthRecord & { type: 'health'; healthType: HealthType });
 
 export interface BaseActivity {
-  id: string;
+  _id: string;
   type: ActivityType;
   time: string;
   notes?: string;
@@ -22,27 +22,62 @@ export interface SleepActivity extends BaseActivity {
   type: 'sleep';
   startTime: string;
   endTime?: string;
+  selectedDate: string;
 }
 
 export interface FeedingActivity extends BaseActivity {
   type: 'feeding';
   feedingType: string;
   amount: string | number;
+  selectedDate: string;
 }
 
 export interface DiaperActivity extends BaseActivity {
   type: 'diaper';
   diaperType: string;
+  selectedDate: string;
 }
 
 export interface HealthActivity extends BaseActivity {
   type: 'health';
   healthType: string;
   value: string;
+  selectedDate: string;
 }
 
-export type Activity =
-  | SleepActivity
-  | FeedingActivity
-  | DiaperActivity
-  | HealthActivity;
+interface BaseActivityForm {
+  notes?: string;
+  time?: string;
+  startTime?: string;
+  endTime?: string;
+  feedingType?: string;
+  amount?: string | number;
+  diaperType?: string;
+  healthType?: string;
+  value?: string | number;
+}
+
+export interface EditActivityFormProps {
+  act: {
+    type: ActivityType;
+    notes?: string;
+    time?: string;
+    startTime?: string;
+    endTime?: string;
+    feedingType?: string;
+    amount?: string | number;
+    diaperType?: string;
+    healthType?: string;
+    value?: string | number;
+    selectedDate: string;
+  };
+  onSave: (
+    updatedData: BaseActivityForm & {
+      type: ActivityType;
+    }
+  ) => Promise<void>;
+  onClose: () => void;
+  selectedDate: string;
+}
+
+export type Activity = ActivityType;

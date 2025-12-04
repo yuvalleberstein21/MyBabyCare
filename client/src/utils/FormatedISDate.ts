@@ -17,7 +17,7 @@ export const formatTimeOnly = (isoString: string) => {
   });
 };
 
-export const formatToHHMM = (iso) => {
+export const formatToHHMM = (iso: string) => {
   const d = new Date(iso);
   return `${String(d.getHours()).padStart(2, '0')}:${String(
     d.getMinutes()

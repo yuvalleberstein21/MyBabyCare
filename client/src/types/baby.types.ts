@@ -5,8 +5,8 @@ export interface Baby {
   name: string;
   gender: 'זכר' | 'נקבה';
   birthDate: string;
-  weight?: number;
-  height?: number;
+  weight: number | undefined;
+  height: number | undefined;
   image?: string;
   createdAt?: string;
   updatedAt?: string;

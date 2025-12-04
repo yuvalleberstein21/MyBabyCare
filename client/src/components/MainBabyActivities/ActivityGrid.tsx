@@ -12,7 +12,7 @@ interface ActivityGridProps {
   activities: Activity[];
   onSelect: (key: string) => void;
   isSleepActive: boolean;
-  sleepDuration: string;
+  sleepDuration: number;
   loading: boolean;
 }
 const ActivityGrid: React.FC<ActivityGridProps> = ({

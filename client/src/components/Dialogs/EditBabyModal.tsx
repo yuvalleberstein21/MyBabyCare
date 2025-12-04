@@ -2,15 +2,7 @@ import { ImagePlus, X } from 'lucide-react';
 import React, { useState } from 'react';
 import Button from '../ui/Button';
 import { Label } from '../ui/Label';
-type Baby = {
-  _id: string;
-  name: string;
-  birthDate: string;
-  gender: 'זכר' | 'נקבה';
-  weight: number;
-  height: number;
-  image?: string;
-};
+import type { Baby } from '../../types';
 
 interface EditBabyDialogProps {
   setIsModalEditOpen: (open: boolean) => void;

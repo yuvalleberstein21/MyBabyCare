@@ -1,8 +1,9 @@
+import type { FeedingType } from '../../../types';
 import { Label } from '../../ui/Label';
 
 interface feedingFieldsProps {
   formData: {
-    feedingType: string;
+    feedingType: FeedingType;
     amount: string | number;
   };
   handleChange: (key: string, value: string | number) => void;

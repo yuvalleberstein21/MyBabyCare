@@ -8,7 +8,7 @@ import { DashboardGrid } from '../components/Dashboard/DashboardGrid';
 import { DashboardEmptyState } from '../components/Dashboard/DashboardEmptyState';
 import { Title } from '../components/ui/Title';
 import Button from '../components/ui/Button';
-import type { Baby } from '../types';
+import type { Baby, NewBaby } from '../types';
 
 const Dashboard = () => {
   const { babies, loading, error, addBaby, deleteBaby, updateBaby } =
@@ -37,7 +37,7 @@ const Dashboard = () => {
   };
 
   // CREATE BABY
-  const handleAddBaby = async (data: Baby) => {
+  const handleAddBaby = async (data: NewBaby) => {
     try {
       await addBaby(data);
       toast.success('תינוק נוסף בהצלחה 👶');

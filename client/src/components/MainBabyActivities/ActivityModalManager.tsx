@@ -3,7 +3,7 @@ import AddFeedingDialog from '../Dialogs/AddFeedingDialog';
 import AddHealthDialog from '../Dialogs/AddHealthDialog';
 
 interface ActivityModalManagerProps {
-  activeActivity: 'feeding' | 'diaper' | 'health' | null;
+  activeActivity: string | null;
   babyId: string;
   onClose: () => void;
 }

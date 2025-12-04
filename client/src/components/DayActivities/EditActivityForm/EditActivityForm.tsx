@@ -7,20 +7,14 @@ import SleepFields from './SleepFields';
 import DiaperFields from './DiaperFields';
 import HealthFields from './HealthFields';
 import { Label } from '../../ui/Label';
-import type { Activity } from '../../../types';
+import type { EditActivityFormProps } from '../../../types';
 
-interface EditActivityFormProps {
-  act: Activity;
-  onSave: (updatedData: Activity) => void;
-  onClose: () => void;
-  selectedDate: string;
-}
-export const EditActivityForm = ({
+export const EditActivityForm: React.FC<EditActivityFormProps> = ({
   act,
   onSave,
   onClose,
   selectedDate,
-}: EditActivityFormProps) => {
+}) => {
   const [isSaving, setIsSaving] = useState(false);
 
   const [formData, setFormData] = useState(() => {

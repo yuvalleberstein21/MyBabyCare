@@ -1,6 +1,12 @@
+import type {
+  DiaperActivity,
+  FeedingActivity,
+  HealthActivity,
+  SleepActivity,
+} from '../types';
 import { combineDateAndTime } from './FormatedISDate';
 
-export const normalizeFeedingPayload = (formData) => {
+export const normalizeFeedingPayload = (formData: FeedingActivity) => {
   return {
     type: formData.feedingType,
     amount: formData.amount,
@@ -9,12 +15,15 @@ export const normalizeFeedingPayload = (formData) => {
   };
 };
 
-export const normalizeSleepingPayload = (formData: any) => {
+export const normalizeSleepingPayload = (formData: SleepActivity) => {
   const startTime = combineDateAndTime(
     formData.selectedDate,
     formData.startTime
   );
-  const endTime = combineDateAndTime(formData.selectedDate, formData.endTime);
+  const endTime = combineDateAndTime(
+    formData.selectedDate,
+    formData.endTime ?? ''
+  );
 
   return {
     ...(startTime && { startTime }),
@@ -23,7 +32,7 @@ export const normalizeSleepingPayload = (formData: any) => {
   };
 };
 
-export const normalizeDiaperPayload = (formData) => {
+export const normalizeDiaperPayload = (formData: DiaperActivity) => {
   return {
     time: combineDateAndTime(formData.selectedDate, formData.time),
     type: formData.diaperType,
@@ -31,7 +40,7 @@ export const normalizeDiaperPayload = (formData) => {
   };
 };
 
-export const normalizeHealthPayload = (formData) => {
+export const normalizeHealthPayload = (formData: HealthActivity) => {
   const combinedTime = combineDateAndTime(formData.selectedDate, formData.time);
 
   return {
