@@ -1,32 +1,56 @@
 import { SubTitle } from '../ui/SubTitle';
 import { Clock, StickyNote, Timer, Milk, Baby } from 'lucide-react';
 import { formatTimeOnly } from '../../utils/FormatedISDate';
+import type { Activity } from '../../types/activity.types';
 
-export const ActivityInfoRows = ({ act }) => {
+interface ActivityInfoRowsProps {
+  act: Activity;
+}
+
+export const ActivityInfoRows = ({ act }: ActivityInfoRowsProps) => {
   const infoRows = [
     act.time && { label: 'שעה', value: formatTimeOnly(act.time), icon: Clock },
-    act.startTime && {
-      label: 'התחלה',
-      value: formatTimeOnly(act.startTime),
-      icon: Clock,
-    },
-    act.endTime && {
-      label: 'סיום',
-      value: formatTimeOnly(act.endTime),
-      icon: Clock,
-    },
-    act.feedingType && {
-      label: 'סוג האכלה',
-      value: act.feedingType,
-      icon: Milk,
-    },
-    act.diaperType && { label: 'סוג החלפה', value: act.diaperType, icon: Baby },
-    act.healthType && { label: 'סוג טיפול', value: act.healthType, icon: Baby },
+    'startTime' in act &&
+      act.startTime && {
+        label: 'התחלה',
+        value: formatTimeOnly(act.startTime),
+        icon: Clock,
+      },
+    'endTime' in act &&
+      act.endTime && {
+        label: 'סיום',
+        value: formatTimeOnly(act.endTime),
+        icon: Clock,
+      },
+    'feedingType' in act &&
+      act.feedingType && {
+        label: 'סוג האכלה',
+        value: act.feedingType,
+        icon: Milk,
+      },
+    'diaperType' in act &&
+      act.diaperType && {
+        label: 'סוג החלפה',
+        value: act.diaperType,
+        icon: Baby,
+      },
+    'healthType' in act &&
+      act.healthType && {
+        label: 'סוג טיפול',
+        value: act.healthType,
+        icon: Baby,
+      },
     act.value && { label: 'תיאור רשומה', value: act.value, icon: Baby },
-    act.duration && { label: 'משך', value: `${act.duration} דק'`, icon: Timer },
-    act.amount && { label: 'כמות', value: act.amount, icon: Milk },
+    'duration' in act &&
+      act.duration && {
+        label: 'משך',
+        value: `${act.duration} דק'`,
+        icon: Timer,
+      },
+    'amount' in act &&
+      act.amount && { label: 'כמות', value: act.amount, icon: Milk },
     act.notes && { label: 'הערות', value: act.notes, icon: StickyNote },
-  ].filter(Boolean);
+  ].filter(Boolean) as { label: string; value: string | number; icon: any }[];
 
   return (
     <>

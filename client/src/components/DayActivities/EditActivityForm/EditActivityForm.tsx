@@ -7,8 +7,20 @@ import SleepFields from './SleepFields';
 import DiaperFields from './DiaperFields';
 import HealthFields from './HealthFields';
 import { Label } from '../../ui/Label';
+import type { Activity } from '../../../types';
 
-export const EditActivityForm = ({ act, onSave, onClose, selectedDate }) => {
+interface EditActivityFormProps {
+  act: Activity;
+  onSave: (updatedData: Activity) => void;
+  onClose: () => void;
+  selectedDate: string;
+}
+export const EditActivityForm = ({
+  act,
+  onSave,
+  onClose,
+  selectedDate,
+}: EditActivityFormProps) => {
   const [isSaving, setIsSaving] = useState(false);
 
   const [formData, setFormData] = useState(() => {

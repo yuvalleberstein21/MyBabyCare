@@ -40,7 +40,7 @@ export const BabyDetails = () => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: any;
     if (isSleepActive && sleepStartTime) {
       interval = setInterval(() => {
         const diff = Math.floor(

@@ -6,9 +6,10 @@ import {
   getSingleBaby,
   updateBabyApi,
 } from '../api/babies';
+import type { Baby } from '../types';
 
 export const useBabies = () => {
-  const [babies, setBabies] = useState([]);
+  const [babies, setBabies] = useState<Baby[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [singleBaby, setSingleBaby] = useState<any>(null);

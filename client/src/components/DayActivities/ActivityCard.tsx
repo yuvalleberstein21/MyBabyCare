@@ -8,6 +8,7 @@ import { ActivityInfoRows } from './ActivityInfoRows';
 import { useDeleteActivity } from '../../hooks/useDeleteActivity';
 import toast from 'react-hot-toast';
 import DeleteDialog from '../Dialogs/DeleteBabyDialog';
+import type { ActivityType } from '../../types';
 
 const colorMap = {
   feeding: 'bg-green-200 border-green-400',
@@ -16,7 +17,17 @@ const colorMap = {
   health: 'bg-pink-200 border-pink-400',
 };
 
-export const ActivityCard = ({ act, refreshSummary, selectedDate }) => {
+interface ActivityCardProps {
+  act: ActivityType;
+  refreshSummary: () => void;
+  selectedDate: string;
+}
+
+export const ActivityCard = ({
+  act,
+  refreshSummary,
+  selectedDate,
+}: ActivityCardProps) => {
   const { babyId } = useParams();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

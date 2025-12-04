@@ -1,4 +1,10 @@
-export const Filters = ({ filter, setFilter }) => {
+interface FiltersProps {
+  filter: 'all' | 'feeding' | 'sleep' | 'diaper' | 'health';
+  setFilter: (
+    filter: 'all' | 'feeding' | 'sleep' | 'diaper' | 'health'
+  ) => void;
+}
+export const Filters: React.FC<FiltersProps> = ({ filter, setFilter }) => {
   const buttons = [
     { key: 'all', label: 'הכל' },
     { key: 'feeding', label: 'האכלה' },

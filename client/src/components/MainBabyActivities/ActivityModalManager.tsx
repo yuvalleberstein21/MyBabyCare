@@ -2,7 +2,16 @@ import { AddDiaperDialog } from '../Dialogs/AddDiaperDialog';
 import AddFeedingDialog from '../Dialogs/AddFeedingDialog';
 import AddHealthDialog from '../Dialogs/AddHealthDialog';
 
-export const ActivityModalManager = ({ activeActivity, babyId, onClose }) => {
+interface ActivityModalManagerProps {
+  activeActivity: 'feeding' | 'diaper' | 'health' | null;
+  babyId: string;
+  onClose: () => void;
+}
+export const ActivityModalManager: React.FC<ActivityModalManagerProps> = ({
+  activeActivity,
+  babyId,
+  onClose,
+}) => {
   switch (activeActivity) {
     case 'feeding':
       return <AddFeedingDialog babyId={babyId} open onClose={onClose} />;

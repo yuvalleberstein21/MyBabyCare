@@ -13,7 +13,7 @@ export interface Baby {
 }
 
 export type NewBaby = Omit<Baby, '_id' | 'createdAt' | 'updatedAt'> & {
-  weight?: number;
-  height?: number;
+  weight: number | undefined;
+  height: number | undefined;
   image?: string;
 };

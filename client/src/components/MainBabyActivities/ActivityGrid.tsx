@@ -1,6 +1,21 @@
+import type { ReactNode } from 'react';
 import { SubTitle } from '../ui/SubTitle';
 
-const ActivityGrid = ({
+interface Activity {
+  key: string;
+  label: string;
+  color: string;
+  icon: ReactNode;
+}
+
+interface ActivityGridProps {
+  activities: Activity[];
+  onSelect: (key: string) => void;
+  isSleepActive: boolean;
+  sleepDuration: string;
+  loading: boolean;
+}
+const ActivityGrid: React.FC<ActivityGridProps> = ({
   activities,
   onSelect,
   isSleepActive,

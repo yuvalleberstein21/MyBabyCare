@@ -1,4 +1,13 @@
-export const DatePicker = ({ className, selectedDate, onChange }) => {
+interface DatePickerProps {
+  className?: string;
+  selectedDate: string;
+  onChange: (date: string) => void;
+}
+export const DatePicker = ({
+  className,
+  selectedDate,
+  onChange,
+}: DatePickerProps) => {
   return (
     <input
       className={className}
