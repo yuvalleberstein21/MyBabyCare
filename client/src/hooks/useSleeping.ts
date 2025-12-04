@@ -1,16 +1,15 @@
 import { useCallback, useState } from 'react';
 import {
-  createStartSleeping,
   createEndSleeping,
-  updateSleeping,
+  createStartSleeping,
   deleteSleep,
-  getActiveSleep,
+  updateSleeping,
 } from '../api/sleeping';
 import type {
-  StartSleepingData,
   EndSleepingData,
+  StartSleepingData,
   UpdateSleepSession,
-} from '../types/sleep.types';
+} from '../types';
 
 export const useSleeping = (babyId: string) => {
   const [loading, setLoading] = useState(false);
@@ -20,46 +19,38 @@ export const useSleeping = (babyId: string) => {
   const run = useCallback(
     async (
       action: 'getSleep' | 'start' | 'end' | 'update' | 'remove',
-      data?:
-        | StartSleepingData
-        | EndSleepingData
-        | { sleepId: string; payload?: Partial<UpdateSleepSession> }
-        | string
+      data?: any
     ) => {
       setLoading(true);
       setError(null);
       setSuccess(false);
 
       try {
+        let result;
+
         switch (action) {
-          case 'getSleep':
-            await getActiveSleep(babyId);
-            break;
           case 'start':
-            await createStartSleeping(babyId, data as StartSleepingData);
+            result = await createStartSleeping(babyId, data);
             break;
 
           case 'end':
-            await createEndSleeping(babyId, data as EndSleepingData);
+            result = await createEndSleeping(babyId, data);
             break;
 
-          case 'update': {
-            const { sleepId, payload } = data as {
-              sleepId: string;
-              payload: Partial<UpdateSleepSession>;
-            };
-            await updateSleeping(sleepId, payload);
+          case 'update':
+            result = await updateSleeping(data.sleepId, data.payload);
             break;
-          }
 
           case 'remove':
-            await deleteSleep(data as string);
+            result = await deleteSleep(data);
             break;
         }
 
         setSuccess(true);
+        return result;
       } catch (err: any) {
-        setError(err?.message || 'שגיאה בפעולת שינה');
+        const serverErr = err?.response?.data?.error;
+        setError(serverErr || err?.message || 'שגיאה בפעולת שינה');
         throw err;
       } finally {
         setLoading(false);
@@ -69,7 +60,6 @@ export const useSleeping = (babyId: string) => {
   );
 
   return {
-    getActiveSleeps: (babyId: string) => run('getSleep', babyId),
     startSleeping: (data: StartSleepingData) => run('start', data),
     endSleeping: (data: EndSleepingData) => run('end', data),
     update: (sleepId: string, payload: Partial<UpdateSleepSession>) =>

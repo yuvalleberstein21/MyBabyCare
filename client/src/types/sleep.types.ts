@@ -35,3 +35,9 @@ export interface SleepSession {
   endTime?: string;
   notes?: string;
 }
+
+export interface CompleteSleepingData {
+  startTime: string;
+  endTime?: string;
+  notes?: string;
+}

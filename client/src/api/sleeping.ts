@@ -1,4 +1,5 @@
 import type {
+  // CompleteSleepingData,
   EndSleepingData,
   SleepSession,
   StartSleepingData,
@@ -6,12 +7,26 @@ import type {
 } from '../types';
 import axiosInstance from '../utils/axiosInstance';
 
-export const getActiveSleep = async (babyId: string) => {
-  const { data } = await axiosInstance.get(`/sleep/${babyId}/active`, {
-    withCredentials: true,
-  });
-  return data;
-};
+// export const getActiveSleep = async (babyId: string) => {
+//   const { data } = await axiosInstance.get(`/sleep/${babyId}/active`, {
+//     withCredentials: true,
+//   });
+//   return data;
+// };
+
+// export const createCompleteSleeping = async (
+//   babyId: string,
+//   payload: CompleteSleepingData
+// ) => {
+//   const { data } = await axiosInstance.post(
+//     `/sleep/${babyId}/complete`,
+//     payload,
+//     {
+//       withCredentials: true,
+//     }
+//   );
+//   return data;
+// };
 
 export const createStartSleeping = async (
   babyId: string,

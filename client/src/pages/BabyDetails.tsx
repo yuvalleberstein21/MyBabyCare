@@ -8,12 +8,17 @@ import { activities } from '../mock/ActivitiesData';
 import DayActivities from '../components/DayActivities/Index';
 import { ActivityModalManager } from '../components/MainBabyActivities/ActivityModalManager';
 import { useBabyDetailsData } from '../hooks/useBabyDetailsData';
+import { useSleeping } from '../hooks/useSleeping';
 
 export const BabyDetails = () => {
   const { babyId } = useParams();
   const navigate = useNavigate();
 
   const [activeActivity, setActiveActivity] = useState<string | null>(null);
+  const [isSleepActive, setIsSleepActive] = useState(false);
+
+  const [sleepStartTime, setSleepStartTime] = useState<Date | null>(null);
+  const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState(
     () => new Date().toISOString().split('T')[0]
   );
@@ -28,9 +33,67 @@ export const BabyDetails = () => {
     refreshSummary,
   } = useBabyDetailsData(babyId!, selectedDate);
 
+  const { startSleeping, endSleeping, loading } = useSleeping(babyId!);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isSleepActive && sleepStartTime) {
+      interval = setInterval(() => {
+        const diff = Math.floor(
+          (Date.now() - sleepStartTime.getTime()) / 60000
+        );
+        setElapsedMinutes(diff);
+      }, 10000);
+    }
+    return () => clearInterval(interval);
+  }, [isSleepActive, sleepStartTime]);
+
+  console.log(sleepStartTime);
+  console.log(elapsedMinutes);
+
+  const handleActivitySelect = async (key: string) => {
+    if (key !== 'sleep') {
+      setActiveActivity(key);
+      return;
+    }
+
+    // אם שינה פעילה → עוצרים
+    if (isSleepActive) {
+      try {
+        const now = new Date();
+        await endSleeping({
+          endTime: now.toISOString(),
+        });
+        setIsSleepActive(false);
+        setSleepStartTime(null);
+        handleCloseActivity();
+      } catch (e) {
+        console.log('Error stopping sleep', e);
+      }
+      return;
+    }
+
+    // אם אין שינה פעילה → מתחילים
+    try {
+      const now = new Date();
+      const result = await startSleeping({
+        startTime: now.toISOString(),
+        notes: 'התחלת שינה',
+      });
+      setIsSleepActive(true);
+      setSleepStartTime(result.sleep.startTime);
+    } catch (e: any) {
+      // אם חוזרת שגיאה שהשינה כבר פעילה
+      if (e?.response?.data?.error === 'SLEEP_ALREADY_ACTIVE') {
+        setIsSleepActive(true);
+        setSleepStartTime(e.response.data.sleep.startTime);
+      }
+    }
+  };
 
   const handleCloseActivity = useCallback(() => {
     setActiveActivity(null);
@@ -66,7 +129,13 @@ export const BabyDetails = () => {
       />
 
       <main className="container mx-auto px-4 py-8">
-        <ActivityGrid activities={activities} onSelect={setActiveActivity} />
+        <ActivityGrid
+          activities={activities}
+          onSelect={handleActivitySelect}
+          isSleepActive={isSleepActive}
+          sleepDuration={elapsedMinutes}
+          loading={loading}
+        />
       </main>
 
       <ActivityModalManager
