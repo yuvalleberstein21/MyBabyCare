@@ -22,11 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:8005',
-      'https://my-baby-care-tau.vercel.app',
-    ],
+    origin: true,
     credentials: true,
   })
 );

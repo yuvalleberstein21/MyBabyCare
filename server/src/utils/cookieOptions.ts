@@ -2,14 +2,14 @@ import { Response } from 'express';
 const cookieOptions = {
   accessToken: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
     sameSite: 'lax' as const,
     maxAge: 15 * 60 * 1000,
   },
   refreshToken: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict' as const,
+    secure: true,
+    sameSite: 'none' as const,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 };
