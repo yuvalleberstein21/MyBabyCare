@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useContext, type JSX } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { Loader } from '../ui/Loader';
 
 interface Props {
   children: JSX.Element;
@@ -13,7 +14,7 @@ export const PublicRoute = ({ children }: Props) => {
   }
   const { user, loading } = auth;
 
-  if (loading) return <div>טוען...</div>;
+  if (loading) return <Loader />;
 
   if (user) return <Navigate to="/dashboard" replace />;
 
