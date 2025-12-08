@@ -24,7 +24,7 @@ app.use(
   cors({
     origin: [
       'https://my-baby-care-tau.vercel.app',
-      'https://app.babytracker.online/',
+      'https://app.babytracker.online',
       'http://localhost:5173',
     ],
     credentials: true,
