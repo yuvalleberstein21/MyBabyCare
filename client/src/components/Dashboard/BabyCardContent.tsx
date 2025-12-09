@@ -2,7 +2,6 @@ import React from 'react';
 import { Calendar, Ruler, Scale, User } from 'lucide-react';
 import { Title } from '../ui/Title';
 import { SubTitle } from '../ui/SubTitle';
-
 import { getDefaultImage } from '../../utils/getDefaultBabyImage';
 import type { Baby } from '../../types';
 
