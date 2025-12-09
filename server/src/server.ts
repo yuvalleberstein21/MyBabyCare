@@ -25,6 +25,7 @@ app.use(
     origin: [
       'https://my-baby-care-tau.vercel.app',
       'https://app.babytracker.online',
+      'https://api.babytracker.online',
       'http://localhost:5173',
     ],
     credentials: true,
