@@ -13,9 +13,7 @@ interface BabyCardContentProps {
 const BabyCardContent: React.FC<BabyCardContentProps> = ({ baby }) => {
   const { name, birthDate, gender, weight, height, image } = baby;
 
-  const imageUrl = image
-    ? `${axiosInstance.defaults.baseURL}${image}`
-    : getDefaultImage(gender);
+  const imageUrl = image ? image : getDefaultImage(gender);
 
   return (
     <>

@@ -2,7 +2,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Title } from './Title';
 import { SubTitle } from './SubTitle';
 import BabyAvatar from './BabyAvatar';
-import axiosInstance from '../../utils/axiosInstance';
 import { getDefaultImage } from '../../utils/getDefaultBabyImage';
 
 const Header = ({ baby, activeActivity, onBack }: any) => (
@@ -18,11 +17,7 @@ const Header = ({ baby, activeActivity, onBack }: any) => (
 
       <div className="flex items-center gap-4">
         <BabyAvatar
-          image={
-            baby.image
-              ? `${axiosInstance.defaults.baseURL}${baby.image}`
-              : getDefaultImage(baby.gender)
-          }
+          image={baby.image ? baby.image : getDefaultImage(baby.gender)}
           name={baby.name}
         />
         <div>

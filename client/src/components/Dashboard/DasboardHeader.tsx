@@ -8,7 +8,10 @@ interface DashboardHeaderProps {
 }
 
 export const DashboardHeader = ({ onAddClick }: DashboardHeaderProps) => (
-  <div className="flex flex-col md:flex-row items-center md:items-start justify-between mb-8 gap-4 text-right">
+  <div
+    className="flex flex-col md:flex-row items-center md:items-start justify-between mb-8 gap-4 text-right"
+    dir="rtl"
+  >
     <div>
       <Title className="text-3xl font-bold mb-2">התינוקות שלך</Title>
       <SubTitle className="text-muted-foreground">
@@ -19,8 +22,8 @@ export const DashboardHeader = ({ onAddClick }: DashboardHeaderProps) => (
       onClick={onAddClick}
       className="bg-gradient-primary hover:opacity-90 transition-opacity flex items-center gap-1"
     >
-      <Plus className="mr-2 h-4 w-4" />
       הוסף תינוק
+      <Plus className="h-4 w-4" />
     </Button>
   </div>
 );
