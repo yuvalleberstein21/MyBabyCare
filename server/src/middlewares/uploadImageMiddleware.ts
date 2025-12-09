@@ -1,22 +1,14 @@
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import cloudinary from '../config/cloudinary';
 
-// הגדרת תיקיית יעד ושם קובץ
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const folder = path.join(__dirname, '../public/uploads');
-
-    if (!fs.existsSync(folder)) {
-      fs.mkdirSync(folder, { recursive: true });
-    }
-
-    cb(null, folder);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `baby-${Date.now()}${ext}`);
-  },
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => ({
+    folder: 'babies', // תיקייה ב-Cloudinary
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    public_id: `baby-${Date.now()}`,
+  }),
 });
 
 const upload = multer({ storage });

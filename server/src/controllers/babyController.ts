@@ -13,7 +13,8 @@ import { Sleeping } from '../models/sleepModel';
 export const createBaby: RequestHandler = async (req, res) => {
   try {
     const { name, gender, birthDate, weight, height, notes } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+    // const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+    const image = req.file ? req.file.path : undefined;
 
     const parsedWeight = weight ? Number(weight) : undefined;
     const parsedHeight = height ? Number(height) : undefined;
@@ -84,9 +85,13 @@ export const updateBaby: RequestHandler<
       ...(notes !== undefined && { notes }),
     };
 
-    // update image if uploaded
+    // // update image if uploaded
+    // if (req.file) {
+    //   updateFields.image = `/uploads/${req.file.filename}`;
+    // }
+
     if (req.file) {
-      updateFields.image = `/uploads/${req.file.filename}`;
+      updateFields.image = req.file.path;
     }
 
     const updatedBaby = await Baby.findOneAndUpdate(
