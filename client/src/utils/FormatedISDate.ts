@@ -16,7 +16,17 @@ export const formatTimeOnly = (isoString: string) => {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
-    // timeZone: 'UTC',
+    timeZone: 'UTC',
+  });
+};
+
+export const formatTimeSleepingOnly = (isoString: string) => {
+  const date = new Date(isoString);
+
+  return date.toLocaleTimeString('he-IL', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
   });
 };
 

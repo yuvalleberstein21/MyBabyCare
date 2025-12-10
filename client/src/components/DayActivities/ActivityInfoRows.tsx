@@ -1,7 +1,10 @@
 // @ts-nocheck
 import { SubTitle } from '../ui/SubTitle';
 import { Clock, StickyNote, Timer, Milk, Baby } from 'lucide-react';
-import { formatTimeOnly } from '../../utils/FormatedISDate';
+import {
+  formatTimeOnly,
+  formatTimeSleepingOnly,
+} from '../../utils/FormatedISDate';
 import type { Activity } from '../../types/activity.types';
 
 interface ActivityInfoRowsProps {
@@ -15,13 +18,13 @@ export const ActivityInfoRows = ({ act }: ActivityInfoRowsProps) => {
     'startTime' in act &&
       act.startTime && {
         label: 'התחלה',
-        value: formatTimeOnly(act.startTime),
+        value: formatTimeSleepingOnly(act.startTime),
         icon: Clock,
       },
     'endTime' in act &&
       act.endTime && {
         label: 'סיום',
-        value: formatTimeOnly(act.endTime),
+        value: formatTimeSleepingOnly(act.endTime),
         icon: Clock,
       },
     'feedingType' in act &&
