@@ -76,9 +76,7 @@ export const createDiaper = async (
 
     const { time, type, notes } = req.body;
 
-    const diaperTime = time
-      ? normalizeToUTC(time)
-      : normalizeToUTC(new Date().toISOString());
+    const diaperTime = time ? normalizeToUTC(time) : new Date();
 
     const newDiaper: IDiaper = await Diaper.create({
       babyId,

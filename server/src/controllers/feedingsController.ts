@@ -59,9 +59,7 @@ export const createFeeding: RequestHandler<
     const { babyId } = req.params;
     const { type, amount, time, notes } = req.body;
 
-    const feedingTime = time
-      ? normalizeToUTC(time)
-      : normalizeToUTC(new Date().toISOString());
+    const feedingTime = time ? normalizeToUTC(time) : new Date();
 
     const feeding = await Feeding.create({
       babyId,

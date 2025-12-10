@@ -24,9 +24,7 @@ export const createHealth = async (
       type,
       value,
       notes,
-      time: time
-        ? normalizeToUTC(time)
-        : normalizeToUTC(new Date().toISOString()),
+      time: time ? normalizeToUTC(time) : new Date(),
     });
 
     res.status(201).json({

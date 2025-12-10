@@ -83,9 +83,7 @@ export const createStartSleep: RequestHandler<
       return;
     }
 
-    const parsedStartTime = startTime
-      ? normalizeToUTC(startTime)
-      : normalizeToUTC(new Date().toISOString());
+    const parsedStartTime = startTime ? normalizeToUTC(startTime) : new Date();
 
     const newSleep: ISleep = new Sleeping({
       babyId,
@@ -114,9 +112,8 @@ export const createEndSleep: RequestHandler<
     const { babyId } = req.params;
 
     const { endTime } = req.body;
-    const parsedEndTime = endTime
-      ? normalizeToUTC(endTime)
-      : normalizeToUTC(new Date().toISOString());
+
+    const parsedEndTime = endTime ? normalizeToUTC(endTime) : new Date();
 
     // מוצא את רשומת השינה הפתוחה ביותר עבור התינוק
     const openSleep: ISleep | null = await Sleeping.findOne({

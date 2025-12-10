@@ -1,4 +1,12 @@
-export const normalizeToUTC = (dateString: string) => {
-  const local = new Date(dateString);
-  return new Date(local.getTime() - local.getTimezoneOffset() * 60000);
+export const normalizeToUTC = (isoString: string) => {
+  const local = new Date(isoString);
+  return new Date(
+    Date.UTC(
+      local.getFullYear(),
+      local.getMonth(),
+      local.getDate(),
+      local.getHours(),
+      local.getMinutes()
+    )
+  );
 };
