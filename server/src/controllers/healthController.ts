@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Health } from '../models/healthModel';
 import { validateObjectId } from '../utils/validateObjectId';
+import { normalizeToUTC } from '../utils/normalizeToUTC';
 
 interface BabyIdParams {
   babyId?: string;
@@ -23,7 +24,9 @@ export const createHealth = async (
       type,
       value,
       notes,
-      time: time ? new Date(time) : new Date(),
+      time: time
+        ? normalizeToUTC(time)
+        : normalizeToUTC(new Date().toISOString()),
     });
 
     res.status(201).json({
@@ -46,7 +49,7 @@ export const updateHealth: RequestHandler = async (req, res) => {
     if (req.body.type !== undefined) updateData.type = req.body.type;
     if (req.body.value !== undefined) updateData.value = req.body.value;
     if (req.body.notes !== undefined) updateData.notes = req.body.notes;
-    if (req.body.time) updateData.time = new Date(req.body.time);
+    if (req.body.time) updateData.time = normalizeToUTC(req.body.time);
 
     const updatedRecord = await Health.findByIdAndUpdate(
       healthId,

@@ -7,6 +7,7 @@ import {
   IDiaper,
 } from '../types/diaper';
 import { Diaper } from '../models/DiaperModel';
+import { normalizeToUTC } from '../utils/normalizeToUTC';
 
 interface BabyIdParams {
   babyId?: string;
@@ -75,7 +76,9 @@ export const createDiaper = async (
 
     const { time, type, notes } = req.body;
 
-    const diaperTime = time ? new Date(time) : new Date();
+    const diaperTime = time
+      ? normalizeToUTC(time)
+      : normalizeToUTC(new Date().toISOString());
 
     const newDiaper: IDiaper = await Diaper.create({
       babyId,
@@ -111,9 +114,9 @@ export const editDiaper = async (
       notes: string;
     }> = {};
 
-    if (time) updateFields.time = new Date(time);
     if (type !== undefined) updateFields.type = type;
     if (notes !== undefined) updateFields.notes = notes;
+    if (time) updateFields.time = normalizeToUTC(time);
 
     const updatedDiaper = await Diaper.findByIdAndUpdate(
       diaperId,
@@ -126,10 +129,11 @@ export const editDiaper = async (
       return;
     }
 
-    res
-      .status(200)
-      .json({ message: 'החלפת חיתולים עודכנה בהצלחה', diaper: updatedDiaper });
-  } catch (error: any) {
+    res.status(200).json({
+      message: 'החלפת חיתולים עודכנה בהצלחה',
+      diaper: updatedDiaper,
+    });
+  } catch (error) {
     console.error('שגיאה בעדכון החלפת חיתולים:', error);
     res.status(500).json({ error: 'שגיאה בשרת' });
   }

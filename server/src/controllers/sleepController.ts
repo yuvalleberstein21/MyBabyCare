@@ -7,6 +7,7 @@ import {
   EditSleepBody,
   ISleep,
 } from '../types/sleep';
+import { normalizeToUTC } from '../utils/normalizeToUTC';
 
 interface BabyIdParams {
   babyId?: string;
@@ -82,7 +83,9 @@ export const createStartSleep: RequestHandler<
       return;
     }
 
-    const parsedStartTime = startTime ? new Date(startTime) : new Date();
+    const parsedStartTime = startTime
+      ? normalizeToUTC(startTime)
+      : normalizeToUTC(new Date().toISOString());
 
     const newSleep: ISleep = new Sleeping({
       babyId,
@@ -111,7 +114,9 @@ export const createEndSleep: RequestHandler<
     const { babyId } = req.params;
 
     const { endTime } = req.body;
-    const parsedEndTime = endTime ? new Date(endTime) : new Date();
+    const parsedEndTime = endTime
+      ? normalizeToUTC(endTime)
+      : normalizeToUTC(new Date().toISOString());
 
     // מוצא את רשומת השינה הפתוחה ביותר עבור התינוק
     const openSleep: ISleep | null = await Sleeping.findOne({
@@ -161,8 +166,8 @@ export const editSleeping = async (
       notes: string;
     }> = {};
 
-    if (startTime) updateFields.startTime = new Date(startTime);
-    if (endTime) updateFields.endTime = new Date(endTime);
+    if (startTime) updateFields.startTime = normalizeToUTC(startTime);
+    if (endTime) updateFields.endTime = normalizeToUTC(endTime);
     if (notes !== undefined) updateFields.notes = notes;
 
     const updatedSleeping = await Sleeping.findByIdAndUpdate(

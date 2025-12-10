@@ -6,6 +6,7 @@ import {
   IFeeding,
   UpdateFeedingRequestBody,
 } from '../types/feeding';
+import { normalizeToUTC } from '../utils/normalizeToUTC';
 
 interface FeedingParams {
   babyId?: string;
@@ -58,7 +59,9 @@ export const createFeeding: RequestHandler<
     const { babyId } = req.params;
     const { type, amount, time, notes } = req.body;
 
-    const feedingTime = time ? new Date(time) : new Date();
+    const feedingTime = time
+      ? normalizeToUTC(time)
+      : normalizeToUTC(new Date().toISOString());
 
     const feeding = await Feeding.create({
       babyId,
@@ -86,9 +89,15 @@ export const editFeeding: RequestHandler<
   try {
     const { feedingId } = req.params;
     const { type, amount, time, notes } = req.body;
-    const updateFields = { type, amount, time, notes };
 
     if (!validateObjectId(feedingId, res, 'מזהה האכלה')) return;
+
+    const updateFields: any = {};
+
+    if (type !== undefined) updateFields.type = type;
+    if (amount !== undefined) updateFields.amount = amount;
+    if (notes !== undefined) updateFields.notes = notes;
+    if (time) updateFields.time = normalizeToUTC(time);
 
     const updatedFeeding: IFeeding | null = await Feeding.findByIdAndUpdate(
       feedingId,
