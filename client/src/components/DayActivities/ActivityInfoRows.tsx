@@ -9,6 +9,7 @@ interface ActivityInfoRowsProps {
 }
 
 export const ActivityInfoRows = ({ act }: ActivityInfoRowsProps) => {
+  console.log(act);
   const infoRows = [
     act.time && { label: 'שעה', value: formatTimeOnly(act.time), icon: Clock },
     'startTime' in act &&

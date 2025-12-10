@@ -1,6 +1,10 @@
 // @ts-nocheck
 import { useState } from 'react';
-import { formatToHHMM, typeLabels } from '../../../utils/FormatedISDate';
+import {
+  formatTimeOnly,
+  formatToHHMM,
+  typeLabels,
+} from '../../../utils/FormatedISDate';
 import { Loader2 } from 'lucide-react';
 import Button from '../../ui/Button';
 import FeedingFields from './FeedingFields';
@@ -22,26 +26,26 @@ export const EditActivityForm: React.FC<EditActivityFormProps> = ({
     switch (act.type) {
       case 'sleep':
         return {
-          startTime: act.startTime ? formatToHHMM(act.startTime) : '',
-          endTime: act.endTime ? formatToHHMM(act.endTime) : '',
+          startTime: act.startTime ? formatTimeOnly(act.startTime) : '',
+          endTime: act.endTime ? formatTimeOnly(act.endTime) : '',
           notes: act.notes || '',
         };
       case 'feeding':
         return {
-          time: act.time ? formatToHHMM(act.time) : '',
+          time: act.time ? formatTimeOnly(act.time) : '',
           notes: act.notes || '',
           feedingType: act.feedingType || '',
           amount: act.amount || '',
         };
       case 'diaper':
         return {
-          time: act.time ? formatToHHMM(act.time) : '',
+          time: act.time ? formatTimeOnly(act.time) : '',
           notes: act.notes || '',
           diaperType: act.diaperType || '',
         };
       case 'health':
         return {
-          time: act.time ? formatToHHMM(act.time) : '',
+          time: act.time ? formatTimeOnly(act.time) : '',
           notes: act.notes || '',
           healthType: act.healthType || '',
           value: act.value || '',
